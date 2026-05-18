@@ -1,0 +1,3358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TempSync — Sleep Smarter. Wake Better.</title>
+
+<!-- SEO & social -->
+<meta name="description" content="TempSync — the Advanced Heat Control Blanket. A smart dual-zone blanket that cools you to sleep and warms you to wake, automatically syncing with your circadian rhythm. Built for students and young professionals." />
+<meta name="keywords" content="smart blanket, sleep tech, circadian rhythm, dual-zone temperature, cooling blanket, heating blanket, student sleep, TempSync" />
+<meta name="author" content="TempSync" />
+<meta property="og:title" content="TempSync — Sleep Smarter. Wake Better." />
+<meta property="og:description" content="The Advanced Heat Control Blanket. Cools you to sleep. Warms you to wake. Built on circadian science." />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="https://og.tempsync.app/preview.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="theme-color" content="#0a1628" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Geist:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+<style>
+  /* =========================================================
+     ROOT TOKENS
+     ========================================================= */
+  :root {
+    --navy-deep: #0a1628;
+    --navy: #0f1e36;
+    --navy-mid: #1b2d44;
+    --gold: #d4af6a;
+    --gold-bright: #e8c889;
+    --cream: #f5f1e8;
+    --cream-dim: #d8d3c5;
+    --cool: #5ba3d0;
+    --cool-bright: #7fc0e8;
+    --warm: #e89456;
+    --warm-bright: #f4a878;
+    --line: rgba(212, 175, 106, 0.18);
+    --line-strong: rgba(212, 175, 106, 0.4);
+
+    --display: "Fraunces", Georgia, serif;
+    --display-cinema: "Instrument Serif", "Fraunces", Georgia, serif;
+    --body: "Geist", -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--body);
+    background: var(--navy-deep);
+    color: var(--cream);
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    font-weight: 300;
+  }
+  ::selection { background: var(--gold); color: var(--navy-deep); }
+
+  /* =========================================================
+     CINEMATIC INTRO (auto-plays once on load)
+     ========================================================= */
+  .cinematic {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    animation: cinemaDismiss 1.2s 12s forwards;
+  }
+  .cinematic.skip {
+    animation: cinemaDismiss 0.6s forwards;
+  }
+  @keyframes cinemaDismiss {
+    0% { opacity: 1; }
+    99% { opacity: 0; pointer-events: none; }
+    100% { opacity: 0; pointer-events: none; visibility: hidden; display: none; }
+  }
+
+  /* letterbox bars */
+  .cinema-bar {
+    position: absolute;
+    left: 0; right: 0;
+    height: 80px;
+    background: #000;
+    z-index: 5;
+    transform: translateY(-100%);
+    animation: barIn 0.8s 0.1s forwards;
+  }
+  .cinema-bar.bottom {
+    top: auto; bottom: 0;
+    transform: translateY(100%);
+    animation: barInBottom 0.8s 0.1s forwards;
+  }
+  @keyframes barIn { to { transform: translateY(0); } }
+  @keyframes barInBottom { to { transform: translateY(0); } }
+
+  .cinema-scene {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .cinema-bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 50%, #0a1628 0%, #000 70%);
+  }
+  .cinema-stars {
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 12% 18%, #f5f1e8, transparent),
+      radial-gradient(1px 1px at 25% 75%, #f5f1e8, transparent),
+      radial-gradient(2px 2px at 35% 35%, #f5f1e8, transparent),
+      radial-gradient(1px 1px at 48% 12%, #f5f1e8, transparent),
+      radial-gradient(1px 1px at 60% 60%, #f5f1e8, transparent),
+      radial-gradient(2px 2px at 73% 25%, #f5f1e8, transparent),
+      radial-gradient(1px 1px at 82% 80%, #f5f1e8, transparent),
+      radial-gradient(1px 1px at 91% 45%, #f5f1e8, transparent),
+      radial-gradient(1.5px 1.5px at 15% 90%, #f5f1e8, transparent),
+      radial-gradient(1px 1px at 67% 88%, #f5f1e8, transparent);
+    opacity: 0;
+    animation: starsIn 2s 0.5s forwards;
+  }
+  @keyframes starsIn { to { opacity: 1; } }
+
+  .cinema-glow {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0;
+  }
+  .cinema-glow.cool {
+    background: var(--cool);
+    animation: glowCool 4s 3s forwards;
+  }
+  .cinema-glow.warm {
+    background: var(--warm);
+    animation: glowWarm 4s 7s forwards;
+  }
+  @keyframes glowCool {
+    0% { opacity: 0; transform: scale(0.5); }
+    50% { opacity: 0.4; transform: scale(1); }
+    100% { opacity: 0; transform: scale(1.2); }
+  }
+  @keyframes glowWarm {
+    0% { opacity: 0; transform: scale(0.5); }
+    50% { opacity: 0.45; transform: scale(1); }
+    100% { opacity: 0; transform: scale(1.2); }
+  }
+
+  .cinema-frame {
+    position: absolute;
+    text-align: center;
+    opacity: 0;
+    z-index: 10;
+    padding: 0 2rem;
+  }
+  .cinema-frame .time-stamp {
+    font-family: var(--body);
+    font-size: 0.8rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+  }
+  .cinema-frame .line {
+    font-family: var(--display-cinema);
+    font-size: clamp(2.5rem, 6vw, 5.5rem);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--cream);
+  }
+  .cinema-frame .line em {
+    font-style: italic;
+    color: var(--gold);
+  }
+  .cinema-frame .sub {
+    font-family: var(--display);
+    font-style: italic;
+    color: var(--cream-dim);
+    font-size: clamp(1rem, 1.6vw, 1.4rem);
+    margin-top: 1rem;
+  }
+
+  /* Frame timing — each ~3s slot, fade in/out */
+  .cinema-frame.f1 { animation: frameShow 3s 0.8s forwards; }
+  .cinema-frame.f2 { animation: frameShow 3s 3.5s forwards; }
+  .cinema-frame.f3 { animation: frameShow 3s 6.5s forwards; }
+  .cinema-frame.f4 { animation: frameShowFinal 3s 9.5s forwards; }
+
+  @keyframes frameShow {
+    0%   { opacity: 0; transform: translateY(20px); }
+    18%  { opacity: 1; transform: translateY(0); }
+    82%  { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-20px); }
+  }
+  @keyframes frameShowFinal {
+    0%   { opacity: 0; transform: scale(0.92); }
+    20%  { opacity: 1; transform: scale(1); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+
+  .cinema-logo {
+    font-family: var(--display);
+    font-size: clamp(4rem, 9vw, 8rem);
+    font-weight: 300;
+    letter-spacing: -0.04em;
+    color: var(--cream);
+  }
+  .cinema-logo sup { font-size: 0.4em; color: var(--gold); vertical-align: super; margin-left: 4px; }
+  .cinema-tagline {
+    font-family: var(--display);
+    font-style: italic;
+    color: var(--gold);
+    font-size: clamp(1rem, 1.8vw, 1.4rem);
+    margin-top: 1.5rem;
+    letter-spacing: 0.04em;
+  }
+
+  /* Skip button */
+  .cinema-skip {
+    position: absolute;
+    top: 30px; right: 30px;
+    z-index: 20;
+    background: transparent;
+    border: 1px solid rgba(212, 175, 106, 0.4);
+    color: var(--cream-dim);
+    padding: 0.6rem 1.2rem;
+    font-family: var(--body);
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    opacity: 0;
+    animation: fadeIn 0.5s 1.5s forwards;
+  }
+  .cinema-skip:hover { color: var(--gold); border-color: var(--gold); }
+  @keyframes fadeIn { to { opacity: 1; } }
+
+  /* Decorative orbit motes inside cinematic */
+  .mote {
+    position: absolute;
+    width: 2px; height: 2px;
+    background: var(--cream);
+    border-radius: 50%;
+    opacity: 0;
+    animation: moteFloat 8s infinite;
+  }
+  @keyframes moteFloat {
+    0%   { opacity: 0; transform: translate(0,0); }
+    20%  { opacity: 0.8; }
+    100% { opacity: 0; transform: translate(80px, -120px); }
+  }
+
+  /* =========================================================
+     NAVIGATION
+     ========================================================= */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.5rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    backdrop-filter: blur(12px);
+    background: rgba(10, 22, 40, 0.6);
+    border-bottom: 1px solid var(--line);
+    transition: padding 0.3s ease, background 0.3s ease;
+  }
+  nav.scrolled {
+    padding: 1rem 3rem;
+    background: rgba(10, 22, 40, 0.88);
+  }
+  nav .logo {
+    font-family: var(--display);
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--cream);
+    letter-spacing: -0.02em;
+    cursor: pointer;
+    user-select: none;
+  }
+  nav .logo sup { font-size: 0.5em; color: var(--gold); margin-left: 2px; }
+  nav ul {
+    display: flex;
+    list-style: none;
+    gap: 2.2rem;
+  }
+  nav a {
+    color: var(--cream-dim);
+    text-decoration: none;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+    position: relative;
+  }
+  nav a:hover { color: var(--gold); }
+  nav a::after {
+    content: '';
+    position: absolute;
+    bottom: -6px; left: 0;
+    width: 0; height: 1px;
+    background: var(--gold);
+    transition: width 0.3s ease;
+  }
+  nav a:hover::after { width: 100%; }
+
+  /* =========================================================
+     HERO
+     ========================================================= */
+  .hero {
+    min-height: 100vh;
+    position: relative;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    align-items: center;
+    padding: 8rem 3rem 4rem;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 80% 30%, rgba(232, 148, 86, 0.12), transparent 60%),
+      radial-gradient(ellipse 70% 80% at 10% 80%, rgba(91, 163, 208, 0.1), transparent 70%);
+    pointer-events: none;
+  }
+  .hero-content { position: relative; z-index: 2; max-width: 720px; }
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 2rem;
+  }
+  .eyebrow::before {
+    content: '';
+    width: 30px; height: 1px;
+    background: var(--gold);
+  }
+  .hero h1 {
+    font-family: var(--display);
+    font-size: clamp(3.5rem, 8vw, 7rem);
+    line-height: 0.95;
+    font-weight: 300;
+    letter-spacing: -0.03em;
+    color: var(--cream);
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 em { font-style: italic; color: var(--gold); font-weight: 400; }
+  .hero .tagline {
+    font-family: var(--display);
+    font-style: italic;
+    font-size: clamp(1.2rem, 2vw, 1.6rem);
+    color: var(--cream-dim);
+    margin-bottom: 2rem;
+  }
+  .hero p.lead {
+    font-size: 1.05rem;
+    color: var(--cream-dim);
+    max-width: 540px;
+    margin-bottom: 2.5rem;
+  }
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 1rem 1.8rem;
+    font-family: var(--body);
+    font-size: 0.82rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+    font-weight: 500;
+  }
+  .btn-primary { background: var(--gold); color: var(--navy-deep); }
+  .btn-primary:hover {
+    background: var(--gold-bright);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(212, 175, 106, 0.25);
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--cream);
+    border-color: var(--line-strong);
+  }
+  .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+  .btn .arrow { transition: transform 0.3s; }
+  .btn:hover .arrow { transform: translateX(4px); }
+
+  /* Hero visual — SVG product mockup */
+  .hero-visual {
+    position: relative;
+    height: 70vh;
+    min-height: 480px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .product-card-svg {
+    width: 100%;
+    height: auto;
+    max-width: 540px;
+    filter: drop-shadow(0 30px 60px rgba(0,0,0,0.5));
+    animation: floatGentle 6s ease-in-out infinite;
+  }
+  @keyframes floatGentle {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+
+  .scroll-indicator {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--cream-dim);
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+  }
+  .scroll-indicator::after {
+    content: '';
+    display: block;
+    width: 1px; height: 40px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    margin: 0.8rem auto 0;
+    animation: scrollLine 2s infinite;
+  }
+  @keyframes scrollLine {
+    0% { transform: scaleY(0); transform-origin: top; }
+    50% { transform: scaleY(1); transform-origin: top; }
+    51% { transform-origin: bottom; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+  }
+
+  /* =========================================================
+     SECTION BASE
+     ========================================================= */
+  section { position: relative; padding: 8rem 3rem; }
+  .container { max-width: 1280px; margin: 0 auto; }
+
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.5rem;
+  }
+  .section-label .num {
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 400;
+  }
+  .section-title {
+    font-family: var(--display);
+    font-size: clamp(2.2rem, 4.5vw, 4rem);
+    line-height: 1.05;
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    color: var(--cream);
+    margin-bottom: 1.5rem;
+    max-width: 900px;
+  }
+  .section-title em { font-style: italic; color: var(--gold); }
+  .section-lead {
+    font-size: 1.1rem;
+    color: var(--cream-dim);
+    max-width: 640px;
+    margin-bottom: 4rem;
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.9s ease, transform 0.9s ease;
+  }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+
+  /* =========================================================
+     PROBLEM
+     ========================================================= */
+  .problem { background: var(--navy); }
+  .problem-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    margin-top: 3rem;
+    border-top: 1px solid var(--line);
+  }
+  .stat {
+    padding: 2.5rem 2rem;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .stat:last-child { border-right: none; }
+  .stat .number {
+    font-family: var(--display);
+    font-size: clamp(3rem, 5vw, 4.5rem);
+    line-height: 1;
+    color: var(--gold);
+    font-weight: 300;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+  }
+  .stat .label { font-size: 0.95rem; color: var(--cream-dim); }
+
+  /* =========================================================
+     3D MODEL
+     ========================================================= */
+  .model-section {
+    background:
+      radial-gradient(ellipse at center, rgba(91, 163, 208, 0.08), transparent 60%),
+      var(--navy-deep);
+    padding: 6rem 0 8rem;
+    overflow: hidden;
+  }
+  .model-header {
+    text-align: center;
+    padding: 0 3rem 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .model-header .section-label { justify-content: center; }
+  .model-stage {
+    position: relative;
+    height: 78vh;
+    min-height: 620px;
+    width: 100%;
+  }
+  #blanket-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+    cursor: grab;
+  }
+  #blanket-canvas:active { cursor: grabbing; }
+
+  /* Floating callout labels */
+  .label-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .layer-label {
+    position: absolute;
+    background: rgba(15, 30, 54, 0.94);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--line-strong);
+    padding: 0.7rem 1rem;
+    border-radius: 3px;
+    font-size: 0.78rem;
+    color: var(--cream);
+    letter-spacing: 0.03em;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+    white-space: nowrap;
+    min-width: 200px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  }
+  .layer-label.visible { opacity: 1; }
+  .layer-label .label-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--gold);
+    color: var(--navy-deep);
+    font-family: var(--display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 0.8rem;
+    margin-right: 0.5rem;
+    vertical-align: middle;
+  }
+  .layer-label .label-title {
+    font-family: var(--display);
+    font-style: italic;
+    color: var(--cream);
+    font-size: 0.95rem;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .layer-label .label-desc {
+    color: var(--cream-dim);
+    font-size: 0.72rem;
+    white-space: normal;
+    margin-top: 4px;
+    line-height: 1.4;
+  }
+
+  .model-controls {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.6rem;
+    background: rgba(15, 30, 54, 0.88);
+    backdrop-filter: blur(14px);
+    padding: 0.55rem;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    z-index: 10;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+  }
+  .model-controls button {
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--cream-dim);
+    font-family: var(--body);
+    font-size: 0.74rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.65rem 1.2rem;
+    cursor: pointer;
+    transition: all 0.25s;
+    border-radius: 3px;
+  }
+  .model-controls button:hover { color: var(--cream); background: rgba(212, 175, 106, 0.08); }
+  .model-controls button.active {
+    background: var(--gold);
+    color: var(--navy-deep);
+    font-weight: 500;
+  }
+
+  .model-hint {
+    position: absolute;
+    top: 2rem;
+    left: 2rem;
+    color: var(--cream-dim);
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    pointer-events: none;
+  }
+  .model-hint .dot {
+    width: 6px; height: 6px;
+    background: var(--gold);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.4; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.4); }
+  }
+
+  /* Mode badge — shows "DAY" or "NIGHT" when in cycle mode */
+  .mode-badge {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    font-family: var(--display);
+    font-style: italic;
+    color: var(--gold);
+    font-size: 0.95rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    background: rgba(15, 30, 54, 0.85);
+    backdrop-filter: blur(8px);
+    padding: 0.5rem 1rem;
+    border: 1px solid var(--line-strong);
+    border-radius: 3px;
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .mode-badge.visible { opacity: 1; }
+
+  /* =========================================================
+     SCIENCE
+     ========================================================= */
+  .science { background: var(--navy); }
+  .science-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 5rem;
+    align-items: center;
+    margin-top: 2rem;
+  }
+  .science-points { list-style: none; }
+  .science-points li {
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+  .science-points li:last-child { border-bottom: none; }
+  .science-points .icon {
+    width: 36px; height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--line-strong);
+    border-radius: 50%;
+    font-family: var(--display);
+    font-style: italic;
+    color: var(--gold);
+    font-size: 0.95rem;
+  }
+  .science-points h4 {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: 1.2rem;
+    color: var(--cream);
+    margin-bottom: 0.3rem;
+  }
+  .science-points p { color: var(--cream-dim); font-size: 0.95rem; }
+  .hormone-chart {
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    background: rgba(10, 22, 40, 0.6);
+    padding: 1.5rem;
+  }
+
+  /* =========================================================
+     AUDIENCE
+     ========================================================= */
+  .audience-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+  .audience-card {
+    padding: 3rem 2.5rem;
+    background: linear-gradient(180deg, var(--navy-mid), var(--navy));
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.4s ease, border-color 0.4s ease;
+  }
+  .audience-card:hover { transform: translateY(-4px); border-color: var(--gold); }
+  .audience-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: var(--gold);
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.5s ease;
+  }
+  .audience-card:hover::before { transform: scaleY(1); }
+  .audience-card .tag {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .audience-card h3 {
+    font-family: var(--display);
+    font-size: 2rem;
+    font-weight: 400;
+    margin-bottom: 0.3rem;
+    color: var(--cream);
+  }
+  .audience-card .age {
+    font-family: var(--display);
+    font-style: italic;
+    color: var(--gold);
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+  }
+  .audience-card p { color: var(--cream-dim); margin-bottom: 1rem; font-size: 0.95rem; }
+  .survey-bar {
+    margin-top: 4rem;
+    padding: 2.5rem 2.5rem;
+    background: rgba(212, 175, 106, 0.06);
+    border: 1px solid var(--line-strong);
+    border-radius: 4px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2rem;
+    align-items: center;
+  }
+  .survey-bar .label {
+    font-size: 0.75rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .survey-stat { text-align: left; }
+  .survey-stat .big {
+    font-family: var(--display);
+    font-size: 3.5rem;
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1;
+  }
+  .survey-stat .desc { font-size: 0.9rem; color: var(--cream-dim); margin-top: 0.4rem; }
+
+  /* =========================================================
+     VALUE
+     ========================================================= */
+  .value { background: var(--navy); }
+  .value-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    margin-top: 3rem;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .value-item {
+    padding: 3rem 2.5rem;
+    border-right: 1px solid var(--line);
+    position: relative;
+  }
+  .value-item:last-child { border-right: none; }
+  .value-item .num {
+    font-family: var(--display);
+    font-style: italic;
+    color: var(--gold);
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    display: block;
+  }
+  .value-item h3 {
+    font-family: var(--display);
+    font-size: 1.8rem;
+    font-weight: 400;
+    color: var(--cream);
+    margin-bottom: 1rem;
+  }
+  .value-item p { color: var(--cream-dim); font-size: 0.95rem; }
+  .value-footer {
+    text-align: center;
+    margin-top: 3rem;
+    font-family: var(--display);
+    font-style: italic;
+    color: var(--gold);
+    font-size: 1.2rem;
+  }
+
+  /* =========================================================
+     COMPETITIVE (replaces market-gap section)
+     ========================================================= */
+  .competitive { background: var(--navy-deep); }
+  .compare-table {
+    margin-top: 3rem;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .compare-row {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr;
+    border-bottom: 1px solid var(--line);
+    transition: background 0.3s;
+  }
+  .compare-row:last-child { border-bottom: none; }
+  .compare-row.header {
+    background: var(--navy-mid);
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .compare-row.us {
+    background: linear-gradient(90deg, rgba(212, 175, 106, 0.18), rgba(212, 175, 106, 0.06));
+    position: relative;
+  }
+  .compare-row.us::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--gold);
+  }
+  .compare-cell {
+    padding: 1.2rem 1.3rem;
+    font-size: 0.92rem;
+    border-right: 1px solid var(--line);
+    color: var(--cream-dim);
+    display: flex;
+    align-items: center;
+  }
+  .compare-cell:last-child { border-right: none; }
+  .compare-cell.feature {
+    color: var(--cream);
+    font-family: var(--body);
+    font-weight: 500;
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+  }
+  .compare-row.header .compare-cell.feature { color: var(--gold); }
+  .compare-row.us .compare-cell {
+    color: var(--cream);
+    font-weight: 500;
+  }
+  .compare-row.us .compare-cell.feature { color: var(--gold); font-family: var(--display); font-weight: 400; font-size: 1.05rem; font-style: italic;}
+  .compare-cell .small { font-size: 0.75rem; color: var(--cream-dim); margin-left: 4px; }
+
+  .compare-takeaway {
+    margin-top: 3rem;
+    padding: 2rem 2.5rem;
+    background: var(--navy);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--gold);
+    border-radius: 3px;
+    font-family: var(--display);
+    font-size: 1.3rem;
+    font-style: italic;
+    color: var(--cream);
+    line-height: 1.5;
+  }
+  .compare-takeaway strong {
+    color: var(--gold);
+    font-style: normal;
+    font-weight: 400;
+  }
+
+  /* =========================================================
+     BUSINESS MODEL (pricing + marketing combined section)
+     ========================================================= */
+  .business { background: var(--navy); }
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 3rem;
+    margin-bottom: 4rem;
+  }
+  .price-card {
+    padding: 2.5rem;
+    background: var(--navy-mid);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    position: relative;
+    transition: transform 0.4s, border-color 0.4s;
+  }
+  .price-card.highlight {
+    background: linear-gradient(180deg, rgba(212, 175, 106, 0.1), var(--navy-mid));
+    border-color: var(--gold);
+  }
+  .price-card:hover { transform: translateY(-4px); }
+  .price-card .stream-tag {
+    font-size: 0.7rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.2rem;
+  }
+  .price-card .price {
+    font-family: var(--display);
+    font-size: clamp(2.8rem, 5vw, 4rem);
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+  }
+  .price-card .price em {
+    font-family: var(--display);
+    font-style: italic;
+    color: var(--gold);
+    font-size: 0.4em;
+    font-weight: 300;
+    margin-left: 0.2em;
+    vertical-align: top;
+    line-height: 1;
+  }
+  .price-card .price-sub {
+    font-family: var(--display);
+    font-style: italic;
+    color: var(--cream-dim);
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .price-card .price-desc {
+    color: var(--cream-dim);
+    font-size: 0.92rem;
+    line-height: 1.6;
+  }
+  .price-card ul {
+    list-style: none;
+    margin-top: 1.2rem;
+  }
+  .price-card ul li {
+    padding: 0.4rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+    font-size: 0.88rem;
+    color: var(--cream-dim);
+  }
+  .price-card ul li::before {
+    content: '+';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-weight: 500;
+  }
+
+  .pricing-strategy {
+    margin-top: 3rem;
+    padding: 2.2rem 2.5rem;
+    background: var(--navy-mid);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 2rem;
+    align-items: center;
+  }
+  .pricing-strategy .strategy-tag {
+    font-family: var(--display);
+    font-style: italic;
+    color: var(--gold);
+    font-size: 1.4rem;
+  }
+  .pricing-strategy .strategy-text { color: var(--cream-dim); font-size: 0.98rem; }
+  .pricing-strategy .strategy-text strong { color: var(--cream); font-weight: 500; }
+
+  .revenue-line {
+    margin-top: 2rem;
+    text-align: center;
+    font-family: var(--display);
+    font-style: italic;
+    font-size: 1.2rem;
+    color: var(--cream);
+  }
+  .revenue-line .big {
+    font-family: var(--display);
+    font-style: italic;
+    color: var(--gold);
+    font-size: 1.6rem;
+  }
+
+  /* Marketing pillars */
+  .marketing-block {
+    margin-top: 6rem;
+    padding-top: 5rem;
+    border-top: 1px solid var(--line);
+  }
+  .marketing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+  .marketing-card {
+    padding: 2rem;
+    background: var(--navy-mid);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .marketing-card:hover { border-color: var(--gold); transform: translateY(-3px); }
+  .marketing-card .channel-tag {
+    font-size: 0.7rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.8rem;
+  }
+  .marketing-card h4 {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: 1.4rem;
+    color: var(--cream);
+    margin-bottom: 1rem;
+  }
+  .marketing-card p { color: var(--cream-dim); font-size: 0.92rem; }
+
+  .launch-bar {
+    margin-top: 3rem;
+    padding: 1.8rem 2.5rem;
+    background: linear-gradient(90deg, rgba(212, 175, 106, 0.15), rgba(212, 175, 106, 0.03));
+    border: 1px solid var(--line-strong);
+    border-radius: 4px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 2rem;
+    align-items: center;
+  }
+  .launch-bar .launch-tag {
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .launch-bar p { color: var(--cream); font-size: 0.98rem; }
+  .launch-bar strong { color: var(--gold); font-weight: 500; }
+
+  /* =========================================================
+     GOAL
+     ========================================================= */
+  .goal { background: var(--navy-deep); text-align: center; }
+  .goal-content { max-width: 880px; margin: 0 auto; }
+  .goal-quote {
+    font-family: var(--display);
+    font-size: clamp(1.8rem, 3.5vw, 3rem);
+    font-weight: 300;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    color: var(--cream);
+    margin-bottom: 2rem;
+  }
+  .goal-quote em { font-style: italic; color: var(--gold); }
+  .goal-signature {
+    font-family: var(--display);
+    font-style: italic;
+    color: var(--gold);
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+  }
+
+  /* =========================================================
+     ACCORDION (learn more)
+     ========================================================= */
+  .more { background: var(--navy); }
+  .accordion { margin-top: 3rem; border-top: 1px solid var(--line); }
+  .acc-item { border-bottom: 1px solid var(--line); }
+  .acc-header {
+    padding: 1.8rem 0;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: padding 0.3s;
+  }
+  .acc-header:hover { padding-left: 0.5rem; }
+  .acc-title {
+    font-family: var(--display);
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: var(--cream);
+  }
+  .acc-meta {
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-right: 1.5rem;
+  }
+  .acc-toggle {
+    width: 30px; height: 30px;
+    border: 1px solid var(--line-strong);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold);
+    transition: all 0.3s;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+  .acc-item.open .acc-toggle { transform: rotate(45deg); background: var(--gold); color: var(--navy-deep); }
+  .acc-body { max-height: 0; overflow: hidden; transition: max-height 0.5s ease, padding 0.5s ease; }
+  .acc-item.open .acc-body { max-height: 1500px; padding-bottom: 2.5rem; }
+  .acc-body-inner { padding-right: 4rem; color: var(--cream-dim); }
+  .acc-body p { margin-bottom: 1rem; }
+  .acc-body ul { list-style: none; margin: 1rem 0; }
+  .acc-body li {
+    padding: 0.6rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+    border-bottom: 1px solid var(--line);
+  }
+  .acc-body li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+  }
+  .acc-body strong { color: var(--cream); font-weight: 500; }
+
+  /* =========================================================
+     FOOTER
+     ========================================================= */
+  footer {
+    padding: 6rem 3rem 3rem;
+    background: var(--navy-deep);
+    border-top: 1px solid var(--line);
+    text-align: center;
+  }
+  .cta-title {
+    font-family: var(--display);
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--cream);
+    margin-bottom: 1.5rem;
+  }
+  .cta-title em { font-style: italic; color: var(--gold); }
+  .cta-tagline {
+    font-family: var(--display);
+    font-style: italic;
+    color: var(--cream-dim);
+    margin-bottom: 3rem;
+    font-size: 1.1rem;
+  }
+  .footer-bottom {
+    margin-top: 5rem;
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--cream-dim);
+    font-size: 0.8rem;
+  }
+  .footer-bottom .signature {
+    font-family: var(--display);
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  /* =========================================================
+     ADMIN MODAL (hidden — triple-click logo to open)
+     ========================================================= */
+  .admin-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 22, 40, 0.92);
+    backdrop-filter: blur(20px);
+    z-index: 200;
+    display: none;
+    align-items: center;
+    justify-content: center;
+  }
+  .admin-modal.open { display: flex; animation: fadeIn 0.3s forwards; }
+  .admin-box {
+    background: var(--navy-mid);
+    border: 1px solid var(--line-strong);
+    border-radius: 6px;
+    padding: 2.5rem 2.5rem 2rem;
+    width: 90%;
+    max-width: 380px;
+    text-align: center;
+    animation: scaleIn 0.4s forwards;
+  }
+  @keyframes scaleIn {
+    from { transform: scale(0.92); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+  .admin-box .admin-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+  .admin-box h3 {
+    font-family: var(--display);
+    font-weight: 300;
+    font-size: 1.5rem;
+    color: var(--cream);
+    margin-bottom: 1.5rem;
+  }
+  .admin-box input {
+    width: 100%;
+    background: var(--navy-deep);
+    border: 1px solid var(--line);
+    color: var(--cream);
+    padding: 0.9rem 1rem;
+    font-family: var(--body);
+    font-size: 1rem;
+    border-radius: 3px;
+    text-align: center;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .admin-box input:focus { border-color: var(--gold); }
+  .admin-box input.error { border-color: #d97a5a; animation: shake 0.3s; }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+  }
+  .admin-actions {
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 0.6rem;
+    justify-content: center;
+  }
+  .admin-actions button {
+    background: var(--gold);
+    color: var(--navy-deep);
+    border: none;
+    padding: 0.7rem 1.4rem;
+    font-family: var(--body);
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-weight: 500;
+    border-radius: 3px;
+    transition: background 0.2s;
+  }
+  .admin-actions button.secondary {
+    background: transparent;
+    color: var(--cream-dim);
+    border: 1px solid var(--line);
+  }
+  .admin-actions button:hover { background: var(--gold-bright); }
+  .admin-actions button.secondary:hover { color: var(--cream); border-color: var(--gold); }
+  .admin-hint {
+    margin-top: 1rem;
+    font-size: 0.72rem;
+    color: var(--cream-dim);
+    font-style: italic;
+    opacity: 0.6;
+  }
+
+  /* =========================================================
+     PRESENTATION MODE
+     ========================================================= */
+  body.presentation-active { overflow: hidden; }
+  body.presentation-active > *:not(.presentation-mode):not(.cinematic) {
+    display: none !important;
+  }
+
+  .presentation-mode {
+    position: fixed;
+    inset: 0;
+    background: var(--navy-deep);
+    z-index: 500;
+    display: none;
+    overflow: hidden;
+  }
+  .presentation-mode.active { display: block; }
+
+  .pres-track {
+    position: absolute;
+    inset: 0;
+    transition: transform 0.85s cubic-bezier(0.76, 0, 0.24, 1);
+  }
+  .pres-slide {
+    position: absolute;
+    left: 0; right: 0;
+    height: 100vh;
+    padding: 7vh 8vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: var(--navy-deep);
+    overflow: hidden;
+  }
+  .pres-slide[data-idx="0"] { top: 0vh; }
+  .pres-slide[data-idx="1"] { top: 100vh; }
+  .pres-slide[data-idx="2"] { top: 200vh; }
+  .pres-slide[data-idx="3"] { top: 300vh; }
+  .pres-slide[data-idx="4"] { top: 400vh; }
+  .pres-slide[data-idx="5"] { top: 500vh; }
+  .pres-slide[data-idx="6"] { top: 600vh; }
+
+  .pres-slide::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 70% 50% at 80% 20%, rgba(232, 148, 86, 0.08), transparent 60%),
+      radial-gradient(ellipse 60% 70% at 10% 90%, rgba(91, 163, 208, 0.08), transparent 60%);
+    pointer-events: none;
+  }
+
+  .pres-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 2vh;
+    z-index: 2;
+    position: relative;
+  }
+  .pres-label .num {
+    font-family: var(--display);
+    font-style: italic;
+    font-size: 0.95rem;
+  }
+  .pres-h1 {
+    font-family: var(--display);
+    font-size: clamp(3rem, 7vw, 6rem);
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -0.025em;
+    color: var(--cream);
+    margin-bottom: 3vh;
+    max-width: 18ch;
+    z-index: 2;
+    position: relative;
+  }
+  .pres-h1 em { font-style: italic; color: var(--gold); }
+  .pres-sub {
+    font-family: var(--display);
+    font-style: italic;
+    color: var(--cream-dim);
+    font-size: clamp(1.1rem, 1.8vw, 1.6rem);
+    max-width: 30ch;
+    z-index: 2;
+    position: relative;
+  }
+
+  /* Slide content variants */
+  .pres-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4vw;
+    margin-top: 4vh;
+    z-index: 2;
+    position: relative;
+  }
+  .pres-stat .n {
+    font-family: var(--display);
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    font-weight: 300;
+    color: var(--gold);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .pres-stat .l {
+    color: var(--cream-dim);
+    font-size: 1rem;
+    margin-top: 0.6rem;
+    max-width: 24ch;
+  }
+
+  .pres-twocol {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3vw;
+    margin-top: 3vh;
+    z-index: 2;
+    position: relative;
+  }
+  .pres-card {
+    padding: 3vh 2.5vw;
+    background: linear-gradient(180deg, var(--navy-mid), var(--navy));
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--gold);
+    border-radius: 4px;
+  }
+  .pres-card .tag {
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.8rem;
+  }
+  .pres-card h4 {
+    font-family: var(--display);
+    font-size: 2rem;
+    font-weight: 400;
+    color: var(--cream);
+    margin-bottom: 0.3rem;
+  }
+  .pres-card .age {
+    font-family: var(--display);
+    font-style: italic;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    font-size: 1rem;
+  }
+  .pres-card p { color: var(--cream-dim); font-size: 0.95rem; margin-bottom: 0.4rem; }
+
+  .pres-triple {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    margin-top: 3vh;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    z-index: 2;
+    position: relative;
+  }
+  .pres-pillar {
+    padding: 3vh 2vw;
+    border-right: 1px solid var(--line);
+  }
+  .pres-pillar:last-child { border-right: none; }
+  .pres-pillar .roman {
+    font-family: var(--display);
+    font-style: italic;
+    color: var(--gold);
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+  .pres-pillar h4 {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: 1.8rem;
+    color: var(--cream);
+    margin-bottom: 0.8rem;
+  }
+  .pres-pillar p { color: var(--cream-dim); font-size: 0.95rem; }
+
+  /* Compare table — presentation version */
+  .pres-compare {
+    margin-top: 3vh;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+    z-index: 2;
+    position: relative;
+  }
+  .pres-compare-row {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr;
+    border-bottom: 1px solid var(--line);
+  }
+  .pres-compare-row:last-child { border-bottom: none; }
+  .pres-compare-row.header {
+    background: var(--navy-mid);
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .pres-compare-row.us {
+    background: linear-gradient(90deg, rgba(212, 175, 106, 0.2), rgba(212, 175, 106, 0.06));
+    position: relative;
+  }
+  .pres-compare-row.us::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--gold);
+  }
+  .pres-compare-cell {
+    padding: 1.4rem 1.5rem;
+    font-size: 0.95rem;
+    border-right: 1px solid var(--line);
+    color: var(--cream-dim);
+    display: flex;
+    align-items: center;
+  }
+  .pres-compare-cell:last-child { border-right: none; }
+  .pres-compare-cell.feature { color: var(--cream); font-weight: 500; }
+  .pres-compare-row.us .pres-compare-cell { color: var(--cream); font-weight: 500; }
+  .pres-compare-row.us .pres-compare-cell.feature {
+    color: var(--gold); font-family: var(--display); font-style: italic; font-weight: 400; font-size: 1.1rem;
+  }
+
+  /* Business slide layout */
+  .pres-business {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3vw;
+    margin-top: 3vh;
+    z-index: 2;
+    position: relative;
+  }
+  .pres-price-card {
+    padding: 3vh 2.5vw;
+    background: var(--navy-mid);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+  }
+  .pres-price-card.gold { border-color: var(--gold); }
+  .pres-price-card .stream-tag {
+    font-size: 0.72rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold);
+    margin-bottom: 1rem;
+  }
+  .pres-price-card .big-price {
+    font-family: var(--display);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    font-weight: 300; color: var(--cream); line-height: 1; margin-bottom: 0.4rem;
+  }
+  .pres-price-card .big-price em {
+    font-family: var(--display); font-style: italic; color: var(--gold);
+    font-size: 0.45em; vertical-align: top;
+  }
+  .pres-price-card .sub {
+    font-family: var(--display); font-style: italic; color: var(--cream-dim);
+    margin-bottom: 1rem; font-size: 1rem;
+  }
+  .pres-price-card p { color: var(--cream-dim); font-size: 0.9rem; }
+  .pres-strategy {
+    margin-top: 3vh;
+    padding: 1.5vh 2vw;
+    background: var(--navy-mid);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--gold);
+    border-radius: 3px;
+    color: var(--cream-dim);
+    font-size: 0.95rem;
+    z-index: 2;
+    position: relative;
+  }
+  .pres-strategy strong { color: var(--gold); font-weight: 500; font-family: var(--display); font-style: italic; }
+
+  /* Closing slide */
+  .pres-slide.closing {
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+  }
+  .pres-slide.closing .pres-label { justify-content: center; }
+  .pres-closing-logo {
+    font-family: var(--display);
+    font-size: clamp(5rem, 12vw, 10rem);
+    font-weight: 300;
+    color: var(--cream);
+    letter-spacing: -0.04em;
+    line-height: 0.9;
+    margin-bottom: 1.5rem;
+  }
+  .pres-closing-logo sup { font-size: 0.35em; color: var(--gold); vertical-align: super; margin-left: 4px; }
+  .pres-closing-tagline {
+    font-family: var(--display);
+    font-style: italic;
+    color: var(--gold);
+    font-size: clamp(1.5rem, 2.5vw, 2.2rem);
+    margin-bottom: 3vh;
+  }
+  .pres-closing-pitch {
+    color: var(--cream-dim);
+    font-size: 1.1rem;
+    max-width: 50ch;
+    margin: 0 auto;
+  }
+
+  /* Presentation UI overlays */
+  .pres-counter {
+    position: fixed;
+    top: 2.5vh; right: 4vw;
+    z-index: 510;
+    font-family: var(--display);
+    font-style: italic;
+    color: var(--cream-dim);
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+    display: none;
+  }
+  .presentation-mode.active ~ .pres-counter { display: block; }
+  .pres-counter .current { color: var(--gold); font-size: 1.2rem; }
+
+  .pres-exit {
+    position: fixed;
+    top: 2.5vh; left: 4vw;
+    z-index: 510;
+    background: transparent;
+    border: 1px solid var(--line-strong);
+    color: var(--cream-dim);
+    padding: 0.5rem 1rem;
+    font-family: var(--body);
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-radius: 3px;
+    display: none;
+  }
+  .presentation-mode.active ~ .pres-exit { display: block; }
+  .pres-exit:hover { color: var(--gold); border-color: var(--gold); }
+
+  .pres-progress {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: var(--gold);
+    z-index: 510;
+    transition: width 0.85s cubic-bezier(0.76, 0, 0.24, 1);
+    display: none;
+    width: 0;
+  }
+  .presentation-mode.active ~ .pres-progress { display: block; }
+
+  .pres-keys {
+    position: fixed;
+    bottom: 2.5vh;
+    right: 4vw;
+    z-index: 510;
+    color: var(--cream-dim);
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    display: none;
+    opacity: 0.7;
+  }
+  .presentation-mode.active ~ .pres-keys { display: block; }
+  .pres-keys kbd {
+    display: inline-block;
+    padding: 2px 8px;
+    background: var(--navy-mid);
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    font-family: var(--body);
+    font-size: 0.7rem;
+    color: var(--gold);
+    margin: 0 4px;
+  }
+
+  /* Slide-in animation when becomes active */
+  .pres-slide.entering > * { animation: slideContentIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+  @keyframes slideContentIn {
+    0% { opacity: 0; transform: translateY(40px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  /* =========================================================
+     RESPONSIVE
+     ========================================================= */
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    nav ul { gap: 1rem; }
+    nav ul a { font-size: 0.65rem; }
+    section { padding: 5rem 1.5rem; }
+    .hero { grid-template-columns: 1fr; padding: 7rem 1.5rem 3rem; }
+    .hero-visual { height: 45vh; min-height: 320px; }
+    .problem-grid, .value-grid, .marketing-grid { grid-template-columns: 1fr; }
+    .stat, .value-item, .pres-pillar { border-right: none; border-bottom: 1px solid var(--line); }
+    .stat:last-child, .value-item:last-child { border-bottom: none; }
+    .science-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .audience-grid, .pricing-grid, .pres-twocol, .pres-business { grid-template-columns: 1fr; }
+    .survey-bar { grid-template-columns: 1fr; gap: 1.5rem; }
+    .compare-row, .pres-compare-row { grid-template-columns: 1fr; }
+    .compare-cell, .pres-compare-cell { border-right: none; border-bottom: 1px solid var(--line); }
+    .pricing-strategy, .launch-bar { grid-template-columns: 1fr; gap: 1rem; }
+    .model-header { padding: 0 1.5rem 2rem; }
+    .model-stage { height: 65vh; min-height: 480px; }
+    .pres-triple, .pres-stats { grid-template-columns: 1fr; }
+    .pres-pillar { border-right: none; border-bottom: 1px solid var(--line); padding: 2vh 0; }
+    .layer-label { font-size: 0.7rem; min-width: 160px; padding: 0.5rem 0.7rem; }
+    .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
+    .cinema-frame .line { font-size: clamp(2rem, 8vw, 3.5rem); }
+  }
+  @media (max-width: 600px) {
+    .layer-label .label-desc { display: none; }
+    .pres-slide { padding: 5vh 5vw; }
+  }
+</style>
+</head>
+<body>
+
+<!-- =========================================================
+     CINEMATIC INTRO (12s, auto-dismisses)
+     ========================================================= -->
+<div class="cinematic" id="cinematic">
+  <div class="cinema-bar top"></div>
+  <div class="cinema-bar bottom"></div>
+
+  <div class="cinema-scene">
+    <div class="cinema-bg"></div>
+    <div class="cinema-stars"></div>
+    <div class="cinema-glow cool"></div>
+    <div class="cinema-glow warm"></div>
+
+    <div class="cinema-frame f1">
+      <div class="time-stamp">10 : 47 pm</div>
+      <div class="line">Your body needs to <em>cool down.</em></div>
+      <div class="sub">— but your blanket only knows how to heat.</div>
+    </div>
+
+    <div class="cinema-frame f2">
+      <div class="time-stamp">deep sleep</div>
+      <div class="line">What if your bed <em>knew the time?</em></div>
+    </div>
+
+    <div class="cinema-frame f3">
+      <div class="time-stamp">06 : 14 am</div>
+      <div class="line">Your body needs to <em>warm up.</em></div>
+      <div class="sub">— but your alarm only knows how to shock.</div>
+    </div>
+
+    <div class="cinema-frame f4">
+      <div class="cinema-logo">TempSync<sup>™</sup></div>
+      <div class="cinema-tagline">Sleep Smarter. Wake Better.</div>
+    </div>
+  </div>
+
+  <button class="cinema-skip" onclick="document.getElementById('cinematic').classList.add('skip')">Skip Intro →</button>
+</div>
+
+<!-- =========================================================
+     NAVIGATION
+     ========================================================= -->
+<nav id="nav">
+  <div class="logo" id="logo">TempSync<sup>™</sup></div>
+  <ul>
+    <li><a href="#problem">Problem</a></li>
+    <li><a href="#model">Product</a></li>
+    <li><a href="#science">Science</a></li>
+    <li><a href="#compete">Edge</a></li>
+    <li><a href="#business">Business</a></li>
+    <li><a href="#goal">Goal</a></li>
+  </ul>
+</nav>
+
+<!-- =========================================================
+     HERO with SVG PRODUCT MOCKUP
+     ========================================================= -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="eyebrow">A Student Sleep-Tech Startup</div>
+    <h1>Sleep <em>Smarter.</em><br>Wake <em>Better.</em></h1>
+    <p class="tagline">The Advanced Heat Control Blanket.</p>
+    <p class="lead">A smart blanket that cools you to sleep and warms you to wake — automatically syncing with your circadian rhythm so every morning feels effortless.</p>
+    <div class="hero-actions">
+      <a href="#model" class="btn btn-primary">Explore the Product <span class="arrow">→</span></a>
+      <a href="#business" class="btn btn-ghost">See the Pricing</a>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <!-- SVG Product Mockup — isometric blanket on bed + phone -->
+    <svg class="product-card-svg" viewBox="0 0 600 540" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="bedShadow" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0" stop-color="#000" stop-opacity="0.5"/>
+          <stop offset="1" stop-color="#000" stop-opacity="0"/>
+        </linearGradient>
+        <linearGradient id="coolGrad" x1="0" x2="1" y1="0" y2="0">
+          <stop offset="0" stop-color="#5ba3d0"/>
+          <stop offset="1" stop-color="#7fc0e8"/>
+        </linearGradient>
+        <linearGradient id="warmGrad" x1="0" x2="1" y1="0" y2="0">
+          <stop offset="0" stop-color="#e89456"/>
+          <stop offset="1" stop-color="#f4a878"/>
+        </linearGradient>
+        <linearGradient id="phoneScreen" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0" stop-color="#1a2a44"/>
+          <stop offset="1" stop-color="#0a1628"/>
+        </linearGradient>
+        <linearGradient id="mattress" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0" stop-color="#3a4a64"/>
+          <stop offset="1" stop-color="#2a3a52"/>
+        </linearGradient>
+        <filter id="softGlow">
+          <feGaussianBlur stdDeviation="8" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <radialGradient id="moonGlow" cx="0.3" cy="0.3" r="0.7">
+          <stop offset="0" stop-color="#f5f1e8"/>
+          <stop offset="1" stop-color="#d4af6a"/>
+        </radialGradient>
+      </defs>
+
+      <!-- floor shadow -->
+      <ellipse cx="280" cy="490" rx="240" ry="22" fill="url(#bedShadow)"/>
+
+      <!-- mattress (isometric base) -->
+      <path d="M 70,420 L 280,520 L 510,420 L 510,450 L 280,550 L 70,450 Z" fill="#222d44"/>
+      <path d="M 70,380 L 280,480 L 510,380 L 510,420 L 280,520 L 70,420 Z" fill="url(#mattress)"/>
+      <path d="M 70,380 L 280,480 L 280,520 L 70,420 Z" fill="#1a2336"/>
+
+      <!-- Blanket top surface (dual zone) -->
+      <!-- Cooling side -->
+      <path d="M 95,355 L 280,450 L 280,490 L 95,395 Z" fill="url(#coolGrad)" opacity="0.85"/>
+      <!-- Warming side -->
+      <path d="M 280,450 L 485,355 L 485,395 L 280,490 Z" fill="url(#warmGrad)" opacity="0.85"/>
+
+      <!-- top quilt diamonds on cool side -->
+      <g opacity="0.3" stroke="#f5f1e8" stroke-width="0.5" fill="none">
+        <path d="M 130,375 L 165,395 L 130,415 L 95,395 Z"/>
+        <path d="M 195,408 L 230,428 L 195,448 L 160,428 Z"/>
+        <path d="M 165,387 L 200,407 L 165,427 L 130,407 Z"/>
+      </g>
+      <g opacity="0.3" stroke="#f5f1e8" stroke-width="0.5" fill="none">
+        <path d="M 320,432 L 355,412 L 320,392 L 285,412 Z"/>
+        <path d="M 385,397 L 420,377 L 385,357 L 350,377 Z"/>
+        <path d="M 355,415 L 390,395 L 355,375 L 320,395 Z"/>
+      </g>
+
+      <!-- Center seam between zones -->
+      <line x1="280" y1="450" x2="280" y2="490" stroke="#d4af6a" stroke-width="1" opacity="0.7"/>
+
+      <!-- Zone labels -->
+      <g font-family="Fraunces" font-style="italic" font-size="11" fill="#f5f1e8" opacity="0.95">
+        <text x="155" y="365">cool zone</text>
+        <text x="375" y="360">warm zone</text>
+      </g>
+
+      <!-- Subtle glow accents -->
+      <circle cx="160" cy="395" r="40" fill="#5ba3d0" opacity="0.15" filter="url(#softGlow)"/>
+      <circle cx="400" cy="395" r="40" fill="#e89456" opacity="0.15" filter="url(#softGlow)"/>
+
+      <!-- Pillow -->
+      <ellipse cx="170" cy="365" rx="50" ry="13" fill="#3a4a64"/>
+      <ellipse cx="170" cy="362" rx="48" ry="11" fill="#4a5a74"/>
+
+      <!-- Moon in background -->
+      <circle cx="510" cy="100" r="42" fill="url(#moonGlow)" filter="url(#softGlow)"/>
+      <circle cx="498" cy="90" r="4" fill="#b29050" opacity="0.4"/>
+      <circle cx="520" cy="115" r="3" fill="#b29050" opacity="0.3"/>
+
+      <!-- Stars -->
+      <g fill="#f5f1e8" opacity="0.7">
+        <circle cx="80" cy="60" r="1.5"/>
+        <circle cx="220" cy="50" r="1"/>
+        <circle cx="350" cy="80" r="1.5"/>
+        <circle cx="420" cy="40" r="1"/>
+        <circle cx="160" cy="120" r="1"/>
+        <circle cx="60" cy="170" r="1.2"/>
+        <circle cx="290" cy="160" r="1"/>
+      </g>
+
+      <!-- Phone with app -->
+      <g transform="translate(380,180) rotate(8)">
+        <!-- phone body -->
+        <rect x="0" y="0" width="125" height="240" rx="18" fill="#0a1628" stroke="#1a2a44" stroke-width="1.5"/>
+        <!-- screen -->
+        <rect x="6" y="22" width="113" height="200" rx="6" fill="url(#phoneScreen)"/>
+        <!-- notch -->
+        <rect x="50" y="6" width="25" height="6" rx="3" fill="#1a2a44"/>
+
+        <!-- Status bar -->
+        <text x="14" y="40" font-family="Geist" font-size="7" fill="#d4af6a" font-weight="500">TempSync</text>
+        <text x="100" y="40" font-family="Geist" font-size="7" fill="#d8d3c5" text-anchor="end">10:47</text>
+
+        <!-- App content - "Tonight" header -->
+        <text x="14" y="62" font-family="Fraunces" font-style="italic" font-size="13" fill="#f5f1e8">Tonight</text>
+
+        <!-- Temperature wheel -->
+        <circle cx="62" cy="105" r="32" fill="none" stroke="#1a3046" stroke-width="3"/>
+        <circle cx="62" cy="105" r="32" fill="none" stroke="#5ba3d0" stroke-width="3"
+                stroke-dasharray="150 200" stroke-linecap="round" transform="rotate(-90 62 105)"/>
+        <text x="62" y="100" font-family="Fraunces" font-size="14" fill="#f5f1e8" text-anchor="middle" font-weight="300">18°</text>
+        <text x="62" y="116" font-family="Geist" font-size="6" fill="#d8d3c5" text-anchor="middle" letter-spacing="1">COOLING</text>
+
+        <!-- Status lines -->
+        <g font-family="Geist" font-size="6" fill="#d8d3c5">
+          <text x="14" y="160">Deep Sleep Phase</text>
+          <circle cx="100" cy="158" r="2.5" fill="#5ba3d0"/>
+        </g>
+
+        <!-- Schedule bar -->
+        <rect x="14" y="172" width="97" height="8" rx="4" fill="#1a2a44"/>
+        <rect x="14" y="172" width="35" height="8" rx="4" fill="#5ba3d0" opacity="0.7"/>
+        <rect x="76" y="172" width="35" height="8" rx="4" fill="#e89456" opacity="0.7"/>
+
+        <text x="14" y="194" font-family="Geist" font-size="5" fill="#d8d3c5">10:47pm</text>
+        <text x="111" y="194" font-family="Geist" font-size="5" fill="#d8d3c5" text-anchor="end">06:14am</text>
+
+        <!-- Bottom button -->
+        <rect x="14" y="202" width="97" height="14" rx="3" fill="#d4af6a"/>
+        <text x="62" y="212" font-family="Geist" font-size="6" fill="#0a1628" text-anchor="middle" font-weight="500" letter-spacing="1">CIRCADIAN MODE ON</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="scroll-indicator">Scroll</div>
+</section>
+
+<!-- =========================================================
+     PROBLEM
+     ========================================================= -->
+<section class="problem" id="problem">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label"><span class="num">01</span> The Problem</div>
+      <h2 class="section-title">Most of us are sleeping <em>wrong</em> — and our environment is making it worse.</h2>
+      <p class="section-lead">Sleep is governed by body temperature and hormones, not just hours in bed. Yet regular blankets only heat, and alarms wake us with a shock.</p>
+    </div>
+    <div class="problem-grid reveal">
+      <div class="stat">
+        <div class="number">1 in 3</div>
+        <div class="label">Australians don't get enough quality sleep.</div>
+      </div>
+      <div class="stat">
+        <div class="number">85%</div>
+        <div class="label">of students surveyed wake up feeling unrefreshed.</div>
+      </div>
+      <div class="stat">
+        <div class="number">-30%</div>
+        <div class="label">Drop in focus and learning when poorly rested.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     3D MODEL
+     ========================================================= -->
+<section class="model-section" id="model">
+  <div class="model-header reveal">
+    <div class="section-label" style="justify-content:center;"><span class="num">02</span> The Product</div>
+    <h2 class="section-title" style="margin:0 auto 1.2rem;">Five layers. <em>One sleep cycle.</em></h2>
+    <p class="section-lead" style="margin:0 auto;">Drag to rotate the model. Tap <strong style="color:var(--gold);">Reveal Layers</strong> to see what's inside, or <strong style="color:var(--gold);">Day / Night Cycle</strong> for the full demonstration.</p>
+  </div>
+
+  <div class="model-stage" id="model-stage">
+    <canvas id="blanket-canvas"></canvas>
+    <div class="label-overlay" id="label-overlay"></div>
+    <div class="model-hint"><span class="dot"></span> Drag to rotate</div>
+    <div class="mode-badge" id="mode-badge">Night Mode</div>
+    <div class="model-controls">
+      <button id="btn-stack" class="active">Assembled</button>
+      <button id="btn-explode">Reveal Layers</button>
+      <button id="btn-cycle">Day / Night Cycle</button>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     SCIENCE
+     ========================================================= -->
+<section class="science" id="science">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label"><span class="num">03</span> The Science</div>
+      <h2 class="section-title">Built on <em>real sleep science.</em></h2>
+      <p class="section-lead">Our blanket triggers the body temperature changes your circadian rhythm already needs — at exactly the right time.</p>
+    </div>
+    <div class="science-grid reveal">
+      <ul class="science-points">
+        <li>
+          <span class="icon">i</span>
+          <div>
+            <h4>Melatonin rises at night</h4>
+            <p>Your body prepares for sleep as core temperature drops.</p>
+          </div>
+        </li>
+        <li>
+          <span class="icon">ii</span>
+          <div>
+            <h4>Cortisol rises at dawn</h4>
+            <p>Body temperature lifts to bring you out of deep sleep naturally.</p>
+          </div>
+        </li>
+        <li>
+          <span class="icon">iii</span>
+          <div>
+            <h4>Temperature is the conductor</h4>
+            <p>Cooler bodies sleep deeper. Gradual warming reduces sleep inertia — the groggy feeling on wake.</p>
+          </div>
+        </li>
+      </ul>
+      <div>
+        <svg class="hormone-chart" viewBox="0 0 500 320" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="melGrad" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0" stop-color="#5ba3d0" stop-opacity="0.35"/>
+              <stop offset="1" stop-color="#5ba3d0" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="corGrad" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0" stop-color="#e89456" stop-opacity="0.35"/>
+              <stop offset="1" stop-color="#e89456" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <g stroke="rgba(212,175,106,0.1)" stroke-width="0.5">
+            <line x1="40" y1="60" x2="480" y2="60"/>
+            <line x1="40" y1="130" x2="480" y2="130"/>
+            <line x1="40" y1="200" x2="480" y2="200"/>
+          </g>
+          <line x1="40" y1="40" x2="40" y2="260" stroke="rgba(245,241,232,0.3)" stroke-width="1"/>
+          <line x1="40" y1="260" x2="480" y2="260" stroke="rgba(245,241,232,0.3)" stroke-width="1"/>
+          <text x="60" y="285" fill="#d8d3c5" font-family="Geist" font-size="10">10pm</text>
+          <text x="160" y="285" fill="#d8d3c5" font-family="Geist" font-size="10">2am</text>
+          <text x="260" y="285" fill="#d8d3c5" font-family="Geist" font-size="10">6am</text>
+          <text x="360" y="285" fill="#d8d3c5" font-family="Geist" font-size="10">10am</text>
+          <text x="450" y="285" fill="#d8d3c5" font-family="Geist" font-size="10">2pm</text>
+          <path d="M 40,250 Q 90,230 130,90 Q 200,40 260,80 Q 320,180 400,240 L 480,250" fill="none" stroke="#5ba3d0" stroke-width="2.5"/>
+          <path d="M 40,250 Q 90,230 130,90 Q 200,40 260,80 Q 320,180 400,240 L 480,250 L 480,260 L 40,260 Z" fill="url(#melGrad)"/>
+          <path d="M 40,240 Q 100,255 180,250 Q 240,210 280,70 Q 340,90 400,170 L 480,210" fill="none" stroke="#e89456" stroke-width="2.5"/>
+          <path d="M 40,240 Q 100,255 180,250 Q 240,210 280,70 Q 340,90 400,170 L 480,210 L 480,260 L 40,260 Z" fill="url(#corGrad)"/>
+          <line x1="280" y1="40" x2="280" y2="260" stroke="#d4af6a" stroke-width="1" stroke-dasharray="3,3"/>
+          <text x="287" y="55" fill="#d4af6a" font-family="Fraunces" font-size="11" font-style="italic">wake</text>
+          <g transform="translate(50,30)">
+            <circle cx="0" cy="0" r="4" fill="#5ba3d0"/>
+            <text x="10" y="4" fill="#f5f1e8" font-family="Geist" font-size="10">Melatonin</text>
+            <circle cx="100" cy="0" r="4" fill="#e89456"/>
+            <text x="110" y="4" fill="#f5f1e8" font-family="Geist" font-size="10">Cortisol</text>
+          </g>
+          <text x="40" y="20" fill="#d4af6a" font-family="Fraunces" font-style="italic" font-size="12">A 24-hour hormone cycle</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     AUDIENCE
+     ========================================================= -->
+<section class="audience" id="audience">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label"><span class="num">04</span> Who It's For</div>
+      <h2 class="section-title">Built for the <em>sleep-deprived generation.</em></h2>
+      <p class="section-lead">Our customers aren't hard to find. They're in classrooms, on campuses, and at first jobs — running on too little sleep and too much pressure.</p>
+    </div>
+    <div class="audience-grid reveal">
+      <div class="audience-card">
+        <div class="tag">Primary</div>
+        <h3>Students</h3>
+        <div class="age">Aged 15 — 22</div>
+        <p>Academic pressure, late-night screens, and irregular schedules wreck sleep quality.</p>
+        <p>Poor sleep cuts learning performance by up to 30%.</p>
+      </div>
+      <div class="audience-card">
+        <div class="tag">Secondary</div>
+        <h3>Young Professionals</h3>
+        <div class="age">Aged 22 — 35</div>
+        <p>Shift workers and high performers who need peak output but sleep poorly.</p>
+        <p>Poor sleep costs Australian businesses $17.9 billion a year.</p>
+      </div>
+    </div>
+    <div class="survey-bar reveal">
+      <div class="label">Our Survey<br><span style="color:var(--cream-dim); letter-spacing:0; text-transform:none; font-family: var(--display); font-style: italic;">20 students at our school</span></div>
+      <div class="survey-stat">
+        <div class="big">85%</div>
+        <div class="desc">said they wake up feeling unrefreshed.</div>
+      </div>
+      <div class="survey-stat">
+        <div class="big">70%</div>
+        <div class="desc">would try a product that helps them wake naturally.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     VALUE
+     ========================================================= -->
+<section class="value">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label"><span class="num">05</span> Why TempSync</div>
+      <h2 class="section-title">Your sleep is worth <em>more than a blanket.</em></h2>
+    </div>
+    <div class="value-grid reveal">
+      <div class="value-item">
+        <span class="num">i.</span>
+        <h3>Sleep Deeper</h3>
+        <p>Cooling zones trigger the body temperature drop required for deep, restorative sleep — the kind that actually rebuilds your energy.</p>
+      </div>
+      <div class="value-item">
+        <span class="num">ii.</span>
+        <h3>Wake Naturally</h3>
+        <p>Gradual morning warmth replaces jarring alarms and eliminates sleep inertia, so every day starts sharp.</p>
+      </div>
+      <div class="value-item">
+        <span class="num">iii.</span>
+        <h3>Perform Better</h3>
+        <p>Better sleep means better focus, better mood, better results. Well-rested students outperform tired peers by 30%.</p>
+      </div>
+    </div>
+    <div class="value-footer reveal">— Fully automatic. Set it once. Forget it. —</div>
+  </div>
+</section>
+
+<!-- =========================================================
+     COMPETITIVE EDGE  (updated positioning)
+     ========================================================= -->
+<section class="competitive" id="compete">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label"><span class="num">06</span> The Competitive Edge</div>
+      <h2 class="section-title">Sleep tech exists. <em>None of it is built for us.</em></h2>
+      <p class="section-lead">Eight Sleep, Oak Sleep, BedJet — they all offer dual-zone temperature. Every one of them is a premium mattress system targeting tech executives and athletes. We are the affordable, portable, student-first alternative.</p>
+    </div>
+    <div class="compare-table reveal">
+      <div class="compare-row header">
+        <div class="compare-cell feature">Product</div>
+        <div class="compare-cell">Form Factor</div>
+        <div class="compare-cell">Starting Price</div>
+        <div class="compare-cell">Portable</div>
+        <div class="compare-cell">Built For</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell feature">Eight Sleep Pod 5</div>
+        <div class="compare-cell">Mattress + hub</div>
+        <div class="compare-cell">A$4,400+</div>
+        <div class="compare-cell">No</div>
+        <div class="compare-cell">Biohackers</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell feature">Oak Sleep Hub 2</div>
+        <div class="compare-cell">Mattress + hub</div>
+        <div class="compare-cell">A$2,500+</div>
+        <div class="compare-cell">No</div>
+        <div class="compare-cell">Premium AU</div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-cell feature">BedJet Dual Zone</div>
+        <div class="compare-cell">Air system + bed</div>
+        <div class="compare-cell">A$1,600+</div>
+        <div class="compare-cell">No</div>
+        <div class="compare-cell">Couples</div>
+      </div>
+      <div class="compare-row us">
+        <div class="compare-cell feature">TempSync</div>
+        <div class="compare-cell">Blanket</div>
+        <div class="compare-cell">A$299</div>
+        <div class="compare-cell">Yes</div>
+        <div class="compare-cell">Students</div>
+      </div>
+    </div>
+    <div class="compare-takeaway reveal">
+      Sleep tech today is a luxury good. TempSync is the <strong>first dual-zone circadian blanket priced for the generation that needs it most</strong> — and the first you can take anywhere.
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     BUSINESS MODEL  (pricing + marketing)
+     ========================================================= -->
+<section class="business" id="business">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label"><span class="num">07</span> Business Model</div>
+      <h2 class="section-title">Two revenue streams. <em>One product.</em></h2>
+      <p class="section-lead">A one-time hardware purchase paired with an optional recurring app subscription. Designed for affordability up front and recurring revenue over time.</p>
+    </div>
+
+    <div class="pricing-grid reveal">
+      <div class="price-card highlight">
+        <div class="stream-tag">Stream 1 — Product</div>
+        <div class="price">A$299<em>RRP</em></div>
+        <div class="price-sub">One-time purchase</div>
+        <p class="price-desc">The TempSync blanket. Includes the cooling zone, warming zone, sensor system, and base app access.</p>
+        <ul>
+          <li>40% gross margin per unit</li>
+          <li>Comparable RRP to premium electric blankets ($150–$400)</li>
+          <li>10× cheaper than the Eight Sleep Pod system</li>
+        </ul>
+      </div>
+      <div class="price-card">
+        <div class="stream-tag">Stream 2 — Subscription</div>
+        <div class="price">$9.99<em>/mo</em></div>
+        <div class="price-sub">TempSync Pro — optional</div>
+        <p class="price-desc">Advanced sleep analytics, wearable integration, and personalised circadian scheduling.</p>
+        <ul>
+          <li>Cancellable anytime — low friction</li>
+          <li>Recurring revenue stream from Day 1</li>
+          <li>The blanket works fully without it</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="pricing-strategy reveal">
+      <div class="strategy-tag">Pricing Strategy</div>
+      <div class="strategy-text"><strong>Penetration pricing with psychological charm anchors.</strong> We enter a premium market at roughly one-tenth the cost of competitors to capture market share quickly, with prices ending in 9 to position below the next round threshold.</div>
+    </div>
+
+    <div class="revenue-line reveal">
+      Year 1 target: <span class="big">500 blankets + 200 subscribers = A$172,280</span> gross revenue.
+    </div>
+
+    <!-- MARKETING BLOCK -->
+    <div class="marketing-block reveal">
+      <div class="section-label"><span class="num">+</span> Go-to-Market</div>
+      <h2 class="section-title" style="font-size: clamp(1.8rem, 3vw, 2.6rem);">We reach customers <em>where they already are.</em></h2>
+    </div>
+
+    <div class="marketing-grid reveal">
+      <div class="marketing-card">
+        <div class="channel-tag">Channel 01</div>
+        <h4>Social-First Content</h4>
+        <p>TikTok and Instagram sleep-science explainers, before/after sleep data, and morning routine transformation videos. Targeting fifteen-to-twenty-eight year olds in their feed.</p>
+      </div>
+      <div class="marketing-card">
+        <div class="channel-tag">Channel 02</div>
+        <h4>Influencer Partnerships</h4>
+        <p>Authentic reviews from student wellness creators in the 10K–100K range. Low cost-per-acquisition, high trust transfer to our target demographic.</p>
+      </div>
+      <div class="marketing-card">
+        <div class="channel-tag">Channel 03</div>
+        <h4>Campus Activation</h4>
+        <p>Year 12 wellbeing sessions, university orientation expos, student health fairs. Positioning TempSync as a study-performance tool, not just bedding.</p>
+      </div>
+    </div>
+
+    <div class="launch-bar reveal">
+      <div class="launch-tag">Launch Strategy</div>
+      <p><strong>Kickstarter pre-order campaign.</strong> Validates demand, funds the first production run, and converts our earliest customers into advocates — zero debt, zero distribution risk.</p>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     GOAL
+     ========================================================= -->
+<section class="goal" id="goal">
+  <div class="container goal-content reveal">
+    <div class="section-label" style="justify-content:center;"><span class="num">08</span> Our Goal</div>
+    <p class="goal-quote">We want your <em>environment</em> to follow your <em>biology</em> — not the other way around.</p>
+    <p class="goal-signature">— The TempSync Team</p>
+  </div>
+</section>
+
+<!-- =========================================================
+     LEARN MORE
+     ========================================================= -->
+<section class="more" id="more">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label"><span class="num">+</span> Go Deeper</div>
+      <h2 class="section-title">For the curious.</h2>
+      <p class="section-lead">Tap any section to read more.</p>
+    </div>
+
+    <div class="accordion reveal">
+      <div class="acc-item">
+        <div class="acc-header">
+          <div>
+            <span class="acc-meta">Research</span>
+            <span class="acc-title">What the science actually says</span>
+          </div>
+          <div class="acc-toggle">+</div>
+        </div>
+        <div class="acc-body"><div class="acc-body-inner">
+          <ul>
+            <li><strong>Cooler sleep environments</strong> increase deep sleep duration and overall sleep quality.</li>
+            <li><strong>Gradual morning warming</strong> or light exposure reduces sleep inertia and improves alertness on waking.</li>
+            <li><strong>Sleep deprivation</strong> can reduce student focus and learning performance by up to 30%.</li>
+            <li>TempSync is engineered around all three of these findings — combined into one automatic system.</li>
+          </ul>
+        </div></div>
+      </div>
+
+      <div class="acc-item">
+        <div class="acc-header">
+          <div>
+            <span class="acc-meta">Funding</span>
+            <span class="acc-title">A$50,000 to launch</span>
+          </div>
+          <div class="acc-toggle">+</div>
+        </div>
+        <div class="acc-body"><div class="acc-body-inner">
+          <ul>
+            <li><strong>$20,000</strong> — Prototype development. Thermal fabrics, endothermic/exothermic components, sensor integration.</li>
+            <li><strong>$15,000</strong> — First production run. 100 units for pilot sale and school testing.</li>
+            <li><strong>$10,000</strong> — App development. iOS &amp; Android, Circadian Mode, wearable connectivity.</li>
+            <li><strong>$5,000</strong> — Marketing launch. Social ads, influencer outreach, crowdfunding setup.</li>
+          </ul>
+          <p>With this funding, we deliver a working prototype, 100 units ready to sell, and a live marketing campaign — all within 90 days.</p>
+        </div></div>
+      </div>
+
+      <div class="acc-item">
+        <div class="acc-header">
+          <div>
+            <span class="acc-meta">Plan</span>
+            <span class="acc-title">The 90-day roadmap</span>
+          </div>
+          <div class="acc-toggle">+</div>
+        </div>
+        <div class="acc-body"><div class="acc-body-inner">
+          <ul>
+            <li><strong>Month 1 — Build the Prototype.</strong> Partner with a textile engineer and electronics manufacturer. Goal: fully functional dual-zone blanket within 8 weeks.</li>
+            <li><strong>Month 2 — Launch on Kickstarter.</strong> Pre-order crowdfunding campaign. Goal: A$30,000. Validates demand and funds production.</li>
+            <li><strong>Month 3 — School Pilot.</strong> Partner with 3 schools or universities. Collect sleep improvement data and testimonials before public launch.</li>
+          </ul>
+        </div></div>
+      </div>
+
+      <div class="acc-item">
+        <div class="acc-header">
+          <div>
+            <span class="acc-meta">Future</span>
+            <span class="acc-title">Beyond Year 1 — expansion paths</span>
+          </div>
+          <div class="acc-toggle">+</div>
+        </div>
+        <div class="acc-body"><div class="acc-body-inner">
+          <ul>
+            <li><strong>Corporate wellness packages</strong> — partnerships with companies optimising employee productivity through sleep.</li>
+            <li><strong>Hospital and clinic licensing</strong> — fatigue-management programs for shift workers in healthcare.</li>
+            <li><strong>University residency programs</strong> — bulk supply deals for student halls and athlete recovery facilities.</li>
+            <li><strong>International expansion</strong> — translating product and content for the broader Asia-Pacific student market.</li>
+          </ul>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =========================================================
+     FOOTER / CTA
+     ========================================================= -->
+<footer>
+  <div class="container">
+    <h2 class="cta-title">Let's <em>sleep smarter.</em></h2>
+    <p class="cta-tagline">Join us at the start of something restful.</p>
+    <a href="#" class="btn btn-primary">Join the Pre-Order List <span class="arrow">→</span></a>
+
+    <div class="footer-bottom">
+      <div>TempSync™ &nbsp;·&nbsp; A student sleep-tech startup &nbsp;·&nbsp; 2026</div>
+      <div class="signature">Sleep Smarter. Wake Better.</div>
+    </div>
+  </div>
+</footer>
+
+<!-- =========================================================
+     ADMIN MODAL (triple-click logo to open)
+     ========================================================= -->
+<div class="admin-modal" id="admin-modal">
+  <div class="admin-box">
+    <div class="admin-label">Restricted Access</div>
+    <h3>Enter Presentation Mode</h3>
+    <input type="text" id="admin-code" maxlength="8" placeholder="• • • •" autocomplete="off" spellcheck="false" />
+    <div class="admin-actions">
+      <button class="secondary" onclick="closeAdmin()">Cancel</button>
+      <button onclick="checkAdminCode()">Enter</button>
+    </div>
+    <div class="admin-hint">team only</div>
+  </div>
+</div>
+
+<!-- =========================================================
+     PRESENTATION MODE — 7 slides for the judges
+     ========================================================= -->
+<div class="presentation-mode" id="presentation-mode">
+  <div class="pres-track" id="pres-track">
+
+    <!-- SLIDE 1 -->
+    <div class="pres-slide" data-idx="0">
+      <div class="pres-label"><span class="num">01</span> The Problem</div>
+      <h1 class="pres-h1">Most of us are sleeping <em>wrong.</em></h1>
+      <p class="pres-sub">And our environment is making it worse.</p>
+      <div class="pres-stats">
+        <div class="pres-stat">
+          <div class="n">1 in 3</div>
+          <div class="l">Australians don't get quality sleep.</div>
+        </div>
+        <div class="pres-stat">
+          <div class="n">85%</div>
+          <div class="l">of our students wake up unrefreshed.</div>
+        </div>
+        <div class="pres-stat">
+          <div class="n">-30%</div>
+          <div class="l">focus drop when poorly rested.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 2 -->
+    <div class="pres-slide" data-idx="1">
+      <div class="pres-label"><span class="num">02</span> The Solution</div>
+      <h1 class="pres-h1">The <em>TempSync</em> Advanced Heat Control Blanket.</h1>
+      <p class="pres-sub">Cools you to deep sleep. Warms you to natural wake. Fully automatic.</p>
+      <div class="pres-triple" style="margin-top: 4vh;">
+        <div class="pres-pillar">
+          <span class="roman">i.</span>
+          <h4>Cool Zone</h4>
+          <p>Endothermic gel channels absorb body heat at night to support deep sleep.</p>
+        </div>
+        <div class="pres-pillar">
+          <span class="roman">ii.</span>
+          <h4>Warm Zone</h4>
+          <p>Gentle exothermic warming lifts body temperature in the morning to support natural waking.</p>
+        </div>
+        <div class="pres-pillar">
+          <span class="roman">iii.</span>
+          <h4>Smart Hub</h4>
+          <p>App and wearable sync — set it once, the blanket follows your circadian rhythm.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 3 -->
+    <div class="pres-slide" data-idx="2">
+      <div class="pres-label"><span class="num">03</span> Who It's For</div>
+      <h1 class="pres-h1">Built for the <em>sleep-deprived generation.</em></h1>
+      <div class="pres-twocol">
+        <div class="pres-card">
+          <div class="tag">Primary Market</div>
+          <h4>Students</h4>
+          <div class="age">Aged 15 — 22</div>
+          <p>Academic pressure. Late-night screens. Irregular schedules.</p>
+          <p>Poor sleep cuts learning performance by 30%.</p>
+        </div>
+        <div class="pres-card">
+          <div class="tag">Secondary Market</div>
+          <h4>Young Professionals</h4>
+          <div class="age">Aged 22 — 35</div>
+          <p>Shift workers and high performers running on too little.</p>
+          <p>Poor sleep costs Australian businesses A$17.9B per year.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 4 -->
+    <div class="pres-slide" data-idx="3">
+      <div class="pres-label"><span class="num">04</span> Value &amp; Impact</div>
+      <h1 class="pres-h1">Three outcomes. <em>One blanket.</em></h1>
+      <div class="pres-triple">
+        <div class="pres-pillar">
+          <span class="roman">i.</span>
+          <h4>Sleep Deeper</h4>
+          <p>Cooling triggers the body temperature drop required for restorative deep sleep.</p>
+        </div>
+        <div class="pres-pillar">
+          <span class="roman">ii.</span>
+          <h4>Wake Naturally</h4>
+          <p>Gradual morning warmth eliminates sleep inertia. No more grogginess.</p>
+        </div>
+        <div class="pres-pillar">
+          <span class="roman">iii.</span>
+          <h4>Perform Better</h4>
+          <p>Well-rested students outperform tired peers by 30% on focus and learning tasks.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 5 -->
+    <div class="pres-slide" data-idx="4">
+      <div class="pres-label"><span class="num">05</span> The Competitive Edge</div>
+      <h1 class="pres-h1">Sleep tech exists. <em>None of it is built for us.</em></h1>
+      <div class="pres-compare">
+        <div class="pres-compare-row header">
+          <div class="pres-compare-cell feature">Product</div>
+          <div class="pres-compare-cell">Form</div>
+          <div class="pres-compare-cell">Price</div>
+          <div class="pres-compare-cell">Portable</div>
+          <div class="pres-compare-cell">Built For</div>
+        </div>
+        <div class="pres-compare-row">
+          <div class="pres-compare-cell feature">Eight Sleep</div>
+          <div class="pres-compare-cell">Mattress</div>
+          <div class="pres-compare-cell">A$4,400+</div>
+          <div class="pres-compare-cell">No</div>
+          <div class="pres-compare-cell">Biohackers</div>
+        </div>
+        <div class="pres-compare-row">
+          <div class="pres-compare-cell feature">Oak Sleep</div>
+          <div class="pres-compare-cell">Mattress</div>
+          <div class="pres-compare-cell">A$2,500+</div>
+          <div class="pres-compare-cell">No</div>
+          <div class="pres-compare-cell">Premium AU</div>
+        </div>
+        <div class="pres-compare-row">
+          <div class="pres-compare-cell feature">BedJet</div>
+          <div class="pres-compare-cell">Air system</div>
+          <div class="pres-compare-cell">A$1,600+</div>
+          <div class="pres-compare-cell">No</div>
+          <div class="pres-compare-cell">Couples</div>
+        </div>
+        <div class="pres-compare-row us">
+          <div class="pres-compare-cell feature">TempSync</div>
+          <div class="pres-compare-cell">Blanket</div>
+          <div class="pres-compare-cell">A$299</div>
+          <div class="pres-compare-cell">Yes</div>
+          <div class="pres-compare-cell">Students</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 6 -->
+    <div class="pres-slide" data-idx="5">
+      <div class="pres-label"><span class="num">06</span> Business Model</div>
+      <h1 class="pres-h1">Two streams. <em>One product.</em></h1>
+      <div class="pres-business">
+        <div class="pres-price-card gold">
+          <div class="stream-tag">Stream 01 — Product</div>
+          <div class="big-price">A$299<em>RRP</em></div>
+          <div class="sub">One-time purchase · 40% margin</div>
+          <p>10× cheaper than the market leader.</p>
+        </div>
+        <div class="pres-price-card">
+          <div class="stream-tag">Stream 02 — Subscription</div>
+          <div class="big-price">$9.99<em>/mo</em></div>
+          <div class="sub">Pro app · optional · cancellable</div>
+          <p>Recurring revenue from Day 1.</p>
+        </div>
+      </div>
+      <div class="pres-strategy">
+        <strong>Penetration pricing</strong> with psychological charm anchors · <strong>Year 1 target:</strong> A$172K gross · <strong>Go-to-market:</strong> TikTok + influencers + campus + Kickstarter
+      </div>
+    </div>
+
+    <!-- SLIDE 7 — Closing -->
+    <div class="pres-slide closing" data-idx="6">
+      <div class="pres-label" style="justify-content:center;"><span class="num">07</span> Closing</div>
+      <div class="pres-closing-logo">TempSync<sup>™</sup></div>
+      <div class="pres-closing-tagline">Sleep Smarter. Wake Better.</div>
+      <p class="pres-closing-pitch">Not just an idea. A plan, a product, and a market that needs it. We're building accessible sleep tech for the generation that needs it most.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- Presentation overlays -->
+<div class="pres-counter" id="pres-counter"><span class="current">1</span> / 7</div>
+<button class="pres-exit" id="pres-exit" onclick="exitPresentation()">Exit ✕</button>
+<div class="pres-progress" id="pres-progress"></div>
+<div class="pres-keys">
+  <kbd>↑</kbd><kbd>↓</kbd> or <kbd>space</kbd> · <kbd>esc</kbd> exit
+</div>
+
+<!-- =========================================================
+     SCRIPTS
+     ========================================================= -->
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+
+<script>
+  /* =========================================================
+     NON-MODULE LOGIC (admin, presentation, accordion, reveal)
+     ========================================================= */
+
+  // ---------- Nav scroll state ----------
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 30);
+  });
+
+  // ---------- Reveal on scroll ----------
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+
+  // ---------- Accordion ----------
+  document.querySelectorAll('.acc-item').forEach(item => {
+    item.querySelector('.acc-header').addEventListener('click', () => {
+      item.classList.toggle('open');
+    });
+  });
+
+  // ---------- Cinematic dismiss on click background ----------
+  document.getElementById('cinematic').addEventListener('click', (e) => {
+    if (e.target.classList.contains('cinema-bg') || e.target.classList.contains('cinema-scene')) {
+      document.getElementById('cinematic').classList.add('skip');
+    }
+  });
+
+  /* =========================================================
+     ADMIN CODE → Presentation Mode
+     Trigger: triple-click the TempSync logo in nav
+     Code: WAKE
+     ========================================================= */
+  const ADMIN_CODE = 'WAKE';
+  let clickCount = 0;
+  let clickTimer = null;
+
+  document.getElementById('logo').addEventListener('click', () => {
+    clickCount++;
+    clearTimeout(clickTimer);
+    if (clickCount >= 3) {
+      openAdmin();
+      clickCount = 0;
+    } else {
+      clickTimer = setTimeout(() => { clickCount = 0; }, 600);
+    }
+  });
+
+  function openAdmin() {
+    document.getElementById('admin-modal').classList.add('open');
+    setTimeout(() => document.getElementById('admin-code').focus(), 100);
+  }
+  function closeAdmin() {
+    document.getElementById('admin-modal').classList.remove('open');
+    document.getElementById('admin-code').value = '';
+  }
+  function checkAdminCode() {
+    const input = document.getElementById('admin-code');
+    if (input.value.trim().toUpperCase() === ADMIN_CODE) {
+      closeAdmin();
+      enterPresentation();
+    } else {
+      input.classList.add('error');
+      setTimeout(() => input.classList.remove('error'), 400);
+    }
+  }
+  document.getElementById('admin-code').addEventListener('keydown', e => {
+    if (e.key === 'Enter') checkAdminCode();
+    if (e.key === 'Escape') closeAdmin();
+  });
+
+  /* =========================================================
+     PRESENTATION MODE — keyboard navigation
+     ========================================================= */
+  const TOTAL_SLIDES = 7;
+  let currentSlide = 0;
+  let inPresentation = false;
+
+  function enterPresentation() {
+    inPresentation = true;
+    currentSlide = 0;
+    document.body.classList.add('presentation-active');
+    document.getElementById('presentation-mode').classList.add('active');
+    goToSlide(0);
+  }
+  function exitPresentation() {
+    inPresentation = false;
+    document.body.classList.remove('presentation-active');
+    document.getElementById('presentation-mode').classList.remove('active');
+  }
+  function goToSlide(idx) {
+    if (idx < 0) idx = 0;
+    if (idx > TOTAL_SLIDES - 1) idx = TOTAL_SLIDES - 1;
+    currentSlide = idx;
+    const track = document.getElementById('pres-track');
+    track.style.transform = `translateY(${-idx * 100}vh)`;
+
+    // Update counter + progress bar
+    document.querySelector('#pres-counter .current').textContent = idx + 1;
+    document.getElementById('pres-progress').style.width = (((idx + 1) / TOTAL_SLIDES) * 100) + '%';
+
+    // Trigger content animation on the active slide
+    document.querySelectorAll('.pres-slide').forEach(s => s.classList.remove('entering'));
+    const active = document.querySelector(`.pres-slide[data-idx="${idx}"]`);
+    if (active) {
+      // force reflow then add class so animation runs
+      void active.offsetWidth;
+      active.classList.add('entering');
+    }
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (!inPresentation) {
+      // Outside presentation: ESC closes admin modal
+      if (e.key === 'Escape') closeAdmin();
+      return;
+    }
+    // Inside presentation
+    if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter' || e.key === 'PageDown') {
+      e.preventDefault();
+      goToSlide(currentSlide + 1);
+    } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft' || e.key === 'PageUp') {
+      e.preventDefault();
+      goToSlide(currentSlide - 1);
+    } else if (e.key === 'Escape') {
+      exitPresentation();
+    } else if (e.key === 'Home') {
+      goToSlide(0);
+    } else if (e.key === 'End') {
+      goToSlide(TOTAL_SLIDES - 1);
+    }
+  });
+
+  // Click anywhere on slide to advance
+  document.getElementById('presentation-mode').addEventListener('click', (e) => {
+    if (e.target.closest('button')) return;
+    goToSlide(currentSlide + 1);
+  });
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+/* =========================================================
+   REALISTIC 3D BLANKET — Three.js
+   ========================================================= */
+const canvas = document.getElementById('blanket-canvas');
+const stage = document.getElementById('model-stage');
+const labelOverlay = document.getElementById('label-overlay');
+const modeBadge = document.getElementById('mode-badge');
+
+const scene = new THREE.Scene();
+scene.fog = new THREE.Fog(0x0a1628, 14, 32);
+
+const camera = new THREE.PerspectiveCamera(34, stage.clientWidth / stage.clientHeight, 0.1, 100);
+camera.position.set(0, 4.5, 10);
+
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+renderer.setSize(stage.clientWidth, stage.clientHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setClearColor(0x000000, 0);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.05;
+
+/* ---------- Lighting (3-point + rim) ---------- */
+scene.add(new THREE.AmbientLight(0xffffff, 0.45));
+const key = new THREE.DirectionalLight(0xfff1d6, 1.0);
+key.position.set(5, 9, 6);
+scene.add(key);
+const fill = new THREE.DirectionalLight(0x6ea8d8, 0.4);
+fill.position.set(-7, 3, -4);
+scene.add(fill);
+const rim = new THREE.DirectionalLight(0xd4af6a, 0.7);
+rim.position.set(0, -4, -8);
+scene.add(rim);
+const top = new THREE.PointLight(0xfff1d6, 0.6, 14);
+top.position.set(0, 6, 0);
+scene.add(top);
+
+/* ---------- Group holding the blanket ---------- */
+const blanket = new THREE.Group();
+scene.add(blanket);
+
+const W = 4.4;     // width
+const D = 3.2;     // depth
+const T = 0.14;    // base thickness
+
+/* ---------- Helper: rounded rectangle shape ---------- */
+function roundedRectShape(w, d, r) {
+  const x = -w/2, y = -d/2;
+  const shape = new THREE.Shape();
+  shape.moveTo(x + r, y);
+  shape.lineTo(x + w - r, y);
+  shape.quadraticCurveTo(x + w, y, x + w, y + r);
+  shape.lineTo(x + w, y + d - r);
+  shape.quadraticCurveTo(x + w, y + d, x + w - r, y + d);
+  shape.lineTo(x + r, y + d);
+  shape.quadraticCurveTo(x, y + d, x, y + d - r);
+  shape.lineTo(x, y + r);
+  shape.quadraticCurveTo(x, y, x + r, y);
+  return shape;
+}
+
+function extrudeLayer(w, d, thickness, radius=0.15) {
+  const shape = roundedRectShape(w, d, radius);
+  const geo = new THREE.ExtrudeGeometry(shape, {
+    depth: thickness,
+    bevelEnabled: true,
+    bevelSegments: 3,
+    bevelSize: 0.04,
+    bevelThickness: 0.03,
+    steps: 1
+  });
+  geo.rotateX(-Math.PI / 2);
+  geo.translate(0, thickness, 0);
+  return geo;
+}
+
+/* ===============================================================
+   LAYER 1 — OUTER FABRIC (quilted with visible diamond stitching)
+   =============================================================== */
+const topGeo = extrudeLayer(W, D, T, 0.2);
+// Subtle vertex displacement for quilted feel
+const topPos = topGeo.attributes.position;
+for (let i = 0; i < topPos.count; i++) {
+  const x = topPos.getX(i);
+  const z = topPos.getZ(i);
+  const y = topPos.getY(i);
+  // only displace top surface
+  if (y > T * 0.9) {
+    const bump = Math.sin(x * 5) * Math.sin(z * 6) * 0.012;
+    topPos.setY(i, y + Math.max(0, bump));
+  }
+}
+topPos.needsUpdate = true;
+topGeo.computeVertexNormals();
+
+const fabricMat = new THREE.MeshStandardMaterial({
+  color: 0xeae3d2,
+  roughness: 0.88,
+  metalness: 0.0,
+});
+const topFabric = new THREE.Mesh(topGeo, fabricMat);
+topFabric.userData = {
+  name: 'Outer Cover',
+  desc: 'Breathable quilted shell, soft to the touch.',
+  baseY: 0.6,
+  num: 1
+};
+blanket.add(topFabric);
+
+// Diamond stitching grid on top fabric
+function makeStitching(w, d) {
+  const group = new THREE.Group();
+  const stitchMat = new THREE.MeshStandardMaterial({
+    color: 0xb89a5c, roughness: 0.7, metalness: 0.15
+  });
+  const lineRadius = 0.008;
+  const halfW = w / 2 * 0.92;
+  const halfD = d / 2 * 0.92;
+
+  // Diagonal lines crossing the surface
+  const stepDiag = 0.35;
+  const range = (halfW + halfD) + 0.2;
+
+  for (let offset = -range; offset <= range; offset += stepDiag) {
+    // diagonal line: y = x + offset, clipped to rect
+    // Build two diagonals (one each direction)
+    [1, -1].forEach(dir => {
+      const pts = [];
+      // sample along x
+      for (let t = -halfW; t <= halfW; t += 0.15) {
+        const z = dir * t + offset;
+        if (z >= -halfD && z <= halfD) {
+          pts.push(new THREE.Vector3(t, T + 0.01, z));
+        }
+      }
+      if (pts.length >= 2) {
+        const curve = new THREE.CatmullRomCurve3(pts, false);
+        const stitchGeo = new THREE.TubeGeometry(curve, Math.max(4, pts.length * 2), lineRadius, 4, false);
+        group.add(new THREE.Mesh(stitchGeo, stitchMat));
+      }
+    });
+  }
+  return group;
+}
+const stitching = makeStitching(W, D);
+topFabric.add(stitching);
+
+// Small "button" stitches at diamond intersections
+const buttonMat = new THREE.MeshStandardMaterial({ color: 0xd4af6a, roughness: 0.4, metalness: 0.5 });
+const buttonGeo = new THREE.SphereGeometry(0.025, 8, 6);
+const halfWb = W / 2 * 0.85;
+const halfDb = D / 2 * 0.85;
+const buttonStep = 0.5;
+for (let bx = -halfWb; bx <= halfWb + 0.01; bx += buttonStep) {
+  for (let bz = -halfDb; bz <= halfDb + 0.01; bz += buttonStep) {
+    const btn = new THREE.Mesh(buttonGeo, buttonMat);
+    btn.position.set(bx, T + 0.018, bz);
+    topFabric.add(btn);
+  }
+}
+
+/* ===============================================================
+   LAYER 2 — MORNING WARMING ZONE (visible serpentine heating wires)
+   =============================================================== */
+const heatGeo = extrudeLayer(W, D, T * 0.55, 0.18);
+const heatBaseMat = new THREE.MeshStandardMaterial({
+  color: 0x2a1a13, roughness: 0.7, metalness: 0.05,
+});
+const heatLayer = new THREE.Mesh(heatGeo, heatBaseMat);
+heatLayer.userData = {
+  name: 'Morning Warming Zone',
+  desc: 'Exothermic micro-wires raise skin temperature gradually for natural waking.',
+  baseY: 0.25,
+  num: 2
+};
+blanket.add(heatLayer);
+
+/* Serpentine heating wire tubes */
+function makeSerpentine(width, depth, rows, color, glowIntensity=0.5) {
+  const group = new THREE.Group();
+  const mat = new THREE.MeshStandardMaterial({
+    color, emissive: color, emissiveIntensity: glowIntensity,
+    roughness: 0.4, metalness: 0.4
+  });
+  const halfW = width / 2 * 0.88;
+  const step = (depth * 0.85) / (rows - 1);
+  const startZ = -depth / 2 * 0.85;
+  const pts = [];
+  for (let i = 0; i < rows; i++) {
+    const z = startZ + i * step;
+    if (i % 2 === 0) {
+      pts.push(new THREE.Vector3(-halfW, 0, z));
+      pts.push(new THREE.Vector3( halfW, 0, z));
+    } else {
+      pts.push(new THREE.Vector3( halfW, 0, z));
+      pts.push(new THREE.Vector3(-halfW, 0, z));
+    }
+  }
+  const curve = new THREE.CatmullRomCurve3(pts, false, 'catmullrom', 0.06);
+  const tubeGeo = new THREE.TubeGeometry(curve, 280, 0.028, 8, false);
+  const tube = new THREE.Mesh(tubeGeo, mat);
+  group.add(tube);
+
+  // little terminal blocks at ends
+  const blockGeo = new THREE.BoxGeometry(0.12, 0.06, 0.12);
+  const blockMat = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.5, metalness: 0.6 });
+  pts.forEach((p, i) => {
+    if (i === 0 || i === pts.length - 1) {
+      const b = new THREE.Mesh(blockGeo, blockMat);
+      b.position.copy(p);
+      b.position.y = 0.04;
+      group.add(b);
+    }
+  });
+
+  return { group, material: mat };
+}
+const heatSerp = makeSerpentine(W, D, 7, 0xe89456, 0.55);
+heatSerp.group.position.y = T * 0.55 + 0.005;
+heatLayer.add(heatSerp.group);
+
+/* ===============================================================
+   LAYER 3 — SMART SENSOR LAYER (sensors + traces + central hub)
+   =============================================================== */
+const sensorGeo = extrudeLayer(W * 0.97, D * 0.97, T * 0.35, 0.14);
+const sensorPlate = new THREE.Mesh(sensorGeo, new THREE.MeshStandardMaterial({
+  color: 0x16223a, roughness: 0.45, metalness: 0.55
+}));
+sensorPlate.userData = {
+  name: 'Smart Sensor Layer',
+  desc: 'Tracks temperature & motion. Syncs with your wearable and the app.',
+  baseY: 0,
+  num: 3
+};
+blanket.add(sensorPlate);
+
+/* Sensor nodes — slim gold cylindrical discs */
+const sensorNodeMat = new THREE.MeshStandardMaterial({
+  color: 0xd4af6a, emissive: 0xd4af6a, emissiveIntensity: 0.55,
+  roughness: 0.3, metalness: 0.75
+});
+const sensorNodeGeo = new THREE.CylinderGeometry(0.11, 0.11, 0.06, 24);
+const sensorPositions = [
+  [-W/2 * 0.72, 0, -D/2 * 0.68],
+  [ W/2 * 0.72, 0, -D/2 * 0.68],
+  [-W/2 * 0.72, 0,  D/2 * 0.68],
+  [ W/2 * 0.72, 0,  D/2 * 0.68],
+];
+sensorPositions.forEach(p => {
+  const n = new THREE.Mesh(sensorNodeGeo, sensorNodeMat);
+  n.position.set(p[0], T * 0.35 + 0.035, p[2]);
+  sensorPlate.add(n);
+});
+ 
+/* Central control hub — bigger, with two-tone ring */
+const hubBaseGeo = new THREE.CylinderGeometry(0.28, 0.28, 0.08, 32);
+const hubBase = new THREE.Mesh(hubBaseGeo, new THREE.MeshStandardMaterial({
+  color: 0x0a1628, roughness: 0.35, metalness: 0.8
+}));
+hubBase.position.y = T * 0.35 + 0.045;
+sensorPlate.add(hubBase);
+ 
+const hubRingGeo = new THREE.TorusGeometry(0.22, 0.018, 12, 48);
+const hubRingMat = new THREE.MeshStandardMaterial({
+  color: 0xd4af6a, emissive: 0xd4af6a, emissiveIntensity: 0.7,
+  roughness: 0.3, metalness: 0.8
+});
+const hubRing = new THREE.Mesh(hubRingGeo, hubRingMat);
+hubRing.rotation.x = Math.PI / 2;
+hubRing.position.y = T * 0.35 + 0.09;
+sensorPlate.add(hubRing);
+ 
+/* Trace lines from sensors to hub */
+const traceMat = new THREE.LineBasicMaterial({
+  color: 0xd4af6a, transparent: true, opacity: 0.55
+});
+const tracePts = [];
+sensorPositions.forEach(p => {
+  tracePts.push(new THREE.Vector3(p[0], T * 0.35 + 0.04, p[2]));
+  tracePts.push(new THREE.Vector3(0, T * 0.35 + 0.04, 0));
+});
+const traceGeo = new THREE.BufferGeometry().setFromPoints(tracePts);
+sensorPlate.add(new THREE.LineSegments(traceGeo, traceMat));
+ 
+/* ===============================================================
+   LAYER 4 — NIGHTTIME COOLING ZONE (gel channel grid)
+   =============================================================== */
+const coolGeo = extrudeLayer(W, D, T * 0.55, 0.18);
+const coolBase = new THREE.Mesh(coolGeo, new THREE.MeshStandardMaterial({
+  color: 0x172e44, roughness: 0.5, metalness: 0.15
+}));
+coolBase.userData = {
+  name: 'Nighttime Cooling Zone',
+  desc: 'Endothermic gel channels absorb body heat for deeper, restorative sleep.',
+  baseY: -0.25,
+  num: 4
+};
+blanket.add(coolBase);
+ 
+/* Cooling gel cells — grid of glowing rounded boxes */
+const cellMat = new THREE.MeshStandardMaterial({
+  color: 0x5ba3d0, emissive: 0x5ba3d0, emissiveIntensity: 0.35,
+  roughness: 0.25, metalness: 0.1,
+  transparent: true, opacity: 0.88
+});
+const cellSize = 0.32;
+const cellGeo = new THREE.BoxGeometry(cellSize, T * 0.32, cellSize);
+// soften edges
+const cellCols = 10;
+const cellRows = 7;
+const gapX = (W * 0.86 - cellCols * cellSize) / (cellCols - 1);
+const gapZ = (D * 0.82 - cellRows * cellSize) / (cellRows - 1);
+const startX = -W * 0.86 / 2 + cellSize / 2;
+const startZ = -D * 0.82 / 2 + cellSize / 2;
+for (let r = 0; r < cellRows; r++) {
+  for (let c = 0; c < cellCols; c++) {
+    const cell = new THREE.Mesh(cellGeo, cellMat);
+    cell.position.set(
+      startX + c * (cellSize + gapX),
+      T * 0.55 + T * 0.16 + 0.005,
+      startZ + r * (cellSize + gapZ)
+    );
+    coolBase.add(cell);
+  }
+}
+ 
+/* ===============================================================
+   LAYER 5 — BACKING (insulating base)
+   =============================================================== */
+const backGeo = extrudeLayer(W, D, T * 0.85, 0.18);
+const backFabric = new THREE.Mesh(backGeo, new THREE.MeshStandardMaterial({
+  color: 0xe0d8c4, roughness: 0.92, metalness: 0.0
+}));
+backFabric.userData = {
+  name: 'Insulating Backing',
+  desc: 'Reflective backing keeps energy directed toward your body.',
+  baseY: -0.55,
+  num: 5
+};
+blanket.add(backFabric);
+ 
+/* ===============================================================
+   LAYERS ARRAY + POSITIONS
+   =============================================================== */
+const layers = [topFabric, heatLayer, sensorPlate, coolBase, backFabric];
+ 
+/* Stacked = together; Exploded = spread vertically */
+const stackedPositions  = [ 0.32, 0.13, 0.00, -0.13, -0.32 ];
+const explodedPositions = [ 1.80, 0.90, 0.00, -0.90, -1.80 ];
+ 
+layers.forEach((layer, i) => { layer.position.y = stackedPositions[i]; });
+ 
+/* Slight rotation for visual interest */
+blanket.rotation.x = -0.18;
+blanket.rotation.y = -0.28;
+ 
+/* ===============================================================
+   NUMBERED SPRITES (1–5) — always face the camera
+   =============================================================== */
+function makeNumberSprite(num) {
+  const c = document.createElement('canvas');
+  c.width = c.height = 128;
+  const ctx = c.getContext('2d');
+  // outer ring
+  ctx.fillStyle = '#0a1628';
+  ctx.beginPath(); ctx.arc(64, 64, 58, 0, Math.PI * 2); ctx.fill();
+  // gold disc
+  ctx.fillStyle = '#d4af6a';
+  ctx.beginPath(); ctx.arc(64, 64, 50, 0, Math.PI * 2); ctx.fill();
+  // number
+  ctx.fillStyle = '#0a1628';
+  ctx.font = 'italic bold 64px "Fraunces", serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(String(num), 64, 68);
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: false }));
+  sprite.scale.set(0.42, 0.42, 1);
+  return sprite;
+}
+const numberSprites = layers.map((layer, i) => {
+  const sp = makeNumberSprite(layer.userData.num);
+  sp.visible = false;
+  // attach to scene (not layer) so we control position manually
+  scene.add(sp);
+  return sp;
+});
+ 
+/* ===============================================================
+   ORBIT CONTROLS
+   =============================================================== */
+const controls = new OrbitControls(camera, canvas);
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+controls.enablePan = false;
+controls.minDistance = 5;
+controls.maxDistance = 16;
+controls.minPolarAngle = Math.PI * 0.12;
+controls.maxPolarAngle = Math.PI * 0.72;
+controls.autoRotate = true;
+controls.autoRotateSpeed = 0.5;
+ 
+let autoRotateTimer;
+canvas.addEventListener('pointerdown', () => {
+  controls.autoRotate = false;
+  clearTimeout(autoRotateTimer);
+});
+canvas.addEventListener('pointerup', () => {
+  clearTimeout(autoRotateTimer);
+  autoRotateTimer = setTimeout(() => { controls.autoRotate = true; }, 3500);
+});
+ 
+/* ===============================================================
+   STATE MACHINE — Assembled / Reveal Layers / Day-Night Cycle
+   =============================================================== */
+let mode = 'stack';   // 'stack' | 'explode' | 'cycle'
+let cycleTime = 0;
+const targets = layers.map((_, i) => stackedPositions[i]);
+ 
+function setMode(newMode) {
+  mode = newMode;
+  if (mode === 'stack') {
+    layers.forEach((_, i) => { targets[i] = stackedPositions[i]; });
+    modeBadge.classList.remove('visible');
+  } else if (mode === 'explode') {
+    layers.forEach((_, i) => { targets[i] = explodedPositions[i]; });
+    modeBadge.classList.remove('visible');
+  } else if (mode === 'cycle') {
+    cycleTime = 0;
+    modeBadge.classList.add('visible');
+  }
+  updateButtons();
+}
+ 
+const btnStack   = document.getElementById('btn-stack');
+const btnExplode = document.getElementById('btn-explode');
+const btnCycle   = document.getElementById('btn-cycle');
+btnStack.addEventListener('click',   () => setMode('stack'));
+btnExplode.addEventListener('click', () => setMode('explode'));
+btnCycle.addEventListener('click',   () => setMode('cycle'));
+ 
+function updateButtons() {
+  [btnStack, btnExplode, btnCycle].forEach(b => b.classList.remove('active'));
+  if (mode === 'stack')   btnStack.classList.add('active');
+  if (mode === 'explode') btnExplode.classList.add('active');
+  if (mode === 'cycle')   btnCycle.classList.add('active');
+}
+ 
+/* ===============================================================
+   HTML LABEL OVERLAYS
+   =============================================================== */
+const labelEls = layers.map((layer, i) => {
+  const el = document.createElement('div');
+  el.className = 'layer-label';
+  el.innerHTML = `
+    <div><span class="label-num">${layer.userData.num}</span><span class="label-title">${layer.userData.name}</span></div>
+    <div class="label-desc">${layer.userData.desc}</div>
+  `;
+  labelOverlay.appendChild(el);
+  return el;
+});
+ 
+/* ===============================================================
+   RESIZE
+   =============================================================== */
+function onResize() {
+  const w = stage.clientWidth;
+  const h = stage.clientHeight;
+  camera.aspect = w / h;
+  camera.updateProjectionMatrix();
+  renderer.setSize(w, h);
+}
+window.addEventListener('resize', onResize);
+ 
+/* ===============================================================
+   RENDER LOOP
+   =============================================================== */
+const tmpVec = new THREE.Vector3();
+ 
+function tick() {
+  requestAnimationFrame(tick);
+ 
+  /* Cycle mode: drift between stacked + exploded, day/night glow */
+  if (mode === 'cycle') {
+    cycleTime += 0.008;
+    // Spread oscillates between stacked and exploded
+    const spread = (Math.sin(cycleTime * 0.7) + 1) / 2;     // 0..1
+    layers.forEach((_, i) => {
+      targets[i] = stackedPositions[i] + (explodedPositions[i] - stackedPositions[i]) * spread;
+    });
+ 
+    // Day/night phase shifts independently of spread for visual interest
+    const dayPhase = (Math.sin(cycleTime) + 1) / 2;  // 0..1 (0 = full night, 1 = full day)
+    // Cool intensity peaks at night (dayPhase low); warm peaks at day (dayPhase high)
+    const coolI = (1 - dayPhase) * 1.4 + 0.2;
+    const warmI = dayPhase * 1.4 + 0.2;
+    cellMat.emissiveIntensity = coolI;
+    heatSerp.material.emissiveIntensity = warmI;
+    hubRingMat.emissiveIntensity = 0.5 + Math.abs(dayPhase - 0.5) * 1.0;
+ 
+    modeBadge.textContent = dayPhase > 0.5 ? 'Morning Warming' : 'Nighttime Cooling';
+  } else {
+    // Reset emissives to default
+    cellMat.emissiveIntensity = 0.35;
+    heatSerp.material.emissiveIntensity = 0.55;
+    hubRingMat.emissiveIntensity = 0.7;
+  }
+ 
+  /* Smooth lerp each layer Y toward target */
+  layers.forEach((layer, i) => {
+    layer.position.y += (targets[i] - layer.position.y) * 0.07;
+  });
+ 
+  controls.update();
+ 
+  /* Update number sprite positions + label DOM positions */
+  const layerSeparation = Math.abs(layers[0].position.y - layers[4].position.y);
+  const totalSep = Math.abs(explodedPositions[0] - explodedPositions[4]);
+  const spreadAmount = layerSeparation / totalSep;
+  const showLabels = spreadAmount > 0.4;
+ 
+  layers.forEach((layer, i) => {
+    // Number sprite — to the LEFT of the layer
+    const sprite = numberSprites[i];
+    sprite.visible = showLabels;
+    if (showLabels) {
+      // World position
+      sprite.position.set(
+        blanket.position.x - W / 2 - 0.7,
+        layer.position.y,
+        blanket.position.z
+      );
+      // Apply blanket rotation for the offset
+      const offset = new THREE.Vector3(-W / 2 - 0.7, 0, 0);
+      offset.applyEuler(blanket.rotation);
+      sprite.position.set(
+        blanket.position.x + offset.x,
+        layer.position.y * Math.cos(blanket.rotation.x) + blanket.position.y,
+        blanket.position.z + offset.z
+      );
+    }
+ 
+    /* HTML label — to the RIGHT of the layer */
+    const el = labelEls[i];
+    if (!showLabels) {
+      el.classList.remove('visible');
+      return;
+    }
+    // Compute world position offset to right of blanket
+    const labelOffset = new THREE.Vector3(W / 2 + 1.0, 0, 0);
+    labelOffset.applyEuler(blanket.rotation);
+    tmpVec.set(
+      blanket.position.x + labelOffset.x,
+      layer.position.y * Math.cos(blanket.rotation.x) + blanket.position.y,
+      blanket.position.z + labelOffset.z
+    );
+    tmpVec.project(camera);
+    if (tmpVec.z < 1 && tmpVec.z > -1) {
+      const x = (tmpVec.x * 0.5 + 0.5) * stage.clientWidth;
+      const y = (-tmpVec.y * 0.5 + 0.5) * stage.clientHeight;
+      el.style.left = x + 'px';
+      el.style.top  = y + 'px';
+      el.classList.add('visible');
+    } else {
+      el.classList.remove('visible');
+    }
+  });
+ 
+  renderer.render(scene, camera);
+}
+ 
+onResize();
+tick();
+</script>
+ 
+</body>
+</html>
