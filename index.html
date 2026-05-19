@@ -1869,6 +1869,456 @@
     .layer-label .label-desc { display: none; }
     .pres-slide { padding: 5vh 5vw; }
   }
+  /* =========================================================
+     SLIDE VISUAL UPGRADES — animated counters, glows, particles
+     ========================================================= */
+
+  /* Each slide gets atmospheric depth via radial gradient overlays */
+  .pres-slide.entering::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 20% 30%, rgba(212, 175, 106, 0.06), transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(91, 163, 208, 0.05), transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+    animation: slideAmbient 8s ease-in-out infinite;
+  }
+  @keyframes slideAmbient {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+  }
+
+  /* Animated count-up numbers — start at 0, count up when slide enters */
+  .count-up {
+    display: inline-block;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Glowing stat tile with pulse ring */
+  .stat-glow {
+    position: relative;
+    padding: 2.5vh 2vw;
+    background: linear-gradient(180deg, rgba(212,175,106,0.08), rgba(212,175,106,0.02));
+    border: 1px solid rgba(212, 175, 106, 0.2);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.5s, border-color 0.5s;
+  }
+  .pres-slide.entering .stat-glow {
+    animation: statGlowIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  }
+  .pres-slide.entering .stat-glow:nth-child(1) { animation-delay: 0.3s; }
+  .pres-slide.entering .stat-glow:nth-child(2) { animation-delay: 0.5s; }
+  .pres-slide.entering .stat-glow:nth-child(3) { animation-delay: 0.7s; }
+  @keyframes statGlowIn {
+    0%   { opacity: 0; transform: translateY(40px) scale(0.95); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  .stat-glow::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle, rgba(212, 175, 106, 0.15) 0%, transparent 40%);
+    animation: glowPulse 4s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes glowPulse {
+    0%, 100% { transform: scale(0.8); opacity: 0.4; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+  }
+  .stat-glow .n {
+    font-family: var(--display);
+    font-size: clamp(4rem, 9vw, 7.5rem);
+    font-weight: 300;
+    color: var(--gold);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    position: relative;
+    z-index: 2;
+    text-shadow: 0 0 40px rgba(212, 175, 106, 0.4);
+  }
+  .stat-glow .l {
+    color: var(--cream-dim);
+    font-size: 1.15rem;
+    margin-top: 0.8rem;
+    max-width: 28ch;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Particle field overlay — subtle moving dots */
+  .particle-field {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+  }
+  .particle {
+    position: absolute;
+    width: 3px; height: 3px;
+    border-radius: 50%;
+    background: var(--gold);
+    opacity: 0;
+    box-shadow: 0 0 6px var(--gold);
+  }
+  .pres-slide.entering .particle {
+    animation: particleFloat 6s ease-out infinite;
+  }
+  .pres-slide.entering .particle:nth-child(1) { top: 15%; left: 8%;  animation-delay: 0s;   }
+  .pres-slide.entering .particle:nth-child(2) { top: 75%; left: 88%; animation-delay: 0.8s; }
+  .pres-slide.entering .particle:nth-child(3) { top: 35%; left: 92%; animation-delay: 1.5s; }
+  .pres-slide.entering .particle:nth-child(4) { top: 60%; left: 5%;  animation-delay: 2.2s; }
+  .pres-slide.entering .particle:nth-child(5) { top: 90%; left: 35%; animation-delay: 3s;   }
+  .pres-slide.entering .particle:nth-child(6) { top: 10%; left: 60%; animation-delay: 3.6s; }
+  @keyframes particleFloat {
+    0%   { opacity: 0; transform: translateY(0); }
+    20%  { opacity: 0.7; }
+    100% { opacity: 0; transform: translateY(-40px); }
+  }
+
+  /* Slide 1 — sleep figure illustration that droops */
+  .sleep-figure {
+    position: relative;
+    width: 100%;
+    max-width: 360px;
+    margin: 4vh auto 0;
+  }
+  .pres-slide.entering .sleep-figure {
+    animation: figureIn 1.5s 0.6s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  }
+  @keyframes figureIn {
+    0% { opacity: 0; transform: translateY(20px) scale(0.95); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  /* Slide 2 — Cool/Warm zone sweep animation on the SVG */
+  .pres-slide.entering .pres-visual {
+    animation: visualIn 1.4s 0.4s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  }
+  @keyframes visualIn {
+    0% { opacity: 0; transform: translateX(-30px) rotate(-2deg); }
+    100% { opacity: 1; transform: translateX(0) rotate(0); }
+  }
+  /* Glow sweep animation on dual-zone blanket */
+  .zone-sweep {
+    transform-origin: center;
+    animation: zoneSweep 4s ease-in-out infinite;
+  }
+  @keyframes zoneSweep {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.9; }
+  }
+
+  /* Slide 3 — animated avatars with floating stats */
+  .audience-viz {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3vw;
+    margin-top: 3vh;
+    z-index: 2;
+    position: relative;
+  }
+  .audience-tile {
+    padding: 3vh 2.5vw;
+    background: linear-gradient(180deg, var(--navy-mid), var(--navy));
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+  }
+  .audience-tile::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: var(--gold);
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+  .pres-slide.entering .audience-tile::before {
+    animation: edgeReveal 0.8s 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .pres-slide.entering .audience-tile:nth-child(2)::before { animation-delay: 0.7s; }
+  @keyframes edgeReveal {
+    0% { transform: scaleY(0); }
+    100% { transform: scaleY(1); }
+  }
+  .pres-slide.entering .audience-tile {
+    animation: tileIn 1s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  }
+  .pres-slide.entering .audience-tile:nth-child(1) { animation-delay: 0.3s; }
+  .pres-slide.entering .audience-tile:nth-child(2) { animation-delay: 0.6s; }
+  @keyframes tileIn {
+    0%   { opacity: 0; transform: translateY(30px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  .audience-avatar {
+    width: 70px; height: 70px;
+    margin-bottom: 1.5rem;
+  }
+  .audience-tile .tag {
+    font-size: 0.78rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.6rem;
+  }
+  .audience-tile .role {
+    font-family: var(--display);
+    font-size: 2.4rem;
+    font-weight: 400;
+    color: var(--cream);
+    line-height: 1;
+  }
+  .audience-tile .age {
+    font-family: var(--display);
+    font-style: italic;
+    color: var(--gold);
+    font-size: 1.2rem;
+    margin-top: 0.3rem;
+    margin-bottom: 1.5rem;
+  }
+  .audience-tile p {
+    color: var(--cream-dim);
+    font-size: 1.05rem;
+    line-height: 1.5;
+    margin-bottom: 0.6rem;
+  }
+  .audience-stat {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.4rem 0.8rem;
+    background: rgba(212, 175, 106, 0.12);
+    border: 1px solid rgba(212, 175, 106, 0.3);
+    border-radius: 4px;
+    font-family: var(--display);
+    font-style: italic;
+    color: var(--gold);
+    font-size: 1.05rem;
+  }
+
+  /* Slide 4 — value pillars with reveal animation and pulsing rings */
+  .pres-slide.entering .pres-pillar {
+    animation: pillarIn 1.1s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  }
+  .pres-slide.entering .pres-pillar:nth-child(1) { animation-delay: 0.3s; }
+  .pres-slide.entering .pres-pillar:nth-child(2) { animation-delay: 0.55s; }
+  .pres-slide.entering .pres-pillar:nth-child(3) { animation-delay: 0.8s; }
+  @keyframes pillarIn {
+    0%   { opacity: 0; transform: translateY(40px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  .pillar-icon {
+    width: 60px; height: 60px;
+    margin-bottom: 1.2rem;
+    position: relative;
+  }
+  .pillar-icon svg {
+    width: 100%; height: 100%;
+    color: var(--gold);
+  }
+  .pillar-icon::after {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    opacity: 0.4;
+    animation: ringPulse 3s ease-in-out infinite;
+  }
+  @keyframes ringPulse {
+    0%, 100% { transform: scale(1); opacity: 0.4; }
+    50% { transform: scale(1.2); opacity: 0; }
+  }
+
+  /* Slide 5 — competitive sweep + 10× callout */
+  .pres-slide.entering .pres-compare-row.us {
+    animation: usRowGlow 2s 1s ease-in-out infinite;
+  }
+  @keyframes usRowGlow {
+    0%, 100% { background: linear-gradient(90deg, rgba(212, 175, 106, 0.2), rgba(212, 175, 106, 0.06)); }
+    50%      { background: linear-gradient(90deg, rgba(212, 175, 106, 0.35), rgba(212, 175, 106, 0.12)); }
+  }
+  .ten-times-callout {
+    position: absolute;
+    right: 6vw;
+    top: 20vh;
+    z-index: 3;
+    text-align: center;
+    opacity: 0;
+  }
+  .pres-slide.entering .ten-times-callout {
+    animation: calloutIn 1s 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  @keyframes calloutIn {
+    0%   { opacity: 0; transform: scale(0.6) rotate(-15deg); }
+    100% { opacity: 1; transform: scale(1) rotate(-8deg); }
+  }
+  .ten-times-callout .big {
+    font-family: var(--display);
+    font-size: clamp(5rem, 10vw, 9rem);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--gold);
+    line-height: 1;
+    text-shadow: 0 0 60px rgba(212, 175, 106, 0.4);
+  }
+  .ten-times-callout .desc {
+    font-family: var(--display);
+    font-style: italic;
+    color: var(--cream);
+    font-size: 1.3rem;
+    margin-top: 0.5rem;
+  }
+
+  /* Slide 6 — revenue counter explosion */
+  .revenue-feature {
+    margin: 3vh auto 3vh;
+    text-align: center;
+    padding: 4vh 4vw;
+    background: linear-gradient(135deg, rgba(212, 175, 106, 0.12), rgba(212, 175, 106, 0.03));
+    border: 1px solid var(--line-strong);
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+    z-index: 2;
+  }
+  .revenue-feature::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle, rgba(212, 175, 106, 0.2) 0%, transparent 50%);
+    animation: glowPulse 5s ease-in-out infinite;
+  }
+  .revenue-feature .label {
+    font-family: var(--body);
+    font-size: 0.85rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 2;
+  }
+  .revenue-feature .big-revenue {
+    font-family: var(--display);
+    font-size: clamp(4rem, 8vw, 6.5rem);
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    position: relative;
+    z-index: 2;
+    text-shadow: 0 0 40px rgba(212, 175, 106, 0.3);
+  }
+  .revenue-feature .big-revenue .currency {
+    color: var(--gold);
+    font-style: italic;
+    font-weight: 400;
+    margin-right: 0.1em;
+  }
+  .revenue-feature .breakdown {
+    margin-top: 1.5rem;
+    font-family: var(--display);
+    font-style: italic;
+    color: var(--cream-dim);
+    font-size: 1.1rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Slide 7 — breathing logo glow */
+  .pres-slide.closing .pres-closing-logo {
+    animation: logoBreathe 4s ease-in-out infinite;
+    text-shadow: 0 0 80px rgba(212, 175, 106, 0);
+  }
+  @keyframes logoBreathe {
+    0%, 100% { text-shadow: 0 0 60px rgba(212, 175, 106, 0.2); }
+    50%      { text-shadow: 0 0 120px rgba(212, 175, 106, 0.5); }
+  }
+  .pres-slide.closing.entering .pres-closing-tagline {
+    animation: taglineSweep 2s 0.6s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  }
+  @keyframes taglineSweep {
+    0%   { opacity: 0; letter-spacing: 0.3em; }
+    100% { opacity: 1; letter-spacing: normal; }
+  }
+
+  /* Slide 2 — animated zone glows */
+  .zone-cool, .zone-warm {
+    transform-origin: center;
+  }
+  .pres-slide.entering .zone-cool {
+    animation: zoneCoolPulse 3s ease-in-out infinite;
+  }
+  .pres-slide.entering .zone-warm {
+    animation: zoneWarmPulse 3s 1.5s ease-in-out infinite;
+  }
+  @keyframes zoneCoolPulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.9; }
+  }
+  @keyframes zoneWarmPulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.9; }
+  }
+
+  /* Mini stat chips */
+  .stat-chip {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    padding: 0.6rem 1rem;
+    background: rgba(212, 175, 106, 0.08);
+    border: 1px solid rgba(212, 175, 106, 0.25);
+    border-radius: 50px;
+    font-size: 0.95rem;
+    color: var(--cream-dim);
+    margin: 0.3rem;
+  }
+  .stat-chip .v {
+    font-family: var(--display);
+    font-style: italic;
+    color: var(--gold);
+    font-size: 1.15rem;
+  }
+
+  /* Speaker timer overlay (BONUS — press T to start/stop) */
+  .pres-timer {
+    position: fixed;
+    top: 2.5vh;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 520;
+    background: rgba(15, 30, 54, 0.92);
+    backdrop-filter: blur(14px);
+    border: 1px solid var(--line-strong);
+    padding: 0.5rem 1.2rem;
+    border-radius: 4px;
+    font-family: var(--display);
+    font-style: italic;
+    color: var(--cream);
+    font-size: 1.1rem;
+    letter-spacing: 0.08em;
+    display: none;
+    font-variant-numeric: tabular-nums;
+  }
+  .presentation-mode.active ~ .pres-timer { display: block; }
+  .pres-timer.green  { color: var(--cream); border-color: rgba(212, 175, 106, 0.4); }
+  .pres-timer.gold   { color: var(--gold);  border-color: var(--gold); }
+  .pres-timer.amber  { color: #f0a060; border-color: #f0a060; }
+  .pres-timer.red    { color: #d97a5a; border-color: #d97a5a; animation: timerRed 1s infinite; }
+  @keyframes timerRed {
+    0%, 100% { background: rgba(217, 122, 90, 0.1); }
+    50% { background: rgba(217, 122, 90, 0.25); }
+  }
+
+
 </style>
 </head>
 <body>
@@ -2750,179 +3200,235 @@
 <div class="presentation-mode" id="presentation-mode">
   <div class="pres-track" id="pres-track">
 
-    <!-- SLIDE 1 -->
+    <!-- SLIDE 1 — THE PROBLEM (animated counters + sleeping figure) -->
     <div class="pres-slide" data-idx="0">
+      <div class="particle-field">
+        <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+        <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+      </div>
       <div class="pres-label"><span class="num">01</span> The Problem</div>
       <h1 class="pres-h1">Most of us are sleeping <em>wrong.</em></h1>
       <p class="pres-sub">And our environment is making it worse.</p>
-      <div class="pres-stats">
-        <div class="pres-stat">
-          <div class="n">1 in 3</div>
-          <div class="l">Australians don't get quality sleep.</div>
+
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2vw; margin-top: 4vh; z-index: 2; position: relative;">
+        <div class="stat-glow">
+          <div class="n"><span class="count-up" data-target="33" data-suffix="%">0%</span></div>
+          <div class="l">of Australians don't get quality sleep.</div>
         </div>
-        <div class="pres-stat">
-          <div class="n">85%</div>
+        <div class="stat-glow">
+          <div class="n"><span class="count-up" data-target="85" data-suffix="%">0%</span></div>
           <div class="l">of our students wake up unrefreshed.</div>
         </div>
-        <div class="pres-stat">
-          <div class="n">-30%</div>
+        <div class="stat-glow">
+          <div class="n">−<span class="count-up" data-target="30" data-suffix="%">0%</span></div>
           <div class="l">focus drop when poorly rested.</div>
         </div>
       </div>
+
+      <!-- Tired-figure illustration drooping -->
+      <svg class="sleep-figure" viewBox="0 0 360 100" xmlns="http://www.w3.org/2000/svg" style="opacity: 0.55;">
+        <defs>
+          <radialGradient id="zZ" cx="0.5" cy="0.5">
+            <stop offset="0" stop-color="#d4af6a" stop-opacity="0.6"/>
+            <stop offset="1" stop-color="#d4af6a" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <!-- Z's drifting up -->
+        <text x="60" y="35" font-family="Fraunces" font-style="italic" font-size="22" fill="#d4af6a" opacity="0.4">z</text>
+        <text x="90" y="22" font-family="Fraunces" font-style="italic" font-size="28" fill="#d4af6a" opacity="0.6">Z</text>
+        <text x="130" y="42" font-family="Fraunces" font-style="italic" font-size="18" fill="#d4af6a" opacity="0.3">z</text>
+        <!-- Slumped person silhouette -->
+        <ellipse cx="180" cy="92" rx="120" ry="6" fill="#000" opacity="0.4"/>
+        <circle cx="180" cy="55" r="14" fill="#d8d3c5" opacity="0.7"/>
+        <path d="M 165,68 Q 180,82 195,68 L 200,90 L 160,90 Z" fill="#d8d3c5" opacity="0.55"/>
+        <!-- droopy eyes -->
+        <line x1="175" y1="53" x2="178" y2="55" stroke="#0a1628" stroke-width="1.2"/>
+        <line x1="183" y1="55" x2="186" y2="53" stroke="#0a1628" stroke-width="1.2"/>
+      </svg>
     </div>
 
-<!-- SLIDE 2 -->
+    <!-- SLIDE 2 — THE SOLUTION (folded blanket + pillars) -->
     <div class="pres-slide" data-idx="1">
+      <div class="particle-field">
+        <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+        <div class="particle"></div><div class="particle"></div>
+      </div>
       <div class="pres-label"><span class="num">02</span> The Solution</div>
       <h1 class="pres-h1">Meet <em>TempSync.</em></h1>
       <div class="pres-split">
-        <!-- Left: product visual -->
         <svg class="pres-visual" viewBox="0 0 600 480" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <linearGradient id="psCool" x1="0" x2="1" y1="0" y2="0">
-              <stop offset="0" stop-color="#3a7da8"/>
-              <stop offset="0.5" stop-color="#5ba3d0"/>
-              <stop offset="1" stop-color="#7fc0e8"/>
+              <stop offset="0" stop-color="#3a7da8"/><stop offset="0.5" stop-color="#5ba3d0"/><stop offset="1" stop-color="#7fc0e8"/>
             </linearGradient>
             <linearGradient id="psWarm" x1="0" x2="1" y1="0" y2="0">
-              <stop offset="0" stop-color="#c47842"/>
-              <stop offset="0.5" stop-color="#e89456"/>
-              <stop offset="1" stop-color="#f4a878"/>
+              <stop offset="0" stop-color="#c47842"/><stop offset="0.5" stop-color="#e89456"/><stop offset="1" stop-color="#f4a878"/>
             </linearGradient>
             <linearGradient id="psFabric" x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0" stop-color="#eee4ce"/>
-              <stop offset="1" stop-color="#c9bf9e"/>
+              <stop offset="0" stop-color="#eee4ce"/><stop offset="1" stop-color="#c9bf9e"/>
             </linearGradient>
             <radialGradient id="psShadow" cx="0.5" cy="0.5">
-              <stop offset="0" stop-color="#000" stop-opacity="0.6"/>
-              <stop offset="1" stop-color="#000" stop-opacity="0"/>
+              <stop offset="0" stop-color="#000" stop-opacity="0.6"/><stop offset="1" stop-color="#000" stop-opacity="0"/>
             </radialGradient>
             <filter id="psGlow"><feGaussianBlur stdDeviation="10"/></filter>
           </defs>
-
-          <!-- floor shadow -->
           <ellipse cx="300" cy="420" rx="260" ry="22" fill="url(#psShadow)"/>
-
-          <!-- Folded blanket — front view, draped softly -->
-          <!-- Bottom fold (warm zone visible) -->
-          <path d="M 70,380 Q 90,360 130,358 L 470,358 Q 510,360 530,380 L 530,395 Q 510,375 470,373 L 130,373 Q 90,375 70,395 Z"
-                fill="url(#psWarm)" opacity="0.92"/>
-
-          <!-- Middle blanket body — outer fabric showing -->
-          <path d="M 60,355 Q 60,260 120,250 L 480,250 Q 540,260 540,355 Q 540,375 470,373 L 130,373 Q 60,375 60,355 Z"
-                fill="url(#psFabric)"/>
-
-          <!-- Quilted diamond pattern on outer fabric -->
+          <path d="M 70,380 Q 90,360 130,358 L 470,358 Q 510,360 530,380 L 530,395 Q 510,375 470,373 L 130,373 Q 90,375 70,395 Z" fill="url(#psWarm)" class="zone-warm" opacity="0.92"/>
+          <path d="M 60,355 Q 60,260 120,250 L 480,250 Q 540,260 540,355 Q 540,375 470,373 L 130,373 Q 60,375 60,355 Z" fill="url(#psFabric)"/>
           <g stroke="#a8966a" stroke-width="0.6" fill="none" opacity="0.5">
-            <path d="M 100,260 L 140,290 L 100,320 L 60,290 Z" stroke-dasharray="2,2"/>
-            <path d="M 180,260 L 220,290 L 180,320 L 140,290 Z" stroke-dasharray="2,2"/>
-            <path d="M 260,260 L 300,290 L 260,320 L 220,290 Z" stroke-dasharray="2,2"/>
-            <path d="M 340,260 L 380,290 L 340,320 L 300,290 Z" stroke-dasharray="2,2"/>
-            <path d="M 420,260 L 460,290 L 420,320 L 380,290 Z" stroke-dasharray="2,2"/>
-            <path d="M 500,260 L 540,290 L 500,320 L 460,290 Z" stroke-dasharray="2,2"/>
-
-            <path d="M 140,320 L 180,350 L 140,360 L 100,330 Z" stroke-dasharray="2,2"/>
-            <path d="M 220,320 L 260,350 L 220,360 L 180,330 Z" stroke-dasharray="2,2"/>
-            <path d="M 300,320 L 340,350 L 300,360 L 260,330 Z" stroke-dasharray="2,2"/>
-            <path d="M 380,320 L 420,350 L 380,360 L 340,330 Z" stroke-dasharray="2,2"/>
-            <path d="M 460,320 L 500,350 L 460,360 L 420,330 Z" stroke-dasharray="2,2"/>
+            <path d="M 100,260 L 140,290 L 100,320 L 60,290 Z"/>
+            <path d="M 180,260 L 220,290 L 180,320 L 140,290 Z"/>
+            <path d="M 260,260 L 300,290 L 260,320 L 220,290 Z"/>
+            <path d="M 340,260 L 380,290 L 340,320 L 300,290 Z"/>
+            <path d="M 420,260 L 460,290 L 420,320 L 380,290 Z"/>
+            <path d="M 500,260 L 540,290 L 500,320 L 460,290 Z"/>
+            <path d="M 140,320 L 180,350 L 140,360 L 100,330 Z"/>
+            <path d="M 220,320 L 260,350 L 220,360 L 180,330 Z"/>
+            <path d="M 300,320 L 340,350 L 300,360 L 260,330 Z"/>
+            <path d="M 380,320 L 420,350 L 380,360 L 340,330 Z"/>
+            <path d="M 460,320 L 500,350 L 460,360 L 420,330 Z"/>
           </g>
-
-          <!-- Button stitches -->
           <g fill="#d4af6a">
             <circle cx="100" cy="290" r="2"/><circle cx="180" cy="290" r="2"/>
             <circle cx="260" cy="290" r="2"/><circle cx="340" cy="290" r="2"/>
             <circle cx="420" cy="290" r="2"/><circle cx="500" cy="290" r="2"/>
           </g>
-
-          <!-- Top fold (cool zone peeking out) -->
-          <path d="M 90,250 Q 90,225 150,220 L 450,220 Q 510,225 510,250 Q 480,242 450,242 L 150,242 Q 120,242 90,250 Z"
-                fill="url(#psCool)" opacity="0.88"/>
-
-          <!-- TempSync embroidered mark on fabric -->
+          <path d="M 90,250 Q 90,225 150,220 L 450,220 Q 510,225 510,250 Q 480,242 450,242 L 150,242 Q 120,242 90,250 Z" fill="url(#psCool)" class="zone-cool" opacity="0.88"/>
           <g transform="translate(440,335)">
             <text font-family="Fraunces" font-style="italic" font-size="14" fill="#b89a5c">TempSync</text>
             <text x="78" y="-7" font-family="Fraunces" font-style="italic" font-size="8" fill="#d4af6a">™</text>
           </g>
-
-          <!-- Cool/warm zone labels -->
           <g font-family="Fraunces" font-style="italic" font-size="13" fill="#f5f1e8">
             <text x="220" y="237" text-anchor="middle">cool zone</text>
             <text x="380" y="392" text-anchor="middle" fill="#0a1628">warm zone</text>
           </g>
-
-          <!-- Glow accents -->
-          <ellipse cx="220" cy="232" rx="80" ry="8" fill="#5ba3d0" opacity="0.4" filter="url(#psGlow)"/>
-          <ellipse cx="380" cy="385" rx="80" ry="8" fill="#e89456" opacity="0.4" filter="url(#psGlow)"/>
+          <ellipse cx="220" cy="232" rx="80" ry="8" fill="#5ba3d0" opacity="0.4" filter="url(#psGlow)" class="zone-cool"/>
+          <ellipse cx="380" cy="385" rx="80" ry="8" fill="#e89456" opacity="0.4" filter="url(#psGlow)" class="zone-warm"/>
         </svg>
-
-        <!-- Right: three quick pillars -->
         <div>
           <div style="margin-bottom: 3vh;">
-            <div style="font-family: var(--display); font-style: italic; color: var(--gold); font-size: 1.3rem; margin-bottom: 0.4rem;">i. Cool Zone</div>
-            <div style="color: var(--cream-dim); font-size: 1.1rem; line-height: 1.4;">Endothermic gel channels absorb body heat at night.</div>
+            <div style="font-family: var(--display); font-style: italic; color: var(--gold); font-size: 1.4rem; margin-bottom: 0.4rem;">i. Cool Zone</div>
+            <div style="color: var(--cream-dim); font-size: 1.15rem; line-height: 1.5;">Endothermic gel channels absorb body heat at night.</div>
           </div>
           <div style="margin-bottom: 3vh;">
-            <div style="font-family: var(--display); font-style: italic; color: var(--gold); font-size: 1.3rem; margin-bottom: 0.4rem;">ii. Warm Zone</div>
-            <div style="color: var(--cream-dim); font-size: 1.1rem; line-height: 1.4;">Gentle exothermic warming lifts you toward wake.</div>
+            <div style="font-family: var(--display); font-style: italic; color: var(--gold); font-size: 1.4rem; margin-bottom: 0.4rem;">ii. Warm Zone</div>
+            <div style="color: var(--cream-dim); font-size: 1.15rem; line-height: 1.5;">Gentle exothermic warming lifts you toward wake.</div>
           </div>
           <div>
-            <div style="font-family: var(--display); font-style: italic; color: var(--gold); font-size: 1.3rem; margin-bottom: 0.4rem;">iii. Smart Hub</div>
-            <div style="color: var(--cream-dim); font-size: 1.1rem; line-height: 1.4;">App + wearable sync. Set it once. Forget it.</div>
+            <div style="font-family: var(--display); font-style: italic; color: var(--gold); font-size: 1.4rem; margin-bottom: 0.4rem;">iii. Smart Hub</div>
+            <div style="color: var(--cream-dim); font-size: 1.15rem; line-height: 1.5;">App + wearable sync. Set it once. Forget it.</div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- SLIDE 3 -->
+    <!-- SLIDE 3 — WHO IT'S FOR (animated avatars + counted stat) -->
     <div class="pres-slide" data-idx="2">
+      <div class="particle-field">
+        <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+        <div class="particle"></div>
+      </div>
       <div class="pres-label"><span class="num">03</span> Who It's For</div>
       <h1 class="pres-h1">Built for the <em>sleep-deprived generation.</em></h1>
-      <div class="pres-twocol">
-        <div class="pres-card">
+
+      <div class="audience-viz">
+        <div class="audience-tile">
+          <svg class="audience-avatar" viewBox="0 0 70 70" xmlns="http://www.w3.org/2000/svg">
+            <!-- graduation cap student icon -->
+            <circle cx="35" cy="30" r="11" fill="#d4af6a"/>
+            <path d="M 18,42 Q 35,52 52,42 L 52,60 L 18,60 Z" fill="#d4af6a" opacity="0.85"/>
+            <!-- cap -->
+            <path d="M 14,22 L 35,14 L 56,22 L 35,30 Z" fill="#0a1628" stroke="#d4af6a" stroke-width="1.5"/>
+            <line x1="54" y1="22" x2="54" y2="32" stroke="#d4af6a" stroke-width="1.5"/>
+            <circle cx="54" cy="34" r="2" fill="#d4af6a"/>
+          </svg>
           <div class="tag">Primary Market</div>
-          <h4>Students</h4>
+          <div class="role">Students</div>
           <div class="age">Aged 15 — 22</div>
           <p>Academic pressure. Late-night screens. Irregular schedules.</p>
-          <p>Poor sleep cuts learning performance by 30%.</p>
+          <div class="audience-stat"><span class="count-up" data-target="30" data-suffix="%">0%</span> learning drop</div>
         </div>
-        <div class="pres-card">
+        <div class="audience-tile">
+          <svg class="audience-avatar" viewBox="0 0 70 70" xmlns="http://www.w3.org/2000/svg">
+            <!-- briefcase professional icon -->
+            <circle cx="35" cy="22" r="9" fill="#5ba3d0"/>
+            <path d="M 22,34 Q 35,42 48,34 L 48,52 L 22,52 Z" fill="#5ba3d0" opacity="0.85"/>
+            <!-- briefcase -->
+            <rect x="20" y="48" width="30" height="14" rx="2" fill="#1b2d44" stroke="#5ba3d0" stroke-width="1.5"/>
+            <rect x="29" y="44" width="12" height="6" rx="1" fill="none" stroke="#5ba3d0" stroke-width="1.5"/>
+            <line x1="20" y1="55" x2="50" y2="55" stroke="#5ba3d0" stroke-width="0.8"/>
+          </svg>
           <div class="tag">Secondary Market</div>
-          <h4>Young Professionals</h4>
+          <div class="role">Young Professionals</div>
           <div class="age">Aged 22 — 35</div>
           <p>Shift workers and high performers running on too little.</p>
-          <p>Poor sleep costs Australian businesses A$17.9B per year.</p>
+          <div class="audience-stat">A$<span class="count-up" data-target="17.9">0</span>B annual cost to AU business</div>
         </div>
       </div>
     </div>
 
-    <!-- SLIDE 4 -->
+    <!-- SLIDE 4 — VALUE & IMPACT (pillars with icons) -->
     <div class="pres-slide" data-idx="3">
+      <div class="particle-field">
+        <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+        <div class="particle"></div><div class="particle"></div>
+      </div>
       <div class="pres-label"><span class="num">04</span> Value &amp; Impact</div>
       <h1 class="pres-h1">Three outcomes. <em>One blanket.</em></h1>
       <div class="pres-triple">
         <div class="pres-pillar">
+          <div class="pillar-icon">
+            <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+              <!-- moon icon -->
+              <path d="M 38 18 A 18 18 0 1 0 38 50 A 14 14 0 1 1 38 18 Z" fill="currentColor"/>
+            </svg>
+          </div>
           <span class="roman">i.</span>
           <h4>Sleep Deeper</h4>
           <p>Cooling triggers the body temperature drop required for restorative deep sleep.</p>
         </div>
         <div class="pres-pillar">
+          <div class="pillar-icon">
+            <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+              <!-- sun icon -->
+              <circle cx="30" cy="30" r="10" fill="currentColor"/>
+              <g stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                <line x1="30" y1="8" x2="30" y2="14"/><line x1="30" y1="46" x2="30" y2="52"/>
+                <line x1="8" y1="30" x2="14" y2="30"/><line x1="46" y1="30" x2="52" y2="30"/>
+                <line x1="14" y1="14" x2="18" y2="18"/><line x1="42" y1="42" x2="46" y2="46"/>
+                <line x1="46" y1="14" x2="42" y2="18"/><line x1="18" y1="42" x2="14" y2="46"/>
+              </g>
+            </svg>
+          </div>
           <span class="roman">ii.</span>
           <h4>Wake Naturally</h4>
           <p>Gradual morning warmth eliminates sleep inertia. No more grogginess.</p>
         </div>
         <div class="pres-pillar">
+          <div class="pillar-icon">
+            <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+              <!-- chart icon -->
+              <polyline points="10,42 22,30 32,36 50,16" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="22" cy="30" r="2.5" fill="currentColor"/>
+              <circle cx="32" cy="36" r="2.5" fill="currentColor"/>
+              <circle cx="50" cy="16" r="2.5" fill="currentColor"/>
+            </svg>
+          </div>
           <span class="roman">iii.</span>
           <h4>Perform Better</h4>
-          <p>Well-rested students outperform tired peers by 30% on focus and learning tasks.</p>
+          <p>Well-rested students outperform tired peers by <strong style="color:var(--gold); font-style:italic; font-family:var(--display);">30%</strong> on focus tasks.</p>
         </div>
       </div>
     </div>
 
-    <!-- SLIDE 5 -->
+    <!-- SLIDE 5 — COMPETITIVE EDGE (table + 10× callout) -->
     <div class="pres-slide" data-idx="4">
+      <div class="particle-field">
+        <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+      </div>
       <div class="pres-label"><span class="num">05</span> The Competitive Edge</div>
       <h1 class="pres-h1">Sleep tech exists. <em>None of it is built for us.</em></h1>
+
       <div class="pres-compare">
         <div class="pres-compare-row header">
           <div class="pres-compare-cell feature">Product</div>
@@ -2960,12 +3466,22 @@
           <div class="pres-compare-cell">Students</div>
         </div>
       </div>
+
+      <div class="ten-times-callout">
+        <div class="big"><span class="count-up" data-target="10">0</span>×</div>
+        <div class="desc">cheaper than the<br/>market leader.</div>
+      </div>
     </div>
 
-    <!-- SLIDE 6 -->
+    <!-- SLIDE 6 — BUSINESS MODEL (animated revenue) -->
     <div class="pres-slide" data-idx="5">
+      <div class="particle-field">
+        <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+        <div class="particle"></div>
+      </div>
       <div class="pres-label"><span class="num">06</span> Business Model</div>
       <h1 class="pres-h1">Two streams. <em>One product.</em></h1>
+
       <div class="pres-business">
         <div class="pres-price-card gold">
           <div class="stream-tag">Stream 01 — Product</div>
@@ -2980,27 +3496,27 @@
           <p>Recurring revenue from Day 1.</p>
         </div>
       </div>
-      <div class="pres-strategy">
-        <strong>Penetration pricing</strong> with psychological charm anchors · <strong>Year 1 target:</strong> A$172K gross · <strong>Go-to-market:</strong> TikTok + influencers + campus + Kickstarter
+
+      <div class="revenue-feature">
+        <div class="label">Year 1 Revenue Target</div>
+        <div class="big-revenue"><span class="currency">A$</span><span class="count-up" data-target="172280" data-duration="2200">0</span></div>
+        <div class="breakdown">500 blankets &nbsp;+&nbsp; 200 subscribers &nbsp;·&nbsp; Penetration pricing &nbsp;·&nbsp; Charm anchors</div>
       </div>
     </div>
 
-<!-- SLIDE 7 — Closing -->
+    <!-- SLIDE 7 — CLOSING (logo + breathing glow) -->
     <div class="pres-slide closing" data-idx="6">
+      <div class="particle-field">
+        <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+        <div class="particle"></div><div class="particle"></div><div class="particle"></div>
+      </div>
       <div class="pres-label" style="justify-content:center;"><span class="num">07</span> Closing</div>
       <svg style="width: 240px; height: auto; margin: 0 auto 2vh; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.6));" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <linearGradient id="closeCool" x1="0" x2="1" y1="0" y2="0">
-            <stop offset="0" stop-color="#5ba3d0"/><stop offset="1" stop-color="#7fc0e8"/>
-          </linearGradient>
-          <linearGradient id="closeWarm" x1="0" x2="1" y1="0" y2="0">
-            <stop offset="0" stop-color="#e89456"/><stop offset="1" stop-color="#f4a878"/>
-          </linearGradient>
-          <linearGradient id="closeFabric" x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0" stop-color="#eee4ce"/><stop offset="1" stop-color="#c9bf9e"/>
-          </linearGradient>
+          <linearGradient id="closeCool" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#5ba3d0"/><stop offset="1" stop-color="#7fc0e8"/></linearGradient>
+          <linearGradient id="closeWarm" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#e89456"/><stop offset="1" stop-color="#f4a878"/></linearGradient>
+          <linearGradient id="closeFabric" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#eee4ce"/><stop offset="1" stop-color="#c9bf9e"/></linearGradient>
         </defs>
-        <!-- Folded blanket icon -->
         <path d="M 40,150 Q 50,135 80,133 L 220,133 Q 250,135 260,150 L 260,160 Q 250,145 220,143 L 80,143 Q 50,145 40,160 Z" fill="url(#closeWarm)"/>
         <path d="M 30,135 Q 30,75 70,68 L 230,68 Q 270,75 270,135 Q 270,150 220,148 L 80,148 Q 30,150 30,135 Z" fill="url(#closeFabric)"/>
         <g stroke="#a8966a" stroke-width="0.5" fill="none" opacity="0.5">
@@ -3146,6 +3662,7 @@
       void active.offsetWidth;
       active.classList.add('entering');
     }
+    if (typeof runSlideAnimations === 'function') runSlideAnimations(idx);
   }
 
   document.addEventListener('keydown', (e) => {
@@ -3175,6 +3692,102 @@
     if (e.target.closest('button')) return;
     goToSlide(currentSlide + 1);
   });
+
+  /* =========================================================
+     SLIDE COUNT-UP ANIMATIONS + SPEAKER TIMER
+     ========================================================= */
+  function animateCountUp(el, target, duration = 1400, suffix = '', prefix = '') {
+    const start = performance.now();
+    const startVal = 0;
+    // Easing: cubic ease-out
+    function tick(now) {
+      const elapsed = now - start;
+      const t = Math.min(1, elapsed / duration);
+      const eased = 1 - Math.pow(1 - t, 3);
+      const val = Math.round(startVal + (target - startVal) * eased);
+      // Format with commas if big enough
+      const formatted = val >= 1000 ? val.toLocaleString() : val;
+      el.textContent = prefix + formatted + suffix;
+      if (t < 1) requestAnimationFrame(tick);
+      else el.textContent = prefix + (target >= 1000 ? target.toLocaleString() : target) + suffix;
+    }
+    requestAnimationFrame(tick);
+  }
+
+  // Run all count-ups on the active slide
+  function runSlideAnimations(slideIdx) {
+    const slide = document.querySelector(`.pres-slide[data-idx="${slideIdx}"]`);
+    if (!slide) return;
+    slide.querySelectorAll('.count-up').forEach(el => {
+      const target = parseFloat(el.dataset.target || '0');
+      const suffix = el.dataset.suffix || '';
+      const prefix = el.dataset.prefix || '';
+      const dur = parseInt(el.dataset.duration || '1400');
+      // Delay slightly so the slide entrance plays first
+      setTimeout(() => animateCountUp(el, target, dur, suffix, prefix), 400);
+    });
+  }
+
+  /* ----- Speaker Timer ----- */
+  let timerRunning = false;
+  let timerStart = 0;
+  let timerAccumulated = 0;
+  let timerEl = null;
+
+  function ensureTimerEl() {
+    if (!timerEl) {
+      timerEl = document.createElement('div');
+      timerEl.className = 'pres-timer green';
+      timerEl.id = 'pres-timer';
+      timerEl.textContent = '00:00';
+      document.body.appendChild(timerEl);
+    }
+    return timerEl;
+  }
+
+  function updateTimer() {
+    if (!timerRunning) return;
+    const elapsed = (Date.now() - timerStart + timerAccumulated) / 1000;
+    const mm = Math.floor(elapsed / 60);
+    const ss = Math.floor(elapsed % 60);
+    const el = ensureTimerEl();
+    el.textContent = `${String(mm).padStart(2,'0')}:${String(ss).padStart(2,'0')}`;
+    // Colour thresholds
+    el.classList.remove('green', 'gold', 'amber', 'red');
+    if      (elapsed < 150) el.classList.add('green');   // < 2:30
+    else if (elapsed < 210) el.classList.add('gold');    // 2:30 – 3:30
+    else if (elapsed < 240) el.classList.add('amber');   // 3:30 – 4:00
+    else                    el.classList.add('red');     // 4:00+
+    requestAnimationFrame(updateTimer);
+  }
+
+  function toggleTimer() {
+    ensureTimerEl();
+    if (!timerRunning) {
+      timerStart = Date.now();
+      timerRunning = true;
+      requestAnimationFrame(updateTimer);
+    } else {
+      timerAccumulated += Date.now() - timerStart;
+      timerRunning = false;
+    }
+  }
+
+  function resetTimer() {
+    timerRunning = false;
+    timerAccumulated = 0;
+    ensureTimerEl().textContent = '00:00';
+    timerEl.classList.remove('gold', 'amber', 'red');
+    timerEl.classList.add('green');
+  }
+
+  // Bind T (toggle) and R (reset) when in presentation
+  document.addEventListener('keydown', (e) => {
+    if (!inPresentation) return;
+    if (e.key === 't' || e.key === 'T') { e.preventDefault(); toggleTimer(); }
+    if (e.key === 'r' || e.key === 'R') { e.preventDefault(); resetTimer(); }
+  });
+
 </script>
 
 <script type="module">
