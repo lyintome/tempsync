@@ -58,210 +58,155 @@
   ::selection { background: var(--gold); color: var(--navy-deep); }
 
   /* =========================================================
-     CINEMATIC INTRO (auto-plays once on load)
+     EMBEDDED INTRO TEASER — small looping tile in the hero
      ========================================================= */
-  .cinematic {
-    position: fixed;
-    inset: 0;
-    z-index: 1000;
+  .teaser {
+    position: relative;
+    width: 100%;
+    max-width: 380px;
+    aspect-ratio: 16 / 10;
     background: #000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    border: 1px solid var(--line-strong);
+    border-radius: 8px;
     overflow: hidden;
-    animation: cinemaDismiss 1.2s 12s forwards;
-  }
-  .cinematic.skip {
-    animation: cinemaDismiss 0.6s forwards;
-  }
-  @keyframes cinemaDismiss {
-    0% { opacity: 1; }
-    99% { opacity: 0; pointer-events: none; }
-    100% { opacity: 0; pointer-events: none; visibility: hidden; display: none; }
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(212, 175, 106, 0.1);
+    margin-bottom: 1.5rem;
   }
 
-  /* letterbox bars */
-  .cinema-bar {
-    position: absolute;
-    left: 0; right: 0;
-    height: 80px;
-    background: #000;
-    z-index: 5;
-    transform: translateY(-100%);
-    animation: barIn 0.8s 0.1s forwards;
-  }
-  .cinema-bar.bottom {
-    top: auto; bottom: 0;
-    transform: translateY(100%);
-    animation: barInBottom 0.8s 0.1s forwards;
-  }
-  @keyframes barIn { to { transform: translateY(0); } }
-  @keyframes barInBottom { to { transform: translateY(0); } }
-
-  .cinema-scene {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-  }
-  .cinema-bg {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at 50% 50%, #0a1628 0%, #000 70%);
-  }
-  .cinema-stars {
+  .teaser-stars {
     position: absolute;
     inset: 0;
     background-image:
-      radial-gradient(1px 1px at 12% 18%, #f5f1e8, transparent),
-      radial-gradient(1px 1px at 25% 75%, #f5f1e8, transparent),
-      radial-gradient(2px 2px at 35% 35%, #f5f1e8, transparent),
-      radial-gradient(1px 1px at 48% 12%, #f5f1e8, transparent),
-      radial-gradient(1px 1px at 60% 60%, #f5f1e8, transparent),
-      radial-gradient(2px 2px at 73% 25%, #f5f1e8, transparent),
-      radial-gradient(1px 1px at 82% 80%, #f5f1e8, transparent),
-      radial-gradient(1px 1px at 91% 45%, #f5f1e8, transparent),
-      radial-gradient(1.5px 1.5px at 15% 90%, #f5f1e8, transparent),
-      radial-gradient(1px 1px at 67% 88%, #f5f1e8, transparent);
-    opacity: 0;
-    animation: starsIn 2s 0.5s forwards;
+      radial-gradient(0.8px 0.8px at 22% 18%, #f5f1e8, transparent),
+      radial-gradient(0.8px 0.8px at 78% 75%, #f5f1e8, transparent),
+      radial-gradient(1.2px 1.2px at 45% 35%, #f5f1e8, transparent),
+      radial-gradient(0.8px 0.8px at 60% 12%, #f5f1e8, transparent),
+      radial-gradient(0.8px 0.8px at 30% 60%, #f5f1e8, transparent),
+      radial-gradient(1px 1px at 88% 40%, #f5f1e8, transparent),
+      radial-gradient(0.8px 0.8px at 12% 80%, #f5f1e8, transparent);
+    opacity: 0.55;
   }
-  @keyframes starsIn { to { opacity: 1; } }
 
-  .cinema-glow {
+  .teaser-glow {
     position: absolute;
-    width: 600px;
-    height: 600px;
+    width: 200px;
+    height: 200px;
     border-radius: 50%;
-    filter: blur(80px);
+    filter: blur(40px);
     opacity: 0;
   }
-  .cinema-glow.cool {
+  .teaser-glow.cool {
     background: var(--cool);
-    animation: glowCool 4s 3s forwards;
+    left: -50px; top: -50px;
+    animation: teaserGlowCool 12s infinite;
   }
-  .cinema-glow.warm {
+  .teaser-glow.warm {
     background: var(--warm);
-    animation: glowWarm 4s 7s forwards;
+    right: -50px; bottom: -50px;
+    animation: teaserGlowWarm 12s infinite;
   }
-  @keyframes glowCool {
-    0% { opacity: 0; transform: scale(0.5); }
-    50% { opacity: 0.4; transform: scale(1); }
-    100% { opacity: 0; transform: scale(1.2); }
+  @keyframes teaserGlowCool {
+    0%, 100% { opacity: 0; }
+    10%, 30% { opacity: 0.4; }
+    50%, 100% { opacity: 0; }
   }
-  @keyframes glowWarm {
-    0% { opacity: 0; transform: scale(0.5); }
-    50% { opacity: 0.45; transform: scale(1); }
-    100% { opacity: 0; transform: scale(1.2); }
+  @keyframes teaserGlowWarm {
+    0%, 50% { opacity: 0; }
+    60%, 80% { opacity: 0.4; }
+    100% { opacity: 0; }
   }
 
-  .cinema-frame {
+  .teaser-frame {
     position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
     text-align: center;
     opacity: 0;
-    z-index: 10;
-    padding: 0 2rem;
   }
-  .cinema-frame .time-stamp {
+  .teaser-frame .time-stamp {
     font-family: var(--body);
-    font-size: 0.8rem;
-    letter-spacing: 0.4em;
+    font-size: 0.55rem;
+    letter-spacing: 0.35em;
     text-transform: uppercase;
     color: var(--gold);
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.8rem;
   }
-  .cinema-frame .line {
+  .teaser-frame .line {
     font-family: var(--display-cinema);
-    font-size: clamp(2.5rem, 6vw, 5.5rem);
+    font-size: clamp(1.1rem, 1.8vw, 1.6rem);
     font-weight: 400;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
     color: var(--cream);
   }
-  .cinema-frame .line em {
-    font-style: italic;
-    color: var(--gold);
-  }
-  .cinema-frame .sub {
+  .teaser-frame .line em { font-style: italic; color: var(--gold); }
+  .teaser-frame .sub {
     font-family: var(--display);
     font-style: italic;
     color: var(--cream-dim);
-    font-size: clamp(1rem, 1.6vw, 1.4rem);
-    margin-top: 1rem;
+    font-size: 0.75rem;
+    margin-top: 0.5rem;
   }
 
-  /* Frame timing — each ~3s slot, fade in/out */
-  .cinema-frame.f1 { animation: frameShow 3s 0.8s forwards; }
-  .cinema-frame.f2 { animation: frameShow 3s 3.5s forwards; }
-  .cinema-frame.f3 { animation: frameShow 3s 6.5s forwards; }
-  .cinema-frame.f4 { animation: frameShowFinal 3s 9.5s forwards; }
-
-  @keyframes frameShow {
-    0%   { opacity: 0; transform: translateY(20px); }
-    18%  { opacity: 1; transform: translateY(0); }
-    82%  { opacity: 1; transform: translateY(0); }
-    100% { opacity: 0; transform: translateY(-20px); }
-  }
-  @keyframes frameShowFinal {
-    0%   { opacity: 0; transform: scale(0.92); }
-    20%  { opacity: 1; transform: scale(1); }
-    100% { opacity: 1; transform: scale(1); }
+  /* 12s loop with 4 frames at 3s each */
+  .teaser-frame.tf1 { animation: teaserFrame 12s infinite; animation-delay: 0s; }
+  .teaser-frame.tf2 { animation: teaserFrame 12s infinite; animation-delay: 3s; }
+  .teaser-frame.tf3 { animation: teaserFrame 12s infinite; animation-delay: 6s; }
+  .teaser-frame.tf4 { animation: teaserFrame 12s infinite; animation-delay: 9s; }
+  @keyframes teaserFrame {
+    0%   { opacity: 0; transform: translateY(10px); }
+    4%   { opacity: 1; transform: translateY(0); }
+    20%  { opacity: 1; transform: translateY(0); }
+    25%  { opacity: 0; transform: translateY(-10px); }
+    100% { opacity: 0; transform: translateY(-10px); }
   }
 
-  .cinema-logo {
+  .teaser-logo {
     font-family: var(--display);
-    font-size: clamp(4rem, 9vw, 8rem);
+    font-size: 1.6rem;
     font-weight: 300;
-    letter-spacing: -0.04em;
     color: var(--cream);
+    letter-spacing: -0.02em;
   }
-  .cinema-logo sup { font-size: 0.4em; color: var(--gold); vertical-align: super; margin-left: 4px; }
-  .cinema-tagline {
+  .teaser-logo sup { font-size: 0.4em; color: var(--gold); margin-left: 2px; }
+  .teaser-tag {
     font-family: var(--display);
     font-style: italic;
     color: var(--gold);
-    font-size: clamp(1rem, 1.8vw, 1.4rem);
-    margin-top: 1.5rem;
+    font-size: 0.72rem;
+    margin-top: 0.3rem;
     letter-spacing: 0.04em;
   }
 
-  /* Skip button */
-  .cinema-skip {
+  /* Tiny "LIVE" badge top-left, "TempSync TV" top-right */
+  .teaser-corner {
     position: absolute;
-    top: 30px; right: 30px;
-    z-index: 20;
-    background: transparent;
-    border: 1px solid rgba(212, 175, 106, 0.4);
-    color: var(--cream-dim);
-    padding: 0.6rem 1.2rem;
+    top: 0.6rem;
+    z-index: 5;
     font-family: var(--body);
-    font-size: 0.7rem;
+    font-size: 0.55rem;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.2s;
-    opacity: 0;
-    animation: fadeIn 0.5s 1.5s forwards;
+    color: var(--cream-dim);
+    opacity: 0.7;
   }
-  .cinema-skip:hover { color: var(--gold); border-color: var(--gold); }
-  @keyframes fadeIn { to { opacity: 1; } }
-
-  /* Decorative orbit motes inside cinematic */
-  .mote {
-    position: absolute;
-    width: 2px; height: 2px;
-    background: var(--cream);
+  .teaser-corner.left { left: 0.8rem; color: var(--gold); }
+  .teaser-corner.left::before {
+    content: '';
+    display: inline-block;
+    width: 5px; height: 5px;
+    background: var(--gold);
     border-radius: 50%;
-    opacity: 0;
-    animation: moteFloat 8s infinite;
+    margin-right: 5px;
+    vertical-align: middle;
+    animation: pulse 2s infinite;
   }
-  @keyframes moteFloat {
-    0%   { opacity: 0; transform: translate(0,0); }
-    20%  { opacity: 0.8; }
-    100% { opacity: 0; transform: translate(80px, -120px); }
-  }
+  .teaser-corner.right { right: 0.8rem; font-style: italic; font-family: var(--display); letter-spacing: 0.12em; text-transform: none; }
+
 
   /* =========================================================
      NAVIGATION
@@ -502,6 +447,134 @@
     transition: opacity 0.9s ease, transform 0.9s ease;
   }
   .reveal.in { opacity: 1; transform: translateY(0); }
+
+/* =========================================================
+     DEMO REEL — auto-playing mini ad
+     ========================================================= */
+  .demo-reel { background: var(--navy-deep); }
+  .reel-frame {
+    position: relative;
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    aspect-ratio: 16 / 9;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--line-strong);
+    background: #000;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.6), 0 0 0 1px rgba(212, 175, 106, 0.1);
+  }
+  .reel-stage {
+    position: absolute;
+    inset: 0;
+  }
+  .reel-scene {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  /* 30s timeline, 6 scenes ~5s each */
+  .reel-scene.s1 { animation: reelScene 30s infinite; animation-delay: 0s; }
+  .reel-scene.s2 { animation: reelScene 30s infinite; animation-delay: 5s; }
+  .reel-scene.s3 { animation: reelScene 30s infinite; animation-delay: 10s; }
+  .reel-scene.s4 { animation: reelScene 30s infinite; animation-delay: 15s; }
+  .reel-scene.s5 { animation: reelScene 30s infinite; animation-delay: 20s; }
+  .reel-scene.s6 { animation: reelScene 30s infinite; animation-delay: 25s; }
+  @keyframes reelScene {
+    0%   { opacity: 0; transform: scale(1.04); }
+    3%   { opacity: 1; transform: scale(1); }
+    16%  { opacity: 1; transform: scale(1); }
+    17%  { opacity: 0; transform: scale(0.98); }
+    100% { opacity: 0; transform: scale(0.98); }
+  }
+
+  .reel-bg-night { position: absolute; inset: 0; background: radial-gradient(ellipse at center top, #1a2540, #0a1628); }
+  .reel-bg-dawn  { position: absolute; inset: 0; background: radial-gradient(ellipse at 70% 30%, #2a2538, #0a1628); }
+  .reel-bg-final { position: absolute; inset: 0; background: radial-gradient(ellipse at center, #15233e, #000); }
+
+  .reel-illust {
+    width: 80%;
+    height: 80%;
+    max-height: 70%;
+  }
+  .reel-caption {
+    position: absolute;
+    bottom: 12%;
+    left: 8%;
+    right: 8%;
+    text-align: center;
+  }
+  .reel-time {
+    font-family: var(--body);
+    font-size: 0.7rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.8rem;
+  }
+  .reel-line {
+    font-family: var(--display-cinema);
+    font-size: clamp(1.6rem, 3.2vw, 2.6rem);
+    color: var(--cream);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+  .reel-line em { font-style: italic; color: var(--gold); }
+
+  .reel-final-content { text-align: center; position: relative; z-index: 2; }
+  .reel-logo {
+    font-family: var(--display);
+    font-size: clamp(3rem, 7vw, 6rem);
+    font-weight: 300;
+    color: var(--cream);
+    letter-spacing: -0.04em;
+  }
+  .reel-logo sup { font-size: 0.4em; color: var(--gold); margin-left: 4px; }
+  .reel-final-tag {
+    font-family: var(--display);
+    font-style: italic;
+    color: var(--gold);
+    font-size: clamp(1rem, 1.6vw, 1.4rem);
+    margin-top: 1rem;
+  }
+
+  .reel-progress {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: rgba(212, 175, 106, 0.15);
+    z-index: 5;
+  }
+  .reel-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--gold);
+    animation: reelProgress 30s linear infinite;
+  }
+  @keyframes reelProgress {
+    0%   { width: 0%; }
+    100% { width: 100%; }
+  }
+
+  .reel-corner {
+    position: absolute;
+    top: 1rem;
+    right: 1.2rem;
+    font-family: var(--display);
+    font-style: italic;
+    color: var(--cream-dim);
+    font-size: 0.8rem;
+    opacity: 0.6;
+    z-index: 5;
+  }
+
+  @media (max-width: 700px) {
+    .reel-corner { display: none; }
+    .reel-caption { bottom: 8%; }
+  }
 
   /* =========================================================
      PROBLEM
@@ -1413,9 +1486,9 @@
     font-style: italic;
     font-size: 0.95rem;
   }
-  .pres-h1 {
+.pres-h1 {
     font-family: var(--display);
-    font-size: clamp(3rem, 7vw, 6rem);
+    font-size: clamp(3.8rem, 8vw, 7rem);
     font-weight: 300;
     line-height: 1;
     letter-spacing: -0.025em;
@@ -1425,29 +1498,18 @@
     z-index: 2;
     position: relative;
   }
-  .pres-h1 em { font-style: italic; color: var(--gold); }
   .pres-sub {
     font-family: var(--display);
     font-style: italic;
     color: var(--cream-dim);
-    font-size: clamp(1.1rem, 1.8vw, 1.6rem);
-    max-width: 30ch;
-    z-index: 2;
-    position: relative;
-  }
-
-  /* Slide content variants */
-  .pres-stats {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 4vw;
-    margin-top: 4vh;
+    font-size: clamp(1.3rem, 2.2vw, 2rem);
+    max-width: 36ch;
     z-index: 2;
     position: relative;
   }
   .pres-stat .n {
     font-family: var(--display);
-    font-size: clamp(3rem, 6vw, 5.5rem);
+    font-size: clamp(4rem, 8vw, 7rem);
     font-weight: 300;
     color: var(--gold);
     line-height: 1;
@@ -1455,9 +1517,75 @@
   }
   .pres-stat .l {
     color: var(--cream-dim);
-    font-size: 1rem;
+    font-size: 1.25rem;
     margin-top: 0.6rem;
-    max-width: 24ch;
+    max-width: 26ch;
+  }
+  .pres-pillar h4 {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: 2.4rem;
+    color: var(--cream);
+    margin-bottom: 0.8rem;
+  }
+  .pres-pillar p {
+    color: var(--cream-dim);
+    font-size: 1.15rem;
+    line-height: 1.5;
+  }
+  .pres-card h4 {
+    font-family: var(--display);
+    font-size: 2.6rem;
+    font-weight: 400;
+    color: var(--cream);
+    margin-bottom: 0.3rem;
+  }
+  .pres-card p {
+    color: var(--cream-dim);
+    font-size: 1.15rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+  }
+  .pres-compare-cell {
+    padding: 1.6rem 1.5rem;
+    font-size: 1.05rem;
+    border-right: 1px solid var(--line);
+    color: var(--cream-dim);
+    display: flex;
+    align-items: center;
+  }
+  .pres-compare-row.us .pres-compare-cell.feature {
+    color: var(--gold); font-family: var(--display); font-style: italic; font-weight: 400; font-size: 1.35rem;
+  }
+
+  /* Two-column layout for slides with visual + content */
+  .pres-split {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 4vw;
+    align-items: center;
+    margin-top: 2vh;
+    z-index: 2;
+    position: relative;
+  }
+  .pres-visual {
+    width: 100%;
+    height: auto;
+    max-height: 50vh;
+    filter: drop-shadow(0 30px 60px rgba(0,0,0,0.5));
+  }
+  @media (max-width: 900px) {
+    .pres-split { grid-template-columns: 1fr; }
+    .pres-visual { max-height: 35vh; }
+  }
+
+  .pres-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4vw;
+    margin-top: 4vh;
+    z-index: 2;
+    position: relative;
   }
 
   .pres-twocol {
@@ -1482,13 +1610,6 @@
     color: var(--gold);
     margin-bottom: 0.8rem;
   }
-  .pres-card h4 {
-    font-family: var(--display);
-    font-size: 2rem;
-    font-weight: 400;
-    color: var(--cream);
-    margin-bottom: 0.3rem;
-  }
   .pres-card .age {
     font-family: var(--display);
     font-style: italic;
@@ -1496,7 +1617,6 @@
     margin-bottom: 1rem;
     font-size: 1rem;
   }
-  .pres-card p { color: var(--cream-dim); font-size: 0.95rem; margin-bottom: 0.4rem; }
 
   .pres-triple {
     display: grid;
@@ -1521,14 +1641,6 @@
     margin-bottom: 1rem;
     display: block;
   }
-  .pres-pillar h4 {
-    font-family: var(--display);
-    font-weight: 400;
-    font-size: 1.8rem;
-    color: var(--cream);
-    margin-bottom: 0.8rem;
-  }
-  .pres-pillar p { color: var(--cream-dim); font-size: 0.95rem; }
 
   /* Compare table — presentation version */
   .pres-compare {
@@ -1563,20 +1675,9 @@
     width: 3px; height: 100%;
     background: var(--gold);
   }
-  .pres-compare-cell {
-    padding: 1.4rem 1.5rem;
-    font-size: 0.95rem;
-    border-right: 1px solid var(--line);
-    color: var(--cream-dim);
-    display: flex;
-    align-items: center;
-  }
   .pres-compare-cell:last-child { border-right: none; }
   .pres-compare-cell.feature { color: var(--cream); font-weight: 500; }
   .pres-compare-row.us .pres-compare-cell { color: var(--cream); font-weight: 500; }
-  .pres-compare-row.us .pres-compare-cell.feature {
-    color: var(--gold); font-family: var(--display); font-style: italic; font-weight: 400; font-size: 1.1rem;
-  }
 
   /* Business slide layout */
   .pres-business {
@@ -1773,45 +1874,6 @@
 <body>
 
 <!-- =========================================================
-     CINEMATIC INTRO (12s, auto-dismisses)
-     ========================================================= -->
-<div class="cinematic" id="cinematic">
-  <div class="cinema-bar top"></div>
-  <div class="cinema-bar bottom"></div>
-
-  <div class="cinema-scene">
-    <div class="cinema-bg"></div>
-    <div class="cinema-stars"></div>
-    <div class="cinema-glow cool"></div>
-    <div class="cinema-glow warm"></div>
-
-    <div class="cinema-frame f1">
-      <div class="time-stamp">10 : 47 pm</div>
-      <div class="line">Your body needs to <em>cool down.</em></div>
-      <div class="sub">— but your blanket only knows how to heat.</div>
-    </div>
-
-    <div class="cinema-frame f2">
-      <div class="time-stamp">deep sleep</div>
-      <div class="line">What if your bed <em>knew the time?</em></div>
-    </div>
-
-    <div class="cinema-frame f3">
-      <div class="time-stamp">06 : 14 am</div>
-      <div class="line">Your body needs to <em>warm up.</em></div>
-      <div class="sub">— but your alarm only knows how to shock.</div>
-    </div>
-
-    <div class="cinema-frame f4">
-      <div class="cinema-logo">TempSync<sup>™</sup></div>
-      <div class="cinema-tagline">Sleep Smarter. Wake Better.</div>
-    </div>
-  </div>
-
-  <button class="cinema-skip" onclick="document.getElementById('cinematic').classList.add('skip')">Skip Intro →</button>
-</div>
-
-<!-- =========================================================
      NAVIGATION
      ========================================================= -->
 <nav id="nav">
@@ -1838,6 +1900,34 @@
     <div class="hero-actions">
       <a href="#model" class="btn btn-primary">Explore the Product <span class="arrow">→</span></a>
       <a href="#business" class="btn btn-ghost">See the Pricing</a>
+    </div>
+  </div>
+
+  <!-- Embedded TempSync TV teaser -->
+  <div class="teaser" aria-label="TempSync teaser reel">
+    <div class="teaser-corner left">LIVE</div>
+    <div class="teaser-corner right">TempSync TV</div>
+    <div class="teaser-stars"></div>
+    <div class="teaser-glow cool"></div>
+    <div class="teaser-glow warm"></div>
+
+    <div class="teaser-frame tf1">
+      <div class="time-stamp">10 : 47 pm</div>
+      <div class="line">Your body needs to <em>cool down.</em></div>
+      <div class="sub">but your blanket only knows how to heat.</div>
+    </div>
+    <div class="teaser-frame tf2">
+      <div class="time-stamp">deep sleep</div>
+      <div class="line">What if your bed <em>knew the time?</em></div>
+    </div>
+    <div class="teaser-frame tf3">
+      <div class="time-stamp">06 : 14 am</div>
+      <div class="line">Your body needs to <em>warm up.</em></div>
+      <div class="sub">but your alarm only knows how to shock.</div>
+    </div>
+    <div class="teaser-frame tf4">
+      <div class="teaser-logo">TempSync<sup>™</sup></div>
+      <div class="teaser-tag">Sleep Smarter. Wake Better.</div>
     </div>
   </div>
 
@@ -1979,6 +2069,223 @@
   </div>
 
   <div class="scroll-indicator">Scroll</div>
+</section>
+
+<!-- =========================================================
+     DEMO REEL — auto-playing mini ad
+     ========================================================= -->
+<section class="demo-reel">
+  <div class="container">
+    <div class="reveal" style="text-align: center; margin-bottom: 3rem;">
+      <div class="section-label" style="justify-content:center;"><span class="num">★</span> Demo Reel</div>
+      <h2 class="section-title" style="margin: 0 auto 1rem;">See it in <em>thirty seconds.</em></h2>
+      <p class="section-lead" style="margin: 0 auto;">A cinematic breakdown of every component.</p>
+    </div>
+
+    <div class="reel-frame reveal">
+      <div class="reel-stage">
+
+        <!-- Scene 1: Sleeping at night -->
+        <div class="reel-scene s1">
+          <div class="reel-bg-night"></div>
+          <svg class="reel-illust" viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="r1cool" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0" stop-color="#5ba3d0" stop-opacity="0.4"/>
+                <stop offset="1" stop-color="#5ba3d0" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <!-- Moon -->
+            <circle cx="650" cy="80" r="40" fill="#f5f1e8" opacity="0.85"/>
+            <circle cx="640" cy="73" r="6" fill="#0a1628" opacity="0.3"/>
+            <circle cx="660" cy="92" r="4" fill="#0a1628" opacity="0.25"/>
+            <!-- Cool aura -->
+            <ellipse cx="400" cy="280" rx="320" ry="60" fill="url(#r1cool)"/>
+            <!-- Bed -->
+            <rect x="180" y="290" width="440" height="50" rx="6" fill="#1a2540"/>
+            <rect x="180" y="270" width="440" height="30" rx="4" fill="#243352"/>
+            <!-- Blanket -->
+            <path d="M 200,275 Q 200,250 250,248 L 550,248 Q 600,250 600,275 L 600,300 Q 580,288 550,288 L 250,288 Q 220,288 200,300 Z"
+                  fill="#5ba3d0" opacity="0.7"/>
+            <!-- Body silhouette under -->
+            <ellipse cx="400" cy="270" rx="180" ry="14" fill="#0a1628" opacity="0.5"/>
+            <!-- Pillow + head -->
+            <ellipse cx="260" cy="262" rx="38" ry="10" fill="#3a4a64"/>
+            <circle cx="265" cy="252" r="14" fill="#d8c8a8"/>
+          </svg>
+          <div class="reel-caption">
+            <div class="reel-time">10 : 47 PM</div>
+            <div class="reel-line">The body needs to <em>cool down.</em></div>
+          </div>
+        </div>
+
+        <!-- Scene 2: Blanket close-up, cool zone active -->
+        <div class="reel-scene s2">
+          <svg class="reel-illust" viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="r2cool" x1="0" x2="1" y1="0" y2="0">
+                <stop offset="0" stop-color="#3a7da8"/>
+                <stop offset="0.5" stop-color="#5ba3d0"/>
+                <stop offset="1" stop-color="#7fc0e8"/>
+              </linearGradient>
+              <radialGradient id="r2glow">
+                <stop offset="0" stop-color="#5ba3d0" stop-opacity="0.6"/>
+                <stop offset="1" stop-color="#5ba3d0" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <ellipse cx="400" cy="200" rx="300" ry="100" fill="url(#r2glow)"/>
+            <!-- Big stylized fabric showing cool gel cell grid -->
+            <rect x="180" y="140" width="440" height="160" rx="14" fill="#172e44"/>
+            <g>
+              <!-- gel cell grid -->
+              <g class="reel-cells">
+              </g>
+            </g>
+            <!-- generate cells via simple grid -->
+            <g fill="#5ba3d0">
+              <rect x="200" y="160" width="32" height="32" rx="4" opacity="0.85"/>
+              <rect x="240" y="160" width="32" height="32" rx="4" opacity="0.85"/>
+              <rect x="280" y="160" width="32" height="32" rx="4" opacity="0.85"/>
+              <rect x="320" y="160" width="32" height="32" rx="4" opacity="0.85"/>
+              <rect x="360" y="160" width="32" height="32" rx="4" opacity="0.85"/>
+              <rect x="400" y="160" width="32" height="32" rx="4" opacity="0.85"/>
+              <rect x="440" y="160" width="32" height="32" rx="4" opacity="0.85"/>
+              <rect x="480" y="160" width="32" height="32" rx="4" opacity="0.85"/>
+              <rect x="520" y="160" width="32" height="32" rx="4" opacity="0.85"/>
+              <rect x="560" y="160" width="32" height="32" rx="4" opacity="0.85"/>
+              <rect x="200" y="200" width="32" height="32" rx="4" opacity="0.85"/>
+              <rect x="240" y="200" width="32" height="32" rx="4" opacity="0.85"/>
+              <rect x="280" y="200" width="32" height="32" rx="4" opacity="0.85"/>
+              <rect x="320" y="200" width="32" height="32" rx="4" opacity="0.85"/>
+              <rect x="360" y="200" width="32" height="32" rx="4" opacity="0.85"/>
+              <rect x="400" y="200" width="32" height="32" rx="4" opacity="0.85"/>
+              <rect x="440" y="200" width="32" height="32" rx="4" opacity="0.85"/>
+              <rect x="480" y="200" width="32" height="32" rx="4" opacity="0.85"/>
+              <rect x="520" y="200" width="32" height="32" rx="4" opacity="0.85"/>
+              <rect x="560" y="200" width="32" height="32" rx="4" opacity="0.85"/>
+              <rect x="200" y="240" width="32" height="32" rx="4" opacity="0.85"/>
+              <rect x="240" y="240" width="32" height="32" rx="4" opacity="0.85"/>
+              <rect x="280" y="240" width="32" height="32" rx="4" opacity="0.85"/>
+              <rect x="320" y="240" width="32" height="32" rx="4" opacity="0.85"/>
+              <rect x="360" y="240" width="32" height="32" rx="4" opacity="0.85"/>
+              <rect x="400" y="240" width="32" height="32" rx="4" opacity="0.85"/>
+              <rect x="440" y="240" width="32" height="32" rx="4" opacity="0.85"/>
+              <rect x="480" y="240" width="32" height="32" rx="4" opacity="0.85"/>
+              <rect x="520" y="240" width="32" height="32" rx="4" opacity="0.85"/>
+              <rect x="560" y="240" width="32" height="32" rx="4" opacity="0.85"/>
+            </g>
+          </svg>
+          <div class="reel-caption">
+            <div class="reel-time">cooling zone</div>
+            <div class="reel-line">Endothermic gel channels <em>absorb body heat.</em></div>
+          </div>
+        </div>
+
+        <!-- Scene 3: Sensor layer -->
+        <div class="reel-scene s3">
+          <svg class="reel-illust" viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+            <rect x="160" y="120" width="480" height="180" rx="14" fill="#0a1628"/>
+            <!-- corner sensors -->
+            <circle cx="220" cy="170" r="14" fill="#d4af6a"/>
+            <circle cx="580" cy="170" r="14" fill="#d4af6a"/>
+            <circle cx="220" cy="260" r="14" fill="#d4af6a"/>
+            <circle cx="580" cy="260" r="14" fill="#d4af6a"/>
+            <!-- traces -->
+            <g stroke="#d4af6a" stroke-width="1.5" fill="none" opacity="0.6">
+              <line x1="220" y1="170" x2="400" y2="215"/>
+              <line x1="580" y1="170" x2="400" y2="215"/>
+              <line x1="220" y1="260" x2="400" y2="215"/>
+              <line x1="580" y1="260" x2="400" y2="215"/>
+            </g>
+            <!-- central hub -->
+            <circle cx="400" cy="215" r="32" fill="#0a1628" stroke="#d4af6a" stroke-width="2"/>
+            <circle cx="400" cy="215" r="22" fill="none" stroke="#e8c889" stroke-width="1.5"/>
+            <!-- wifi pulse rings -->
+            <circle cx="400" cy="215" r="50" fill="none" stroke="#d4af6a" stroke-width="1" opacity="0.5"/>
+            <circle cx="400" cy="215" r="75" fill="none" stroke="#d4af6a" stroke-width="1" opacity="0.3"/>
+          </svg>
+          <div class="reel-caption">
+            <div class="reel-time">smart sync</div>
+            <div class="reel-line">Sensors talk to <em>your phone.</em></div>
+          </div>
+        </div>
+
+        <!-- Scene 4: Warming wires lighting up -->
+        <div class="reel-scene s4">
+          <svg class="reel-illust" viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="r4warm">
+                <stop offset="0" stop-color="#e89456" stop-opacity="0.7"/>
+                <stop offset="1" stop-color="#e89456" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <ellipse cx="400" cy="220" rx="300" ry="110" fill="url(#r4warm)"/>
+            <rect x="160" y="130" width="480" height="180" rx="14" fill="#2a1410"/>
+            <!-- serpentine warm wires -->
+            <path d="M 200,160 L 600,160 L 600,180 L 200,180 L 200,200 L 600,200 L 600,220 L 200,220 L 200,240 L 600,240 L 600,260 L 200,260 L 200,280 L 600,280"
+                  stroke="#e89456" stroke-width="4" fill="none" stroke-linecap="round" opacity="0.95"/>
+            <!-- end junctions -->
+            <rect x="180" y="148" width="20" height="20" rx="3" fill="#1a1a1a"/>
+            <rect x="590" y="272" width="20" height="20" rx="3" fill="#1a1a1a"/>
+          </svg>
+          <div class="reel-caption">
+            <div class="reel-time">warming zone</div>
+            <div class="reel-line">Wires <em>gently warm</em> at dawn.</div>
+          </div>
+        </div>
+
+        <!-- Scene 5: Morning, person waking refreshed -->
+        <div class="reel-scene s5">
+          <div class="reel-bg-dawn"></div>
+          <svg class="reel-illust" viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="r5dawn" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0" stop-color="#e89456" stop-opacity="0.4"/>
+                <stop offset="1" stop-color="#e89456" stop-opacity="0"/>
+              </linearGradient>
+              <radialGradient id="r5sun">
+                <stop offset="0" stop-color="#f4a878"/>
+                <stop offset="1" stop-color="#e89456"/>
+              </radialGradient>
+            </defs>
+            <!-- sun -->
+            <circle cx="650" cy="100" r="45" fill="url(#r5sun)" opacity="0.9"/>
+            <!-- warm aura -->
+            <ellipse cx="400" cy="280" rx="320" ry="60" fill="url(#r5dawn)"/>
+            <!-- bed -->
+            <rect x="180" y="290" width="440" height="50" rx="6" fill="#2a2540"/>
+            <rect x="180" y="270" width="440" height="30" rx="4" fill="#3a3252"/>
+            <!-- warm blanket -->
+            <path d="M 200,275 Q 200,250 250,248 L 550,248 Q 600,250 600,275 L 600,300 Q 580,288 550,288 L 250,288 Q 220,288 200,300 Z"
+                  fill="#e89456" opacity="0.7"/>
+            <!-- person sitting up -->
+            <ellipse cx="280" cy="270" rx="35" ry="9" fill="#3a4a64"/>
+            <circle cx="285" cy="248" r="16" fill="#d8c8a8"/>
+            <!-- arms stretching -->
+            <path d="M 285,260 L 250,225" stroke="#d8c8a8" stroke-width="6" stroke-linecap="round"/>
+            <path d="M 285,260 L 320,225" stroke="#d8c8a8" stroke-width="6" stroke-linecap="round"/>
+          </svg>
+          <div class="reel-caption">
+            <div class="reel-time">06 : 14 AM</div>
+            <div class="reel-line">You wake <em>naturally.</em></div>
+          </div>
+        </div>
+
+        <!-- Final logo card -->
+        <div class="reel-scene s6">
+          <div class="reel-bg-final"></div>
+          <div class="reel-final-content">
+            <div class="reel-logo">TempSync<sup>™</sup></div>
+            <div class="reel-final-tag">Sleep Smarter. Wake Better.</div>
+          </div>
+        </div>
+
+        <!-- progress bar -->
+        <div class="reel-progress"><div class="reel-progress-fill"></div></div>
+        <div class="reel-corner">A 30-second TempSync film</div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- =========================================================
@@ -2464,26 +2771,105 @@
       </div>
     </div>
 
-    <!-- SLIDE 2 -->
+<!-- SLIDE 2 -->
     <div class="pres-slide" data-idx="1">
       <div class="pres-label"><span class="num">02</span> The Solution</div>
-      <h1 class="pres-h1">The <em>TempSync</em> Advanced Heat Control Blanket.</h1>
-      <p class="pres-sub">Cools you to deep sleep. Warms you to natural wake. Fully automatic.</p>
-      <div class="pres-triple" style="margin-top: 4vh;">
-        <div class="pres-pillar">
-          <span class="roman">i.</span>
-          <h4>Cool Zone</h4>
-          <p>Endothermic gel channels absorb body heat at night to support deep sleep.</p>
-        </div>
-        <div class="pres-pillar">
-          <span class="roman">ii.</span>
-          <h4>Warm Zone</h4>
-          <p>Gentle exothermic warming lifts body temperature in the morning to support natural waking.</p>
-        </div>
-        <div class="pres-pillar">
-          <span class="roman">iii.</span>
-          <h4>Smart Hub</h4>
-          <p>App and wearable sync — set it once, the blanket follows your circadian rhythm.</p>
+      <h1 class="pres-h1">Meet <em>TempSync.</em></h1>
+      <div class="pres-split">
+        <!-- Left: product visual -->
+        <svg class="pres-visual" viewBox="0 0 600 480" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="psCool" x1="0" x2="1" y1="0" y2="0">
+              <stop offset="0" stop-color="#3a7da8"/>
+              <stop offset="0.5" stop-color="#5ba3d0"/>
+              <stop offset="1" stop-color="#7fc0e8"/>
+            </linearGradient>
+            <linearGradient id="psWarm" x1="0" x2="1" y1="0" y2="0">
+              <stop offset="0" stop-color="#c47842"/>
+              <stop offset="0.5" stop-color="#e89456"/>
+              <stop offset="1" stop-color="#f4a878"/>
+            </linearGradient>
+            <linearGradient id="psFabric" x1="0" x2="0" y1="0" y2="1">
+              <stop offset="0" stop-color="#eee4ce"/>
+              <stop offset="1" stop-color="#c9bf9e"/>
+            </linearGradient>
+            <radialGradient id="psShadow" cx="0.5" cy="0.5">
+              <stop offset="0" stop-color="#000" stop-opacity="0.6"/>
+              <stop offset="1" stop-color="#000" stop-opacity="0"/>
+            </radialGradient>
+            <filter id="psGlow"><feGaussianBlur stdDeviation="10"/></filter>
+          </defs>
+
+          <!-- floor shadow -->
+          <ellipse cx="300" cy="420" rx="260" ry="22" fill="url(#psShadow)"/>
+
+          <!-- Folded blanket — front view, draped softly -->
+          <!-- Bottom fold (warm zone visible) -->
+          <path d="M 70,380 Q 90,360 130,358 L 470,358 Q 510,360 530,380 L 530,395 Q 510,375 470,373 L 130,373 Q 90,375 70,395 Z"
+                fill="url(#psWarm)" opacity="0.92"/>
+
+          <!-- Middle blanket body — outer fabric showing -->
+          <path d="M 60,355 Q 60,260 120,250 L 480,250 Q 540,260 540,355 Q 540,375 470,373 L 130,373 Q 60,375 60,355 Z"
+                fill="url(#psFabric)"/>
+
+          <!-- Quilted diamond pattern on outer fabric -->
+          <g stroke="#a8966a" stroke-width="0.6" fill="none" opacity="0.5">
+            <path d="M 100,260 L 140,290 L 100,320 L 60,290 Z" stroke-dasharray="2,2"/>
+            <path d="M 180,260 L 220,290 L 180,320 L 140,290 Z" stroke-dasharray="2,2"/>
+            <path d="M 260,260 L 300,290 L 260,320 L 220,290 Z" stroke-dasharray="2,2"/>
+            <path d="M 340,260 L 380,290 L 340,320 L 300,290 Z" stroke-dasharray="2,2"/>
+            <path d="M 420,260 L 460,290 L 420,320 L 380,290 Z" stroke-dasharray="2,2"/>
+            <path d="M 500,260 L 540,290 L 500,320 L 460,290 Z" stroke-dasharray="2,2"/>
+
+            <path d="M 140,320 L 180,350 L 140,360 L 100,330 Z" stroke-dasharray="2,2"/>
+            <path d="M 220,320 L 260,350 L 220,360 L 180,330 Z" stroke-dasharray="2,2"/>
+            <path d="M 300,320 L 340,350 L 300,360 L 260,330 Z" stroke-dasharray="2,2"/>
+            <path d="M 380,320 L 420,350 L 380,360 L 340,330 Z" stroke-dasharray="2,2"/>
+            <path d="M 460,320 L 500,350 L 460,360 L 420,330 Z" stroke-dasharray="2,2"/>
+          </g>
+
+          <!-- Button stitches -->
+          <g fill="#d4af6a">
+            <circle cx="100" cy="290" r="2"/><circle cx="180" cy="290" r="2"/>
+            <circle cx="260" cy="290" r="2"/><circle cx="340" cy="290" r="2"/>
+            <circle cx="420" cy="290" r="2"/><circle cx="500" cy="290" r="2"/>
+          </g>
+
+          <!-- Top fold (cool zone peeking out) -->
+          <path d="M 90,250 Q 90,225 150,220 L 450,220 Q 510,225 510,250 Q 480,242 450,242 L 150,242 Q 120,242 90,250 Z"
+                fill="url(#psCool)" opacity="0.88"/>
+
+          <!-- TempSync embroidered mark on fabric -->
+          <g transform="translate(440,335)">
+            <text font-family="Fraunces" font-style="italic" font-size="14" fill="#b89a5c">TempSync</text>
+            <text x="78" y="-7" font-family="Fraunces" font-style="italic" font-size="8" fill="#d4af6a">™</text>
+          </g>
+
+          <!-- Cool/warm zone labels -->
+          <g font-family="Fraunces" font-style="italic" font-size="13" fill="#f5f1e8">
+            <text x="220" y="237" text-anchor="middle">cool zone</text>
+            <text x="380" y="392" text-anchor="middle" fill="#0a1628">warm zone</text>
+          </g>
+
+          <!-- Glow accents -->
+          <ellipse cx="220" cy="232" rx="80" ry="8" fill="#5ba3d0" opacity="0.4" filter="url(#psGlow)"/>
+          <ellipse cx="380" cy="385" rx="80" ry="8" fill="#e89456" opacity="0.4" filter="url(#psGlow)"/>
+        </svg>
+
+        <!-- Right: three quick pillars -->
+        <div>
+          <div style="margin-bottom: 3vh;">
+            <div style="font-family: var(--display); font-style: italic; color: var(--gold); font-size: 1.3rem; margin-bottom: 0.4rem;">i. Cool Zone</div>
+            <div style="color: var(--cream-dim); font-size: 1.1rem; line-height: 1.4;">Endothermic gel channels absorb body heat at night.</div>
+          </div>
+          <div style="margin-bottom: 3vh;">
+            <div style="font-family: var(--display); font-style: italic; color: var(--gold); font-size: 1.3rem; margin-bottom: 0.4rem;">ii. Warm Zone</div>
+            <div style="color: var(--cream-dim); font-size: 1.1rem; line-height: 1.4;">Gentle exothermic warming lifts you toward wake.</div>
+          </div>
+          <div>
+            <div style="font-family: var(--display); font-style: italic; color: var(--gold); font-size: 1.3rem; margin-bottom: 0.4rem;">iii. Smart Hub</div>
+            <div style="color: var(--cream-dim); font-size: 1.1rem; line-height: 1.4;">App + wearable sync. Set it once. Forget it.</div>
+          </div>
         </div>
       </div>
     </div>
@@ -2599,12 +2985,35 @@
       </div>
     </div>
 
-    <!-- SLIDE 7 — Closing -->
+<!-- SLIDE 7 — Closing -->
     <div class="pres-slide closing" data-idx="6">
       <div class="pres-label" style="justify-content:center;"><span class="num">07</span> Closing</div>
+      <svg style="width: 240px; height: auto; margin: 0 auto 2vh; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.6));" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="closeCool" x1="0" x2="1" y1="0" y2="0">
+            <stop offset="0" stop-color="#5ba3d0"/><stop offset="1" stop-color="#7fc0e8"/>
+          </linearGradient>
+          <linearGradient id="closeWarm" x1="0" x2="1" y1="0" y2="0">
+            <stop offset="0" stop-color="#e89456"/><stop offset="1" stop-color="#f4a878"/>
+          </linearGradient>
+          <linearGradient id="closeFabric" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0" stop-color="#eee4ce"/><stop offset="1" stop-color="#c9bf9e"/>
+          </linearGradient>
+        </defs>
+        <!-- Folded blanket icon -->
+        <path d="M 40,150 Q 50,135 80,133 L 220,133 Q 250,135 260,150 L 260,160 Q 250,145 220,143 L 80,143 Q 50,145 40,160 Z" fill="url(#closeWarm)"/>
+        <path d="M 30,135 Q 30,75 70,68 L 230,68 Q 270,75 270,135 Q 270,150 220,148 L 80,148 Q 30,150 30,135 Z" fill="url(#closeFabric)"/>
+        <g stroke="#a8966a" stroke-width="0.5" fill="none" opacity="0.5">
+          <path d="M 60,80 L 90,100 L 60,120 L 30,100 Z"/>
+          <path d="M 110,80 L 140,100 L 110,120 L 80,100 Z"/>
+          <path d="M 160,80 L 190,100 L 160,120 L 130,100 Z"/>
+          <path d="M 210,80 L 240,100 L 210,120 L 180,100 Z"/>
+        </g>
+        <path d="M 45,68 Q 45,52 80,48 L 220,48 Q 255,52 255,68 Q 240,62 220,62 L 80,62 Q 60,62 45,68 Z" fill="url(#closeCool)"/>
+      </svg>
       <div class="pres-closing-logo">TempSync<sup>™</sup></div>
       <div class="pres-closing-tagline">Sleep Smarter. Wake Better.</div>
-      <p class="pres-closing-pitch">Not just an idea. A plan, a product, and a market that needs it. We're building accessible sleep tech for the generation that needs it most.</p>
+      <p class="pres-closing-pitch">Not just an idea — a plan, a product, and a market that needs it. Accessible sleep tech for the generation that needs it most.</p>
     </div>
 
   </div>
@@ -2655,12 +3064,6 @@
     });
   });
 
-  // ---------- Cinematic dismiss on click background ----------
-  document.getElementById('cinematic').addEventListener('click', (e) => {
-    if (e.target.classList.contains('cinema-bg') || e.target.classList.contains('cinema-scene')) {
-      document.getElementById('cinematic').classList.add('skip');
-    }
-  });
 
   /* =========================================================
      ADMIN CODE → Presentation Mode
@@ -2819,13 +3222,176 @@ scene.add(top);
 const blanket = new THREE.Group();
 scene.add(blanket);
 
-const W = 4.4;     // width
-const D = 3.2;     // depth
-const T = 0.14;    // base thickness
+const W = 4.6;     // width
+const D = 3.3;     // depth
+const T = 0.16;    // top fabric thickness
 
-/* ---------- Helper: rounded rectangle shape ---------- */
-function roundedRectShape(w, d, r) {
+/* ===============================================================
+   HELPER — draped fabric surface using PlaneGeometry with vertex displacement
+   This gives organic softness instead of slab-like flatness.
+   =============================================================== */
+function makeDrapedFabric(w, d, segments = 80) {
+  const geo = new THREE.PlaneGeometry(w, d, segments, Math.floor(segments * d / w));
+  geo.rotateX(-Math.PI / 2);
+
+  const pos = geo.attributes.position;
+  for (let i = 0; i < pos.count; i++) {
+    const x = pos.getX(i);
+    const z = pos.getZ(i);
+
+    // Distance from center (normalized 0 to 1)
+    const nx = x / (w / 2);
+    const nz = z / (d / 2);
+    const distFromCenter = Math.sqrt(nx * nx + nz * nz);
+
+    // Gentle dome — slightly raised in center, drapes down at edges (like a blanket on a body)
+    const dome = Math.cos(distFromCenter * Math.PI * 0.5) * 0.08;
+
+    // Quilted ripple pattern — soft sinusoidal undulation
+    const ripple = Math.sin(x * 3.5) * Math.sin(z * 3.5) * 0.025;
+
+    // Tiny noise for fabric grain
+    const noise = (Math.sin(x * 18 + z * 7) + Math.sin(x * 11 - z * 13)) * 0.004;
+
+    // Edge sag — corners droop more (gravity feel)
+    const edgeSag = Math.pow(distFromCenter, 4) * -0.12;
+
+    pos.setY(i, dome + ripple + noise + edgeSag);
+  }
+  pos.needsUpdate = true;
+  geo.computeVertexNormals();
+  return geo;
+}
+
+/* ===============================================================
+   HELPER — quilted padding underside (thick fluffy underbelly)
+   =============================================================== */
+function makeQuiltedUnderside(w, d, thickness, segments = 60) {
+  const geo = new THREE.PlaneGeometry(w * 0.99, d * 0.99, segments, Math.floor(segments * d / w));
+  geo.rotateX(Math.PI / 2);   // face DOWN
+
+  const pos = geo.attributes.position;
+  // Diamond quilted bulges — each diamond cell puffs out
+  const diamondScale = 4;
+  for (let i = 0; i < pos.count; i++) {
+    const x = pos.getX(i);
+    const z = pos.getZ(i);
+    // Quilted diamond pattern: bulge at diamond centers, dip at stitch lines
+    const dx = Math.sin(x * diamondScale + z * diamondScale);
+    const dz = Math.sin(x * diamondScale - z * diamondScale);
+    const puff = (dx + dz) * 0.5;          // -1 to 1
+    const bulge = Math.max(0, puff) * thickness * 0.6;
+    pos.setY(i, -thickness * 0.5 - bulge);
+  }
+  pos.needsUpdate = true;
+  geo.computeVertexNormals();
+  return geo;
+}
+
+/* ===============================================================
+   LAYER 1 — DRAPED OUTER FABRIC (the actual blanket surface)
+   =============================================================== */
+const topGeo = makeDrapedFabric(W, D, 90);
+const fabricMat = new THREE.MeshStandardMaterial({
+  color: 0xe6dec9,
+  roughness: 0.92,
+  metalness: 0.0,
+  side: THREE.DoubleSide,
+  flatShading: false
+});
+const topFabric = new THREE.Mesh(topGeo, fabricMat);
+topFabric.userData = {
+  name: 'Outer Cover',
+  desc: 'Breathable quilted cotton-blend shell.',
+  baseY: 0.7,
+  num: 1
+};
+blanket.add(topFabric);
+
+// Underside padding (gives it real blanket thickness)
+const undersideGeo = makeQuiltedUnderside(W, D, T * 2.5, 60);
+const undersideMat = new THREE.MeshStandardMaterial({
+  color: 0xd8d0bc, roughness: 0.95, metalness: 0.0, side: THREE.DoubleSide
+});
+const underside = new THREE.Mesh(undersideGeo, undersideMat);
+underside.position.y = -0.01;
+topFabric.add(underside);
+
+// Embroidered TempSync mark in a corner
+function makeEmbroideredMark() {
+  const c = document.createElement('canvas');
+  c.width = 256; c.height = 128;
+  const ctx = c.getContext('2d');
+  ctx.fillStyle = 'rgba(212, 175, 106, 0)';
+  ctx.fillRect(0, 0, 256, 128);
+  ctx.fillStyle = '#b89a5c';
+  ctx.font = 'italic 38px "Fraunces", serif';
+  ctx.textAlign = 'left';
+  ctx.fillText('TempSync', 14, 70);
+  ctx.fillStyle = '#d4af6a';
+  ctx.font = 'italic 16px "Fraunces", serif';
+  ctx.fillText('™', 230, 50);
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  return tex;
+}
+const markGeo = new THREE.PlaneGeometry(0.5, 0.25);
+markGeo.rotateX(-Math.PI / 2);
+const markMat = new THREE.MeshStandardMaterial({
+  map: makeEmbroideredMark(),
+  transparent: true,
+  roughness: 0.85,
+  metalness: 0.1,
+});
+const mark = new THREE.Mesh(markGeo, markMat);
+mark.position.set(W / 2 - 0.45, 0.02, D / 2 - 0.25);
+topFabric.add(mark);
+
+// Diagonal quilted stitching — engraved instead of raised
+function makeStitchLines(w, d) {
+  const group = new THREE.Group();
+  const mat = new THREE.MeshStandardMaterial({
+    color: 0x9c8348, roughness: 0.5, metalness: 0.3
+  });
+  const halfW = w / 2 * 0.93;
+  const halfD = d / 2 * 0.93;
+  const stepDiag = 0.42;
+  const range = halfW + halfD + 0.3;
+
+  for (let offset = -range; offset <= range; offset += stepDiag) {
+    [1, -1].forEach(dir => {
+      const pts = [];
+      for (let t = -halfW; t <= halfW; t += 0.1) {
+        const z = dir * t + offset;
+        if (z >= -halfD && z <= halfD) {
+          // Follow the dome curve
+          const nx = t / (w / 2);
+          const nz = z / (d / 2);
+          const distFromCenter = Math.sqrt(nx * nx + nz * nz);
+          const yCurve = Math.cos(distFromCenter * Math.PI * 0.5) * 0.08
+                       + Math.sin(t * 3.5) * Math.sin(z * 3.5) * 0.025
+                       - Math.pow(distFromCenter, 4) * 0.12;
+          pts.push(new THREE.Vector3(t, yCurve + 0.005, z));
+        }
+      }
+      if (pts.length >= 2) {
+        const curve = new THREE.CatmullRomCurve3(pts, false);
+        const stitchGeo = new THREE.TubeGeometry(curve, Math.max(8, pts.length * 2), 0.007, 4, false);
+        group.add(new THREE.Mesh(stitchGeo, mat));
+      }
+    });
+  }
+  return group;
+}
+topFabric.add(makeStitchLines(W, D));
+
+/* ===============================================================
+   HELPER — make any internal layer that can be toggled visible
+   =============================================================== */
+function makeInternalLayer(w, d, thickness, color, options = {}) {
+  // Use rounded extruded geometry but make it visually softer
   const x = -w/2, y = -d/2;
+  const r = options.radius || 0.18;
   const shape = new THREE.Shape();
   shape.moveTo(x + r, y);
   shape.lineTo(x + w - r, y);
@@ -2836,133 +3402,51 @@ function roundedRectShape(w, d, r) {
   shape.quadraticCurveTo(x, y + d, x, y + d - r);
   shape.lineTo(x, y + r);
   shape.quadraticCurveTo(x, y, x + r, y);
-  return shape;
-}
 
-function extrudeLayer(w, d, thickness, radius=0.15) {
-  const shape = roundedRectShape(w, d, radius);
   const geo = new THREE.ExtrudeGeometry(shape, {
     depth: thickness,
     bevelEnabled: true,
-    bevelSegments: 3,
-    bevelSize: 0.04,
-    bevelThickness: 0.03,
+    bevelSegments: 4,
+    bevelSize: 0.05,
+    bevelThickness: 0.04,
     steps: 1
   });
   geo.rotateX(-Math.PI / 2);
   geo.translate(0, thickness, 0);
-  return geo;
-}
 
-/* ===============================================================
-   LAYER 1 — OUTER FABRIC (quilted with visible diamond stitching)
-   =============================================================== */
-const topGeo = extrudeLayer(W, D, T, 0.2);
-// Subtle vertex displacement for quilted feel
-const topPos = topGeo.attributes.position;
-for (let i = 0; i < topPos.count; i++) {
-  const x = topPos.getX(i);
-  const z = topPos.getZ(i);
-  const y = topPos.getY(i);
-  // only displace top surface
-  if (y > T * 0.9) {
-    const bump = Math.sin(x * 5) * Math.sin(z * 6) * 0.012;
-    topPos.setY(i, y + Math.max(0, bump));
-  }
-}
-topPos.needsUpdate = true;
-topGeo.computeVertexNormals();
-
-const fabricMat = new THREE.MeshStandardMaterial({
-  color: 0xeae3d2,
-  roughness: 0.88,
-  metalness: 0.0,
-});
-const topFabric = new THREE.Mesh(topGeo, fabricMat);
-topFabric.userData = {
-  name: 'Outer Cover',
-  desc: 'Breathable quilted shell, soft to the touch.',
-  baseY: 0.6,
-  num: 1
-};
-blanket.add(topFabric);
-
-// Diamond stitching grid on top fabric
-function makeStitching(w, d) {
-  const group = new THREE.Group();
-  const stitchMat = new THREE.MeshStandardMaterial({
-    color: 0xb89a5c, roughness: 0.7, metalness: 0.15
+  const mat = new THREE.MeshStandardMaterial({
+    color, roughness: options.roughness ?? 0.55,
+    metalness: options.metalness ?? 0.15,
+    transparent: true, opacity: 0
   });
-  const lineRadius = 0.008;
-  const halfW = w / 2 * 0.92;
-  const halfD = d / 2 * 0.92;
 
-  // Diagonal lines crossing the surface
-  const stepDiag = 0.35;
-  const range = (halfW + halfD) + 0.2;
-
-  for (let offset = -range; offset <= range; offset += stepDiag) {
-    // diagonal line: y = x + offset, clipped to rect
-    // Build two diagonals (one each direction)
-    [1, -1].forEach(dir => {
-      const pts = [];
-      // sample along x
-      for (let t = -halfW; t <= halfW; t += 0.15) {
-        const z = dir * t + offset;
-        if (z >= -halfD && z <= halfD) {
-          pts.push(new THREE.Vector3(t, T + 0.01, z));
-        }
-      }
-      if (pts.length >= 2) {
-        const curve = new THREE.CatmullRomCurve3(pts, false);
-        const stitchGeo = new THREE.TubeGeometry(curve, Math.max(4, pts.length * 2), lineRadius, 4, false);
-        group.add(new THREE.Mesh(stitchGeo, stitchMat));
-      }
-    });
-  }
-  return group;
-}
-const stitching = makeStitching(W, D);
-topFabric.add(stitching);
-
-// Small "button" stitches at diamond intersections
-const buttonMat = new THREE.MeshStandardMaterial({ color: 0xd4af6a, roughness: 0.4, metalness: 0.5 });
-const buttonGeo = new THREE.SphereGeometry(0.025, 8, 6);
-const halfWb = W / 2 * 0.85;
-const halfDb = D / 2 * 0.85;
-const buttonStep = 0.5;
-for (let bx = -halfWb; bx <= halfWb + 0.01; bx += buttonStep) {
-  for (let bz = -halfDb; bz <= halfDb + 0.01; bz += buttonStep) {
-    const btn = new THREE.Mesh(buttonGeo, buttonMat);
-    btn.position.set(bx, T + 0.018, bz);
-    topFabric.add(btn);
-  }
+  return { mesh: new THREE.Mesh(geo, mat), material: mat };
 }
 
 /* ===============================================================
-   LAYER 2 — MORNING WARMING ZONE (visible serpentine heating wires)
+   LAYER 2 — MORNING WARMING ZONE (heating wires + base)
    =============================================================== */
-const heatGeo = extrudeLayer(W, D, T * 0.55, 0.18);
-const heatBaseMat = new THREE.MeshStandardMaterial({
-  color: 0x2a1a13, roughness: 0.7, metalness: 0.05,
-});
-const heatLayer = new THREE.Mesh(heatGeo, heatBaseMat);
+const heatLayerData = makeInternalLayer(W * 0.96, D * 0.96, T * 0.5, 0x2a1410, { roughness: 0.72 });
+const heatLayer = heatLayerData.mesh;
 heatLayer.userData = {
   name: 'Morning Warming Zone',
-  desc: 'Exothermic micro-wires raise skin temperature gradually for natural waking.',
-  baseY: 0.25,
-  num: 2
+  desc: 'Exothermic micro-wires raise skin temperature for natural waking.',
+  baseY: 0.32,
+  num: 2,
+  baseMaterial: heatLayerData.material
 };
+heatLayer.visible = false;   // hidden when assembled
 blanket.add(heatLayer);
 
-/* Serpentine heating wire tubes */
-function makeSerpentine(width, depth, rows, color, glowIntensity=0.5) {
+// Serpentine heating wires
+function makeSerpentine(width, depth, rows, color) {
   const group = new THREE.Group();
   const mat = new THREE.MeshStandardMaterial({
-    color, emissive: color, emissiveIntensity: glowIntensity,
-    roughness: 0.4, metalness: 0.4
+    color, emissive: color, emissiveIntensity: 0.6,
+    roughness: 0.4, metalness: 0.45,
+    transparent: true, opacity: 0
   });
-  const halfW = width / 2 * 0.88;
+  const halfW = width / 2 * 0.86;
   const step = (depth * 0.85) / (rows - 1);
   const startZ = -depth / 2 * 0.85;
   const pts = [];
@@ -2976,149 +3460,167 @@ function makeSerpentine(width, depth, rows, color, glowIntensity=0.5) {
       pts.push(new THREE.Vector3(-halfW, 0, z));
     }
   }
-  const curve = new THREE.CatmullRomCurve3(pts, false, 'catmullrom', 0.06);
-  const tubeGeo = new THREE.TubeGeometry(curve, 280, 0.028, 8, false);
+  const curve = new THREE.CatmullRomCurve3(pts, false, 'catmullrom', 0.08);
+  const tubeGeo = new THREE.TubeGeometry(curve, 320, 0.032, 10, false);
   const tube = new THREE.Mesh(tubeGeo, mat);
   group.add(tube);
 
-  // little terminal blocks at ends
-  const blockGeo = new THREE.BoxGeometry(0.12, 0.06, 0.12);
-  const blockMat = new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.5, metalness: 0.6 });
-  pts.forEach((p, i) => {
-    if (i === 0 || i === pts.length - 1) {
-      const b = new THREE.Mesh(blockGeo, blockMat);
-      b.position.copy(p);
-      b.position.y = 0.04;
-      group.add(b);
-    }
+  // Junction blocks at ends
+  const blockMat = new THREE.MeshStandardMaterial({
+    color: 0x1a1a1a, roughness: 0.5, metalness: 0.6, transparent: true, opacity: 0
+  });
+  [pts[0], pts[pts.length - 1]].forEach(p => {
+    const b = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.07, 0.14), blockMat);
+    b.position.set(p.x, 0.045, p.z);
+    group.add(b);
   });
 
-  return { group, material: mat };
+  return { group, material: mat, blockMaterial: blockMat };
 }
-const heatSerp = makeSerpentine(W, D, 7, 0xe89456, 0.55);
-heatSerp.group.position.y = T * 0.55 + 0.005;
+const heatSerp = makeSerpentine(W, D, 8, 0xe89456);
+heatSerp.group.position.y = T * 0.5 + 0.008;
 heatLayer.add(heatSerp.group);
 
 /* ===============================================================
-   LAYER 3 — SMART SENSOR LAYER (sensors + traces + central hub)
+   LAYER 3 — SMART SENSOR LAYER
    =============================================================== */
-const sensorGeo = extrudeLayer(W * 0.97, D * 0.97, T * 0.35, 0.14);
-const sensorPlate = new THREE.Mesh(sensorGeo, new THREE.MeshStandardMaterial({
-  color: 0x16223a, roughness: 0.45, metalness: 0.55
-}));
+const sensorData = makeInternalLayer(W * 0.94, D * 0.94, T * 0.32, 0x14223a, { roughness: 0.4, metalness: 0.6 });
+const sensorPlate = sensorData.mesh;
 sensorPlate.userData = {
   name: 'Smart Sensor Layer',
-  desc: 'Tracks temperature & motion. Syncs with your wearable and the app.',
+  desc: 'Tracks temperature & motion. Syncs with your wearable.',
   baseY: 0,
-  num: 3
+  num: 3,
+  baseMaterial: sensorData.material
 };
+sensorPlate.visible = false;
 blanket.add(sensorPlate);
 
-/* Sensor nodes — slim gold cylindrical discs */
+// Corner sensor pucks
 const sensorNodeMat = new THREE.MeshStandardMaterial({
-  color: 0xd4af6a, emissive: 0xd4af6a, emissiveIntensity: 0.55,
-  roughness: 0.3, metalness: 0.75
+  color: 0xd4af6a, emissive: 0xd4af6a, emissiveIntensity: 0.6,
+  roughness: 0.28, metalness: 0.8, transparent: true, opacity: 0
 });
-const sensorNodeGeo = new THREE.CylinderGeometry(0.11, 0.11, 0.06, 24);
+const sensorNodeGeo = new THREE.CylinderGeometry(0.13, 0.13, 0.07, 28);
 const sensorPositions = [
-  [-W/2 * 0.72, 0, -D/2 * 0.68],
-  [ W/2 * 0.72, 0, -D/2 * 0.68],
-  [-W/2 * 0.72, 0,  D/2 * 0.68],
-  [ W/2 * 0.72, 0,  D/2 * 0.68],
+  [-W/2 * 0.74, 0, -D/2 * 0.70],
+  [ W/2 * 0.74, 0, -D/2 * 0.70],
+  [-W/2 * 0.74, 0,  D/2 * 0.70],
+  [ W/2 * 0.74, 0,  D/2 * 0.70],
 ];
 sensorPositions.forEach(p => {
   const n = new THREE.Mesh(sensorNodeGeo, sensorNodeMat);
-  n.position.set(p[0], T * 0.35 + 0.035, p[2]);
+  n.position.set(p[0], T * 0.32 + 0.04, p[2]);
   sensorPlate.add(n);
 });
- 
-/* Central control hub — bigger, with two-tone ring */
-const hubBaseGeo = new THREE.CylinderGeometry(0.28, 0.28, 0.08, 32);
-const hubBase = new THREE.Mesh(hubBaseGeo, new THREE.MeshStandardMaterial({
-  color: 0x0a1628, roughness: 0.35, metalness: 0.8
-}));
-hubBase.position.y = T * 0.35 + 0.045;
+
+// Central control hub
+const hubBase = new THREE.Mesh(
+  new THREE.CylinderGeometry(0.32, 0.32, 0.09, 36),
+  new THREE.MeshStandardMaterial({
+    color: 0x0a1628, roughness: 0.32, metalness: 0.85, transparent: true, opacity: 0
+  })
+);
+hubBase.position.y = T * 0.32 + 0.05;
+hubBase.userData.material = hubBase.material;
 sensorPlate.add(hubBase);
- 
-const hubRingGeo = new THREE.TorusGeometry(0.22, 0.018, 12, 48);
+
 const hubRingMat = new THREE.MeshStandardMaterial({
-  color: 0xd4af6a, emissive: 0xd4af6a, emissiveIntensity: 0.7,
-  roughness: 0.3, metalness: 0.8
+  color: 0xd4af6a, emissive: 0xd4af6a, emissiveIntensity: 0.75,
+  roughness: 0.28, metalness: 0.85, transparent: true, opacity: 0
 });
-const hubRing = new THREE.Mesh(hubRingGeo, hubRingMat);
+const hubRing = new THREE.Mesh(new THREE.TorusGeometry(0.25, 0.02, 14, 56), hubRingMat);
 hubRing.rotation.x = Math.PI / 2;
-hubRing.position.y = T * 0.35 + 0.09;
+hubRing.position.y = T * 0.32 + 0.10;
 sensorPlate.add(hubRing);
- 
-/* Trace lines from sensors to hub */
+
+// Trace lines from sensors to hub
 const traceMat = new THREE.LineBasicMaterial({
-  color: 0xd4af6a, transparent: true, opacity: 0.55
+  color: 0xd4af6a, transparent: true, opacity: 0
 });
 const tracePts = [];
 sensorPositions.forEach(p => {
-  tracePts.push(new THREE.Vector3(p[0], T * 0.35 + 0.04, p[2]));
-  tracePts.push(new THREE.Vector3(0, T * 0.35 + 0.04, 0));
+  tracePts.push(new THREE.Vector3(p[0], T * 0.32 + 0.045, p[2]));
+  tracePts.push(new THREE.Vector3(0, T * 0.32 + 0.045, 0));
 });
 const traceGeo = new THREE.BufferGeometry().setFromPoints(tracePts);
-sensorPlate.add(new THREE.LineSegments(traceGeo, traceMat));
- 
+const traceLines = new THREE.LineSegments(traceGeo, traceMat);
+sensorPlate.add(traceLines);
+
 /* ===============================================================
    LAYER 4 — NIGHTTIME COOLING ZONE (gel channel grid)
    =============================================================== */
-const coolGeo = extrudeLayer(W, D, T * 0.55, 0.18);
-const coolBase = new THREE.Mesh(coolGeo, new THREE.MeshStandardMaterial({
-  color: 0x172e44, roughness: 0.5, metalness: 0.15
-}));
+const coolData = makeInternalLayer(W * 0.96, D * 0.96, T * 0.5, 0x152838, { roughness: 0.55, metalness: 0.15 });
+const coolBase = coolData.mesh;
 coolBase.userData = {
   name: 'Nighttime Cooling Zone',
-  desc: 'Endothermic gel channels absorb body heat for deeper, restorative sleep.',
-  baseY: -0.25,
-  num: 4
+  desc: 'Endothermic gel channels absorb body heat for deeper sleep.',
+  baseY: -0.32,
+  num: 4,
+  baseMaterial: coolData.material
 };
+coolBase.visible = false;
 blanket.add(coolBase);
- 
-/* Cooling gel cells — grid of glowing rounded boxes */
+
 const cellMat = new THREE.MeshStandardMaterial({
-  color: 0x5ba3d0, emissive: 0x5ba3d0, emissiveIntensity: 0.35,
-  roughness: 0.25, metalness: 0.1,
-  transparent: true, opacity: 0.88
+  color: 0x5ba3d0, emissive: 0x5ba3d0, emissiveIntensity: 0.4,
+  roughness: 0.22, metalness: 0.15,
+  transparent: true, opacity: 0
 });
-const cellSize = 0.32;
-const cellGeo = new THREE.BoxGeometry(cellSize, T * 0.32, cellSize);
-// soften edges
-const cellCols = 10;
+const cellSize = 0.34;
+const cellCols = 11;
 const cellRows = 7;
-const gapX = (W * 0.86 - cellCols * cellSize) / (cellCols - 1);
+const gapX = (W * 0.84 - cellCols * cellSize) / (cellCols - 1);
 const gapZ = (D * 0.82 - cellRows * cellSize) / (cellRows - 1);
-const startX = -W * 0.86 / 2 + cellSize / 2;
+const startX = -W * 0.84 / 2 + cellSize / 2;
 const startZ = -D * 0.82 / 2 + cellSize / 2;
 for (let r = 0; r < cellRows; r++) {
   for (let c = 0; c < cellCols; c++) {
-    const cell = new THREE.Mesh(cellGeo, cellMat);
+    const cell = new THREE.Mesh(new THREE.BoxGeometry(cellSize, T * 0.28, cellSize), cellMat);
     cell.position.set(
       startX + c * (cellSize + gapX),
-      T * 0.55 + T * 0.16 + 0.005,
+      T * 0.5 + T * 0.14 + 0.005,
       startZ + r * (cellSize + gapZ)
     );
     coolBase.add(cell);
   }
 }
- 
+
 /* ===============================================================
-   LAYER 5 — BACKING (insulating base)
+   LAYER 5 — INSULATING BACKING
    =============================================================== */
-const backGeo = extrudeLayer(W, D, T * 0.85, 0.18);
-const backFabric = new THREE.Mesh(backGeo, new THREE.MeshStandardMaterial({
-  color: 0xe0d8c4, roughness: 0.92, metalness: 0.0
-}));
+const backData = makeInternalLayer(W * 0.99, D * 0.99, T * 0.7, 0xddd4be, { roughness: 0.95, metalness: 0.0 });
+const backFabric = backData.mesh;
 backFabric.userData = {
   name: 'Insulating Backing',
   desc: 'Reflective backing keeps energy directed toward your body.',
-  baseY: -0.55,
-  num: 5
+  baseY: -0.7,
+  num: 5,
+  baseMaterial: backData.material
 };
+backFabric.visible = false;
 blanket.add(backFabric);
- 
+
+/* ===============================================================
+   GROUP — collect everything that needs fade in/out
+   =============================================================== */
+// All internal materials that need to fade
+const internalMaterials = [
+  heatLayerData.material,
+  heatSerp.material,
+  heatSerp.blockMaterial,
+  sensorData.material,
+  sensorNodeMat,
+  hubBase.material,
+  hubRingMat,
+  traceMat,
+  cellMat,
+  coolData.material,
+  backData.material
+];
+// All internal meshes (for visibility toggle)
+const internalLayers = [heatLayer, sensorPlate, coolBase, backFabric];
+
 /* ===============================================================
    LAYERS ARRAY + POSITIONS
    =============================================================== */
@@ -3197,29 +3699,33 @@ canvas.addEventListener('pointerup', () => {
 let mode = 'stack';   // 'stack' | 'explode' | 'cycle'
 let cycleTime = 0;
 const targets = layers.map((_, i) => stackedPositions[i]);
- 
+let internalOpacityTarget = 0;   // 0 = hidden, 1 = fully visible
+
 function setMode(newMode) {
   mode = newMode;
   if (mode === 'stack') {
     layers.forEach((_, i) => { targets[i] = stackedPositions[i]; });
+    internalOpacityTarget = 0;
     modeBadge.classList.remove('visible');
   } else if (mode === 'explode') {
     layers.forEach((_, i) => { targets[i] = explodedPositions[i]; });
+    internalOpacityTarget = 1;
     modeBadge.classList.remove('visible');
   } else if (mode === 'cycle') {
     cycleTime = 0;
+    internalOpacityTarget = 1;
     modeBadge.classList.add('visible');
   }
   updateButtons();
 }
- 
+
 const btnStack   = document.getElementById('btn-stack');
 const btnExplode = document.getElementById('btn-explode');
 const btnCycle   = document.getElementById('btn-cycle');
 btnStack.addEventListener('click',   () => setMode('stack'));
 btnExplode.addEventListener('click', () => setMode('explode'));
 btnCycle.addEventListener('click',   () => setMode('cycle'));
- 
+
 function updateButtons() {
   [btnStack, btnExplode, btnCycle].forEach(b => b.classList.remove('active'));
   if (mode === 'stack')   btnStack.classList.add('active');
@@ -3257,61 +3763,58 @@ window.addEventListener('resize', onResize);
    RENDER LOOP
    =============================================================== */
 const tmpVec = new THREE.Vector3();
- 
+let currentInternalOpacity = 0;
+
 function tick() {
   requestAnimationFrame(tick);
- 
+
   /* Cycle mode: drift between stacked + exploded, day/night glow */
   if (mode === 'cycle') {
     cycleTime += 0.008;
-    // Spread oscillates between stacked and exploded
-    const spread = (Math.sin(cycleTime * 0.7) + 1) / 2;     // 0..1
+    const spread = (Math.sin(cycleTime * 0.7) + 1) / 2;
     layers.forEach((_, i) => {
       targets[i] = stackedPositions[i] + (explodedPositions[i] - stackedPositions[i]) * spread;
     });
- 
-    // Day/night phase shifts independently of spread for visual interest
-    const dayPhase = (Math.sin(cycleTime) + 1) / 2;  // 0..1 (0 = full night, 1 = full day)
-    // Cool intensity peaks at night (dayPhase low); warm peaks at day (dayPhase high)
-    const coolI = (1 - dayPhase) * 1.4 + 0.2;
-    const warmI = dayPhase * 1.4 + 0.2;
+
+    const dayPhase = (Math.sin(cycleTime) + 1) / 2;
+    const coolI = (1 - dayPhase) * 1.5 + 0.25;
+    const warmI = dayPhase * 1.5 + 0.25;
     cellMat.emissiveIntensity = coolI;
     heatSerp.material.emissiveIntensity = warmI;
     hubRingMat.emissiveIntensity = 0.5 + Math.abs(dayPhase - 0.5) * 1.0;
- 
+
     modeBadge.textContent = dayPhase > 0.5 ? 'Morning Warming' : 'Nighttime Cooling';
   } else {
-    // Reset emissives to default
-    cellMat.emissiveIntensity = 0.35;
-    heatSerp.material.emissiveIntensity = 0.55;
-    hubRingMat.emissiveIntensity = 0.7;
+    cellMat.emissiveIntensity = 0.4;
+    heatSerp.material.emissiveIntensity = 0.6;
+    hubRingMat.emissiveIntensity = 0.75;
   }
- 
+
   /* Smooth lerp each layer Y toward target */
   layers.forEach((layer, i) => {
     layer.position.y += (targets[i] - layer.position.y) * 0.07;
   });
- 
+
+  /* Fade internal layers in/out based on mode */
+  currentInternalOpacity += (internalOpacityTarget - currentInternalOpacity) * 0.06;
+  // Toggle visibility once close to zero
+  const internallyVisible = currentInternalOpacity > 0.02;
+  internalLayers.forEach(layer => { layer.visible = internallyVisible; });
+  internalMaterials.forEach(mat => { mat.opacity = currentInternalOpacity; });
+
   controls.update();
- 
-  /* Update number sprite positions + label DOM positions */
+
+  /* Number sprites + HTML labels — only when revealed */
   const layerSeparation = Math.abs(layers[0].position.y - layers[4].position.y);
   const totalSep = Math.abs(explodedPositions[0] - explodedPositions[4]);
   const spreadAmount = layerSeparation / totalSep;
-  const showLabels = spreadAmount > 0.4;
- 
+  const showLabels = spreadAmount > 0.4 && currentInternalOpacity > 0.5;
+
   layers.forEach((layer, i) => {
-    // Number sprite — to the LEFT of the layer
+    /* Number sprite — LEFT of layer */
     const sprite = numberSprites[i];
     sprite.visible = showLabels;
     if (showLabels) {
-      // World position
-      sprite.position.set(
-        blanket.position.x - W / 2 - 0.7,
-        layer.position.y,
-        blanket.position.z
-      );
-      // Apply blanket rotation for the offset
       const offset = new THREE.Vector3(-W / 2 - 0.7, 0, 0);
       offset.applyEuler(blanket.rotation);
       sprite.position.set(
@@ -3320,14 +3823,10 @@ function tick() {
         blanket.position.z + offset.z
       );
     }
- 
-    /* HTML label — to the RIGHT of the layer */
+
+    /* HTML label — RIGHT of layer */
     const el = labelEls[i];
-    if (!showLabels) {
-      el.classList.remove('visible');
-      return;
-    }
-    // Compute world position offset to right of blanket
+    if (!showLabels) { el.classList.remove('visible'); return; }
     const labelOffset = new THREE.Vector3(W / 2 + 1.0, 0, 0);
     labelOffset.applyEuler(blanket.rotation);
     tmpVec.set(
@@ -3346,10 +3845,10 @@ function tick() {
       el.classList.remove('visible');
     }
   });
- 
+
   renderer.render(scene, camera);
 }
- 
+
 onResize();
 tick();
 </script>
